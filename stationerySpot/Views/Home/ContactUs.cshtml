@@ -1,0 +1,78 @@
+﻿@{
+    Layout = "HomeLayout";
+}
+@section style{
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+    <link rel="stylesheet" href="~/assets\style\nav.css">
+    <link rel="stylesheet" href="~/assets\style\Contact.css">
+}
+<!-- hero -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Contact Us</h1>
+        <h3>We'd Love to Hear from You</h3>
+    </div>
+    <img src="~/assets\img\contact.jpg" alt="library-image" class="hero-image">
+</div>
+<!-- contact -->
+<section class="contact">
+    <div class="content">
+        <h2 style="color: #0097B2;">Contact Us</h2>
+        <p>Thank you for visiting Stationery Spot Website. We are a leading provider of stationery products based in Khalda, Amman, Jordan. Our team is dedicated to offering high-quality stationery solutions to meet your needs. Reach out to us for more information or inquiries.</p>
+
+    </div>
+    <div class="container">
+        <div class="contactInfo">
+            <div class="box">
+                <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="text">
+                    <h3>Address</h3>
+                    <p>1234 Khalda Street<br>Amman, Jordan,<br>5678</p>
+                </div>
+            </div>
+            <div class="box">
+                <div class="icon"><i class="fas fa-phone"></i></div>
+                <div class="text">
+                    <h3>Phone</h3>
+                    <p>+(671) 7896453</p>
+                </div>
+            </div>
+            <div class="box">
+                <div class="icon"><i class="far fa-envelope"></i></div>
+                <div class="text">
+                    <h3>Email</h3>
+                    <p>StationerySpot@stationery.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="contactForm">
+            <h2 style="color: #0097B2;">Send Message</h2>
+            <form id="contact-form">
+                <div class="inputBox">
+                    <input type="text" id="name" name="first_name" required="required" data-label="First Name">
+                    <span>First Name</span>
+                </div>
+                <div class="inputBox">
+                    <input type="text" id="lastName" name="last_name" required="required"
+                           data-label="Last Name">
+                    <span>Last Name</span>
+                </div>
+                <div class="inputBox">
+                    <input type="email" id="email" name="user_email" required="required" data-label="Email">
+                    <span>Email</span>
+                </div>
+                <div class="inputBox">
+                    <textarea id="message" name="user_message" required="required"
+                              data-label="Type your message..."></textarea>
+                    <span>Type your message...</span>
+                </div>
+                <div class="inputBox">
+                    <button type="submit">Send</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</section>

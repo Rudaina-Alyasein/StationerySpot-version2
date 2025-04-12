@@ -1,0 +1,208 @@
+﻿@model stationerySpot.Models.Library
+
+@{
+    Layout = "LibraryDashboard";
+}
+
+@section style {
+    <link href="~/assets/css/StyleSheet.css" rel="stylesheet">
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '@TempData["SuccessMessage"]',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    </script>
+}
+
+
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <!-- القسم الأيسر: صورة + اسم + أزرار -->
+        <div class="col-md-3 border-right d-flex justify-content-center">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5 w-100">
+                <img class="rounded-circle mt-4" width="150px" height="150px" style="object-fit:cover" src="@Url.Content(Model.LogoPath)">
+                <h5 class="mt-3 fw-bold">@Model.Name</h5>
+
+                <div class="mt-3 d-grid gap-2 w-100 px-3" style=" display:flex; flex-direction:column; gap:10px !important;">
+                    <button class="btn btn-sm btn-primary w-100 d-flex align-items-center justify-content-center gap-2 py-2"
+                            data-bs-toggle="modal" data-bs-target="#editInfoModal">
+                        <i class="bi bi-pencil-square"></i> Edit Info
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2 py-2"
+                            data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                        <i class="bi bi-lock"></i> Change Password
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- القسم الأيمن: معلومات المكتبة -->
+        <div class="col-md-9">
+            <div class="p-3 py-5">
+                <h4 class="mb-4 text-center text-md-start">Library Profile Settings</h4>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Library Name</label>
+                        <p class="form-control-plaintext">@Model.Name</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email</label>
+                        <p class="form-control-plaintext">@Model.LibraryAccounts.FirstOrDefault()?.Email</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <p class="form-control-plaintext">@Model.Phone</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">City</label>
+                        <p class="form-control-plaintext">@Model.City</p>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Full Address</label>
+                        <p class="form-control-plaintext">@Model.Location</p>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Working Hours</label>
+                        <p class="form-control-plaintext">@Model.WorkingHours</p>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Library Description</label>
+                        <p class="form-control-plaintext">@Model.Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Info Modal -->
+        <div class="modal fade" id="editInfoModal" tabindex="-1" aria-labelledby="editInfoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="editInfoModalLabel">Edit Library Information</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="@Url.Action("EditProfile", "LibraryDashboard")" enctype="multipart/form-data">
+                            <!-- Library Image Upload -->
+                            <div class="mb-3">
+                                <label class="form-label">Library Logo</label>
+                                <input type="file" class="form-control" name="LogoPathFile" accept="image/*">
+                            </div>
+
+                            <!-- Library Name and Email -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Library Name</label>
+                                    <input type="text" class="form-control" name="Name" value="@Model.Name" placeholder="Al-Noor Library" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="Email" value="@Model.LibraryAccounts.FirstOrDefault()?.Email" placeholder="library@example.com" required>
+                                </div>
+                            </div>
+
+                            <!-- Phone, City and Address -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone</label>
+                                    <input type="text" class="form-control" name="Phone" value="@Model.Phone" placeholder="07XXXXXXXX" required>
+                                </div>
+                              
+                                <!-- Dropdown for City -->
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                        <select id="City" name="City" value="@Model.City" class="form-control">
+                                            <option value="" disabled selected>Select City</option>
+                                            <option value="Amman" selected>Amman</option>
+                                            <option value="Irbid">Irbid</option>
+                                            <option value="Zarqa">Zarqa</option>
+                                            <option value="Aqaba">Aqaba</option>
+                                            <option value="Madaba">Madaba</option>
+                                            <option value="Mafraq">Mafraq</option>
+                                            <option value="Karak">Karak</option>
+                                            <option value="Tafilah">Tafilah</option>
+                                            <option value="Jerash">Jerash</option>
+                                            <option value="Ajloun">Ajloun</option>
+                                            <option value="Salt">Salt</option>
+                                            <option value="Balqa">Balqa</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Full Address -->
+                            <div class="mb-3">
+                                <label class="form-label">Full Address</label>
+                                <input type="text" class="form-control" name="Location" value="@Model.Location" placeholder="University Street, beside Arab Bank" required>
+                            </div>
+
+                            <!-- Working Hours -->
+                            <div class="mb-3">
+                                <label class="form-label">Working Hours</label>
+                                <input type="text" class="form-control" name="WorkingHours" value="@Model.WorkingHours" placeholder="Sun - Thu | 9:00 AM - 6:00 PM" required>
+                            </div>
+
+                            <!-- Library Description -->
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" name="Description" rows="4" placeholder="Short description about the library..." required>@Model.Description</textarea>
+                            </div>
+
+                            
+
+                            <!-- Submit Button -->
+                            <div class="mt-4 text-center">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change Password Modal -->
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-secondary text-white">
+                        <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label">Current Password</label>
+                                <input type="password" class="form-control" placeholder="Enter current password">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">New Password</label>
+                                <input type="password" class="form-control" placeholder="Enter new password">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" placeholder="Confirm new password">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary">Update Password</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,397 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", serif;
+    color: #333;
+    background: linear-gradient(to bottom, #f5f5f5, #e8e8e8);
+}
+
+/* Hero Section Styling */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 90vh; 
+}
+.hero-section h2 {
+    font-size: 3rem; /* Adjust text size */
+    font-weight: bold;
+    text-align: center;
+    color: #fff; /* White text */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(45deg, #fa65b1, #ff8c94);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; /* Gradient text effect */
+    text-shadow: 2px 2px 15px rgba(250, 101, 177, 0.4);
+    padding: 10px 20px;
+}
+.hero-section h2 {
+    font-size: 2.8rem;
+    font-weight: bold;
+    text-align: center;
+    color: #fa65b1;
+    position: relative;
+}
+
+.hero-section h2::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: #fa65b1;
+    margin: 10px auto 0;
+    transition: width 0.3s ease-in-out;
+}
+
+.hero-section h2:hover::after {
+    width: 150px;
+}
+
+
+
+.hero-img-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+
+
+.hero-content-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: rgb(243 243 243); */
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgb(225, 215, 215);
+    padding: 20px;
+}
+
+.hero-content h1 {
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color:#464040;
+}
+
+.hero-content p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    color:#000011a1;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+}
+
+.cta-btn {
+    padding: 15px 30px;
+    
+    color: #fa65b1;
+    font-size: 1.2em;
+    border: 1px solid #fa65b1;
+    border-radius: 23px;
+    text-decoration: none;
+}
+
+
+
+/* Media Query for Small Screens */
+@media (max-width: 767px) {
+
+    .hero-content h1 {
+        font-size: 2em; /* Reduced font size */
+    }
+    .hero-content p {
+        font-size: 1em; /* Reduced font size */
+    }
+    .cta-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .cta-btn {
+        width: 100%; /* Full width buttons */
+        padding: 12px 20px;
+    }
+}
+
+/* Adjustments for very small screens (425px or less) */
+@media (max-width: 425px) {
+    .navbar {
+        width: 100vw !important;
+    }
+    .hero-section {
+        width: 100vw !important;
+    }
+    .hero-content h1 {
+        font-size: 1.6em; /* Further reduced for small screens */
+    }
+    .hero-content p {
+        font-size: 0.9em; /* Further reduced for small screens */
+    }
+    .cta-btn {
+        padding: 10px 15px;
+    }
+}
+
+/* How It Works Section */
+.how-it-works .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.how-it-works i {
+    color: #fa65b1 !important;
+}
+
+.how-it-works p {
+    color: rgb(108 117 125) !important;
+}
+
+.step-icon {
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+
+svg {
+    transform: rotate(90deg);  /* Rotate arrow to horizontal */
+    margin: 0 15px;
+    transition: transform 0.3s ease;
+}
+
+svg:hover {
+    transform: rotate(0deg);  /* Hover effect */
+}
+
+/* Form Styling */
+.form-group {
+    padding: 20px 40px;
+}
+
+.form-group label {
+    color: #eee !important;
+    font-size: 20px;
+}
+
+.form-group input {
+    padding: 20px;
+    background: #eee;
+}
+
+/* Accordion Styling */
+.accordion-item {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+.accordion-button {
+    background: #eeeeee !important;
+    color: #fa65b1 !important;
+    font-weight: bold;
+    box-shadow: none !important;
+    padding: 15px !important;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #eeeeee !important;
+    color: #fa65b1 !important;
+}
+
+.accordion-body {
+    background: #eeeeee;
+    padding: 20px;
+    border-radius: 10px;
+    color: #333;
+    font-size: 1rem;
+}
+
+/* FAQ Container */
+.faq-container {
+    margin-top: 60px;
+    padding: 40px 20px;
+    border-radius: 15px;
+}
+
+h6 {
+    color: #007f92;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Libraries Section */
+.libraries {
+    padding: 60px 0;
+}
+
+.libraries h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #0097b2;
+}
+
+/* Stat Cards */
+.stat-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    height: auto;
+    min-height: 400px !important;
+    box-shadow: 0px 4px 10px #fa65b1;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    /* border: 4px solid #0097b2; */
+}
+
+.stat-card h5 {
+    font-size: 1.2rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.stat-card p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.stat-card .btn {
+    border-radius: 25px;
+    font-size: 0.9rem;
+    padding: 8px 20px;
+    border: 2px solid #fa65b1;
+    color: #fa65b1;
+
+    transition: all 0.3s;
+}
+
+.stat-card .btn:hover {
+    background: #0097b2;
+    color: white;
+}
+
+/* Carousel Controls */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #fa65b1;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: auto;
+}
+
+/* Testimonial Library Images */
+.Testimonial-Library img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Join Us Icons */
+.join-us i {
+    color: #fa65b1;
+}
+.card-body{
+    box-shadow: 0px 4px 10px #fa65b1;
+
+}
+.form-outline .form-control {
+    border: 1px solid #fa65b1;
+    border-radius: 26px;
+  }
+  .form-outline {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-outline .form-control {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-outline label {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #aaa;
+  transition: 0.3s ease-in-out;
+  pointer-events: none; /* يمنع التفاعل مع الليبل */
+}
+
+.form-outline .form-control:focus + label,
+.form-outline .form-control:not(:placeholder-shown) + label {
+  top: 0;
+  left: 10px;
+  font-size: 16px;
+  color: #fa65b1 !important; 
+  background: white;
+  padding: 0 5px;
+}
+.text-center.h1.fw-bold::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #fa65b1;
+    margin: 10px auto 0;
+    transition: width 0.3s ease-in-out;
+}
+.text-center.h1.fw-bold:hover::after {
+    width: 120px;
+}
+.text-center.h1.fw-bold {
+    font-size: 2.8rem; /* Adjust heading size */
+    color: #fa65b1; /* Use your preferred color */
+    text-transform: uppercase; /* Make text uppercase */
+    letter-spacing: 2px; /* Add spacing between letters */
+    background: linear-gradient(45deg, #fa65b1, #ff8c94); /* Gradient effect */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; /* Apply gradient to text */
+    text-shadow: 2px 2px 10px rgba(250, 101, 177, 0.5); /* Soft glow effect */
+    padding: 10px 0;
+    position: relative;
+}

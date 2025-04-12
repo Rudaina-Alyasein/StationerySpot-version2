@@ -1,0 +1,120 @@
+﻿
+@{
+    Layout = "HomeLayout";
+}
+@section style{
+
+    <link rel="stylesheet" href="~/assets\style\Terms.css">
+
+}
+<!-- Main Content -->
+<main>
+    <section class="terms">
+        <div class="container">
+            <div class="title-container">
+                <img src="~/assets/img/Contract_with_personal_sign-removebg-preview.png" alt="Terms Icon">
+                <h1>Terms & Conditions</h1>
+            </div>
+
+
+
+            <div class="terms-item">
+                <h2 class="toggle"><i class="fas fa-check-circle"></i> Acceptance of Terms</h2>
+                <p class="details">
+                    By accessing and using our website, you agree to comply with these terms and conditions. If
+                    you do not agree to these terms, please do not use the website.
+                </p>
+            </div>
+
+            <div class="terms-item">
+                <h2 class="toggle"><i class="fas fa-book"></i> Services Provided</h2>
+                <p class="details">
+                    We provide a platform that aggregates local libraries, allowing you to browse and purchase
+                    books, stationery, and related services from these libraries.
+                </p>
+            </div>
+
+            <div class="terms-item">
+                <h2 class="toggle"><i class="fas fa-credit-card"></i> Purchasing and Payment</h2>
+                <ul class="details">
+                    <li><strong>Payment Methods:</strong> We accept credit/debit cards and online payments.</li>
+                    <li>
+                        <strong>Pricing:</strong> Prices are determined by the local libraries and may change without prior
+                        notice.
+                    </li>
+                </ul>
+            </div>
+
+            <div class="terms-item">
+                <h2 class="toggle"><i class="fas fa-user"></i> User Account</h2>
+                <p class="details">
+                    To use certain features of the website, you may be required to create an account. You are
+                    responsible for maintaining the confidentiality of your account information and for all activities that
+                    occur under your account.
+                </p>
+            </div>
+
+            <div class="terms-item">
+                <h2 class="toggle"><i class="fas fa-shield-alt"></i> Privacy Policy</h2>
+                <p class="details">
+                    We respect your privacy. By using our website, you agree to our Privacy Policy, which
+                    outlines how your data is collected, stored, and used.
+                </p>
+            </div>
+
+            <div class="terms-item">
+                <h2 class="toggle"><i class="fas fa-copyright"></i> Intellectual Property</h2>
+                <p class="details">
+                    All content on this website, including text, graphics, logos, and images, is the property
+                    of the website owners or third parties and is protected by intellectual property laws.
+                </p>
+            </div>
+
+            <div class="terms-item">
+                <h2 class="toggle"><i class="fas fa-exclamation-triangle"></i> Limitation of Liability</h2>
+                <p class="details">
+                    We are not liable for any damages arising from the use of our website, including but not
+                    limited to direct, indirect, incidental, or consequential damages.
+                </p>
+            </div>
+
+            <div class="terms-item">
+                <h2 class="toggle"><i class="fas fa-ban"></i> Termination</h2>
+                <p class="details">
+                    We reserve the right to suspend or terminate your access to the website at any time,
+                    without notice, for any reason, including if we believe you have violated these terms.
+                </p>
+            </div>
+
+            <div class="terms-item">
+                <h2 class="toggle"><i class="fas fa-sync-alt"></i> Modifications to Terms</h2>
+                <p class="details">
+                    We may update or modify these terms and conditions at any time. Any changes will be posted
+                    on this page, and by continuing to use the website, you agree to abide by the updated terms.
+                </p>
+            </div>
+
+            <div class="terms-item">
+                <h2 class="toggle"><i class="fas fa-balance-scale"></i> Governing Law</h2>
+                <p class="details">
+                    These terms are governed by the laws of the country where the website is based. Any
+                    disputes arising from the use of the website shall be subject to the jurisdiction of the courts in that
+                    country.
+                </p>
+            </div>
+
+        </div>
+    </section>
+</main>
+@section scripts{
+    <script>
+        document.querySelectorAll('.toggle').forEach(item => {
+          item.addEventListener('click', () => {
+            const details = item.nextElementSibling;
+            details.style.display = details.style.display === 'block' ? 'none' : 'block';
+          });
+        });
+
+    </script>
+
+}

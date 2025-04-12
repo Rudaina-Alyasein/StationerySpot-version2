@@ -1,0 +1,76 @@
+﻿@model List<LibraryRegistrationRequest>
+
+@{
+    Layout = "AdminLayout";
+}
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="col-2">Library Name</th>
+                <th class="col-2">Email</th>
+                <th class="col-1">Phone</th>
+                <th class="col-2">Address</th>
+                <th class="col-2">Services</th>
+                <th class="col-2">Description</th>
+                <th class="col-1">Status</th>
+                <th class="col-1">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var request in Model)
+            {
+                <tr>
+                    <td>@request?.LibraryName</td>
+                    <td>@request?.Email</td>
+                    <td>@request?.Phone</td>
+                    <td>@request?.Location</td>
+                    <td>@request?.Services</td>
+                    <td>@request?.Description</td>
+
+                        <td class="
+    @(request?.Status == "Approved" ? "text-success" :
+      request?.Status == "Rejected" ? "text-danger" :
+      "text-warning")">
+                            @request?.Status
+                        </td>
+
+                    <td>
+                        <div style="display:flex; flex-direction:column; gap:10px;">
+                                <form asp-action="ApproveLibrary" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@request.Id" />
+                                    <button type="submit" class="btn btn-success" @(request?.Status == "Approved" ? "disabled=\"disabled\"" : "")>Approve</button>
+                                </form>
+
+                                <form asp-action="RejectLibrary" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@request.Id" />
+                                    <button type="submit" class="btn btn-danger" @(request?.Status == "Rejected" ? "disabled" : "")>
+                                        Reject
+                                    </button>
+                                </form>
+
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    <script>
+        function approveLibrary(id) {
+            if (confirm("Are you sure you want to approve this library?")) {
+                window.location.href = `/Admin/ApproveLibrary?id=${id}`;
+            }
+        }
+
+        function rejectLibrary(id) {
+            let reason = prompt("Enter rejection reason:");
+            if (reason) {
+                window.location.href = `/Admin/RejectLibrary?id=${id}&reason=${encodeURIComponent(reason)}`;
+            }
+        }
+    </script>
+
+ </div>

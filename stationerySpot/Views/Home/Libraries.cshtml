@@ -1,0 +1,90 @@
+﻿@{
+    Layout = "HomeLayout";
+}
+@model IEnumerable<stationerySpot.Models.Library>
+
+
+@section Style {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/assets/Style/location.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+}
+
+<section class="hero">
+    <div>
+        <h1>Discover Local Libraries</h1>
+        <p>Find the best libraries near you with just one click!</p>
+        <button id="detectLocation" class="btn btn-light px-4 py-2 mt-3">Detect Nearest Libraries</button>
+    </div>
+</section>
+
+<div class="container py-5">
+    <div class="mb-4">
+        <h2 class="section-title">All Libraries</h2>
+
+        <!-- Filter Section -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <select class="form-select" id="city-filter">
+                    <option value="">Select City</option>
+                    <option value="Irbid">Irbid</option>
+                    <option value="Amman">Amman</option>
+                    <option value="Zarqa">Zarqa</option>
+                    <option value="Aqaba">Aqaba</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" id="best-seller-filter">
+                    <option value="">All Libraries</option>
+                    <option value="best-seller">Best Seller</option>
+                    <option value="new-arrival">New Arrivals</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group SearchInput">
+                    <input type="text" class="form-control" placeholder="Search for library..." aria-label="search" id="search-library">
+                    <button class="btn btn-primary" type="button" id="search-btn">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Library Cards Section -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var library in Model)
+            {
+                <div class="col">
+                    <div class="card library-card">
+                        <div class="badge-container">
+                            @if (library.Status == "New")
+                            {
+                                <span class="badge new-arrival">New</span>
+                            }
+                            else if (library.Status == "Best Seller")
+                            {
+                                <span class="badge best-seller">Best Seller</span>
+                            }
+                        </div>
+                        <img src="@library.LogoPath" class="card-img-top" alt="@library.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@library.Name</h5>
+                            <p class="card-text"><strong>Address:</strong> @library.Location</p>
+                            <div class="rating mb-2">
+                                @for (int i = 0; i < 5; i++)
+                                {
+                                    <i class="fas fa-star"></i>
+                                }
+                            </div>
+                            <a href="@Url.Action("pressure", "Home", new { id = library.Id })" class="btn btn-primary btn-sm w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Custom JS for searching and filtering functionality can be added later
+    </script>
+}

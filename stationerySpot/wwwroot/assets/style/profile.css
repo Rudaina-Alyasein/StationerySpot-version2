@@ -1,0 +1,71 @@
+  /* Personal Information Section  */
+  .Personal-Card img{
+    width:80px;
+    height:80px;
+    object-fit: cover;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.Personal-Card .btn {
+    background-color: #ffffff;
+    border: 1px solid #fa65b1;
+    color:#fa65b1;
+}
+.Personal-Card .btn:hover {
+    background-color: #fa65b1;
+    /* border: 1px solid #fa65b1; */
+    color:#ffffff;
+}
+.modal-body .btn{
+    background-color: #0097B2!important;
+    border: none;
+}
+/* shopping cart */
+.table-bordered .form-control:focus{
+    box-shadow: 3px 3px 10px #0097B2;
+}
+.table-bordered .btn-danger{
+    background-color: #ffffff;
+    border: 1px solid #fa65b1;
+    color:#fa65b1;
+}
+.card-body .btn-success{
+    background-color:  #fa65b1;
+    border: 1px solid #fa65b1;
+    color:#ffffff;
+}
+/* faviorite */
+.card-body img {
+border-radius: 8px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.card-body h5 {
+font-size: 1.1rem;
+font-weight: bold;
+}
+.card-body p {
+font-size: 0.9rem;
+color: #6c757d;
+}
+.btn {
+font-size: 0.85rem;
+padding: 5px 10px;
+}
+.favorite-card .btn-danger{
+    background-color: #ffffff;
+    border: 1px solid #fa65b1;
+    color:#fa65b1;
+
+}
+.setting-card .btn{
+background-color: #0097B2!important;
+color:white !important;
+border: none;
+padding:10px 20px;
+font-size: 16px;
+
+}
+.modal-footer .btn-secondary{
+background-color: #fa65b1!important;
+
+}

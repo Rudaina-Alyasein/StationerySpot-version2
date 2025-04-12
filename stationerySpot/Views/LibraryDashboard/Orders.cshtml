@@ -1,0 +1,98 @@
+﻿
+@{
+    Layout = "LibraryDashboard";
+}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <h3 class="mb-4">Order Management - Library</h3>
+
+    <!-- Filter by Status & Sort by Date -->
+    <div class="mb-3 row">
+        <div class="col-md-4">
+            <select class="form-select" id="statusFilter">
+                <option value="">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" id="sortOrder">
+                <option value="asc">Oldest to Newest</option>
+                <option value="desc">Newest to Oldest</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <input type="text" class="form-control" id="orderSearch" placeholder="Search Orders by Order ID or Customer Name" />
+        </div>
+    </div>
+
+    <!-- Orders Table -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="ordersTable">
+            <!-- Example Order Row -->
+            <tr>
+                <td>1001</td>
+                <td>John Doe</td>
+                <td>$150.00</td>
+                <td><span class="badge bg-warning">Pending</span></td>
+                <td>2025-04-02</td>
+                <td>
+                    <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#orderDetailsModal">View Details</button>
+                    <button class="btn btn-success btn-sm">Complete</button>
+                    <button class="btn btn-danger btn-sm">Cancel</button>
+                </td>
+            </tr>
+            <tr>
+                <td>1002</td>
+                <td>Jane Smith</td>
+                <td>$220.50</td>
+                <td><span class="badge bg-success">Completed</span></td>
+                <td>2025-04-01</td>
+                <td>
+                    <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#orderDetailsModal">View Details</button>
+                </td>
+            </tr>
+            <!-- More Orders can be added dynamically -->
+        </tbody>
+    </table>
+
+    <!-- Order Details Modal -->
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Order Details (Example) -->
+                    <h5>Order #1001</h5>
+                    <p><strong>Customer:</strong> John Doe</p>
+                    <p><strong>Total Amount:</strong> $150.00</p>
+                    <p><strong>Products:</strong></p>
+                    <ul>
+                        <li>Book A - Quantity: 2 - $50.00</li>
+                        <li>Book B - Quantity: 1 - $50.00</li>
+                    </ul>
+                    <p><strong>Status:</strong> Pending</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success">Complete Order</button>
+                    <button type="button" class="btn btn-danger">Cancel Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

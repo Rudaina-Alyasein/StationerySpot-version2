@@ -1,0 +1,92 @@
+/* Contact Section Styles */
+#contact {
+    background-color: #f4f7f6;
+    padding: 70px 0;
+}
+
+.section-title {
+    margin-bottom: 50px;
+}
+
+.section-title h1 {
+    font-size: 36px;
+    color: #0097b2;
+    margin-bottom: 15px;
+}
+
+.section-title p {
+    font-size: 18px;
+    color: #333;
+}
+
+.contact-area .form-control {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.contact-area .form-control:focus {
+    border-color: #0097b2;
+    box-shadow: 0 0 8px rgba(0, 151, 178, 0.3);
+}
+
+.btn-contact-bg {
+    background-color: #E65100;
+    border-color: #E65100;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 18px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-contact-bg:hover {
+    background-color: #d84c00;
+}
+
+.single_address {
+    margin-bottom: 30px;
+}
+
+.single_address i {
+    font-size: 30px;
+    color: #0097b2;
+    margin-right: 15px;
+}
+
+.single_address h4 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.single_address p {
+    font-size: 16px;
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    .contact-area .row {
+        flex-direction: column;
+    }
+
+    .contact-area .col-lg-7, .contact-area .col-lg-5 {
+        width: 100%;
+    }
+
+    .btn-contact-bg {
+        width: auto;
+        margin-top: 20px;
+    }
+}
+#contact #submitButton{
+    background-color: #0097b2!important;
+    padding:10px 30px;
+    color: #fff;
+}

@@ -1,0 +1,559 @@
+﻿
+@{
+    Layout = "HomeLayout";
+}
+@section Style{
+     <link rel="stylesheet" href="~/assets/style/style.css" asp-append-version="true"> 
+
+}
+    <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner">
+
+
+            <!-- السلايد الثاني -->
+            <div class="carousel-item">
+                <img style="height: 655px;" src="~/assets\img\ffff.jpeg" class="d-block w-100" alt="...">
+                <div class="carousel-caption">
+                    <h1>Welcome to stationery website</h1>
+                    <p>Discover Your Nearest Library and Shop Now</p>
+                    <p>We connect you to the nearest libraries to purchase books, stationery, and other services available.</p>
+                    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center" style="gap: 10px;">
+                    <img src="~/assets\img\map.png" alt="Map showing nearest libraries" style="width: 100%; max-width: 300px; height: auto;">
+                        <a href="Location.html" class="nav-link">
+                            <button class="btn btn-outline-primary" id="DetectBtn" style="transition: all 0.3s ease; width: 180px !important; height: 50px;">
+                                Detect My Location
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item active">
+            <img style="height: 655px;" src="~/assets\img\slide3.jpeg" class="d-block w-100" alt="...">
+                <div class="carousel-caption">
+                    <h1>Welcome to stationery website</h1>
+                    <p>Discover Your Nearest Library and Shop Now</p>
+                    <p>We connect you to the nearest libraries to purchase books, stationery, and other services available.</p>
+                    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center" style="gap: 10px;">
+                    <img src="~/assets\img\map.png" alt="Map showing nearest libraries" style="width: 100%; max-width: 300px; height: auto;">
+                        <a href="Location.html" class="nav-link">
+                            <button class="btn btn-outline-primary" id="DetectBtn" style="transition: all 0.3s ease; width: 180px !important; height: 50px;">
+                                Detect My Location
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
+    </section>
+    <section class="py-5" id="About" style="padding:40px auto !important;">
+        <div class="container" style="color: black;">
+            <div class="row">
+                <div class="col-md-5">
+                    <span class="text-muted" style="color: #fa65b1 !important; font-size:22px;">Our Story</span>
+                    <h2 class="display-5 " style="color: #0097B2 !important; font-size:32px; font-weight:900;">About Us</h2>
+                    <p class="lead">Welcome to your local hub for all things books and stationery. Our platform allows you to shop from your nearest bookstore and stationery store with ease, helping support local businesses while getting what you need at your convenience.</p>
+                    <a class="btn btn-primary mt-2" href="" style="color: #fa65b1 !important; border: 1px solid #fa65b1; background: #f2f2f2; padding:10px 30px;">Learn more</a>
+                </div>
+                <div class="col-md-6 offset-md-1 mt-5">
+                    <p class="lead">Our goal is to bring you the best selection of books and stationery from local stores, helping you access quality products with the click of a button. Whether you're looking for the latest bestsellers, essential study materials, or everyday stationery items, we’ve got you covered.</p>
+                    <p class="lead">With our location-based feature, simply input your location, and we’ll show you nearby stores, so you can shop conveniently and support local businesses. Say goodbye to long waits and hello to instant shopping!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="services pd" id="#services">
+        <div class="container">
+            <h2 class="title" style="color:#0097B2; font-size:32px; font-weight:900;">Services</h2>
+            <div class="row text-center">
+                <div class="col-md-3">
+                    <div class="square"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="serv">
+                        <h5>Local Purchase</h5>
+                        <p>Discover and purchase books and stationery from local stores near you, offering a seamless shopping experience while supporting your community.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="serv">
+                        <div class="square"><i class="fa-solid fa-truck"></i></div>
+                        <h5>Fast Delivery</h5>
+                        <p>Enjoy fast delivery for books and stationery purchased from local stores near you, ensuring a quick and efficient shopping experience.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="square"><i class="fa-solid fa-dollar-sign"></i></div>
+                    <div class="serv">
+                        <h5>Price Comparison</h5>
+                        <p>Compare prices across local bookstores for books and stationery, helping you find the best deals while supporting nearby shops</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="square"><i class="fa-solid fa-tag"></i></div>
+                    <div class="serv">
+                        <h5>Deals & Discounts</h5>
+                        <p>Take advantage of exclusive deals and discounts on books and stationery from local bookstores, making your purchases more affordable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Latest Offers Section -->
+    <div class="offers-section">
+        <h3 class="offers-title text-center" style="color:#0097B2; font-size:32px; font-weight:900;">Latest Offers</h3>
+        <div id="offersCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-item active">
+                    <div class="row justify-content-center g-3">
+                        <!-- Offer 1 -->
+                        <div class="col-6 col-lg-4">
+                            <div class="card">
+                            <img src="~/assets\img\Kawaii_Pen_Shop__1_-removebg-preview.png" class="card-img-top" alt="Offer 1">
+                                <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
+                                    <h5 class="card-title">Special Offer 1</h5>
+                                    <p class="card-text">Get 20% off on your favorite books!</p>
+                                    <h5 class="card-title">Available at: Curve Library</h5>
+                                    <a class="btn btn-primary mt-2 ShopNow" href="#">Shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Offer 2 -->
+                        <div class="col-6 col-lg-4">
+                            <div class="card">
+                            <img src="~/assets\img\download__8_-removebg-preview (1).png" class="card-img-top" alt="Offer 2">
+                                <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
+                                    <h5 class="card-title">Special Offer 2</h5>
+                                    <p class="card-text">Buy 1 get 1 free on selected items!</p>
+                                    <h5 class="card-title">Available at: Alyaqeen Library</h5>
+                                    <a class="btn btn-primary mt-2 ShopNow" href="#">Shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Offer 3 -->
+                        <div class="col-6 col-lg-4 d-none d-lg-block">
+                            <div class="card">
+                            <img src="~/assets\img\offer3-removebg-preview.png" class="card-img-top" alt="Offer 3">
+                                <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
+                                    <h5 class="card-title">Special Offer 3</h5>
+                                    <p class="card-text">Free shipping for orders over $50!</p>
+                                    <h5 class="card-title">Available at: Noor Library</h5>
+                                    <a class="btn btn-primary mt-2 ShopNow" href="#">Shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                    <div class="row justify-content-center g-3">
+                        <!-- Offer 4 -->
+                        <div class="col-6 col-lg-4">
+                            <div class="card">
+                            <img src="~/assets\img/Offer1.png" class="card-img-top" alt="Offer 4">
+                                <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
+                                    <h5 class="card-title">Special Offer 4</h5>
+                                    <p class="card-text">Save 30% on your next purchase!</p>
+                                    <h5 class="card-title">Available at: Curve Library</h5>
+                                    <a class="btn btn-primary mt-2 ShopNow" href="#">Shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Offer 5 -->
+                        <div class="col-6 col-lg-4">
+                            <div class="card">
+                            <img src="~/assets\img\LIK_EPOCH_Pink_Backpack_Kawaii_Backpack_with_Cute_Pin_Accessories_Plush_Pendant__16_Inch-removebg-preview.png" class="card-img-top" alt="Offer 5">
+                                <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
+                                    <h5 class="card-title">Special Offer 5</h5>
+                                    <p class="card-text">Enjoy an exclusive member discount!</p>
+                                    <h5 class="card-title">Available at: Curve Library</h5>
+                                    <a class="btn btn-primary mt-2 ShopNow" href="#">Shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Offer 6 -->
+                        <div class="col-6 col-lg-4 d-none d-lg-block">
+                            <div class="card">
+                            <img src="~/assets\img\download__9_-removebg-preview.png" class="card-img-top" alt="Offer 6">
+                                <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
+                                    <h5 class="card-title">Special Offer 6</h5>
+                                    <p class="card-text">Get a free gift with every purchase over $100!</p>
+                                    <h5 class="card-title">Available at: Curve Library</h5>
+                                    <a class="btn btn-primary mt-2 ShopNow" href="#">Shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Carousel Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#offersCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#offersCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Tabs Section -->
+    <div class="container py-5">
+        <h2 class="text-center mb-4" style="color: #0097B2 !important; font-size:32px; font-weight:900;">Product Categories</h2>
+
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs justify-content-center" id="productTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active tab " id="featured-tab" data-bs-toggle="tab" data-bs-target="#featured" type="button" role="tab" aria-controls="featured" aria-selected="true">
+                    Featured Products
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link tab" id="onsale-tab" data-bs-toggle="tab" data-bs-target="#onsale" type="button" role="tab" aria-controls="onsale" aria-selected="false">
+                    On Sale
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link tab" id="mostview-tab" data-bs-toggle="tab" data-bs-target="#mostview" type="button" role="tab" aria-controls="mostview" aria-selected="false">
+                    Most View
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tabs Content -->
+        <div class="tab-content pt-4" id="productTabsContent">
+            <!-- Featured Products Section -->
+            <!-- Featured Products Section -->
+            <div class="tab-pane fade show active" id="featured" role="tabpanel" aria-labelledby="featured-tab">
+
+                <!-- Carousel (Slider) -->
+                <div id="featuredProductsCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+
+                        <!-- Sticky Notes Slider -->
+                        <div class="carousel-item active ">
+                            <div class="row align-items-center">
+                                <!-- Main Featured Product -->
+                                <div class="col-lg-6">
+                                    <div class="featured-product-card card shadow">
+                                    <img src="~/assets\img\0d85eb79-df02-4ed2-8e2c-39d2da975124.jpg" class="card-img-top" alt="Sticky Notes">
+                                        <div class="card-body text-center">
+                                            <h4 class="card-title">Colorful Sticky Notes</h4>
+                                            <p class="card-text">Organize your tasks and ideas with these vibrant sticky notes, perfect for reminders and brainstorming sessions!</p>
+                                            <button class="btn btn-primary">View Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Smaller Featured Products -->
+                                <div class="col-lg-6">
+                                    <div class="row g-3">
+                                        <div class="col-6">
+                                            <div class="card shadow miniCard">
+                                            <img src="~/assets\img\8ac413c9-caea-4a6b-8cfa-6477962506c4.jpg" class="card-img-top" alt="Sticky Notes Pack 1">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title">Sticky Notes Pack</h6>
+                                                    <p class="card-text">Compact pack of colorful sticky notes, ideal for students and professionals.</p>
+                                                    <button class="btn btn-outline-primary btn-sm">View</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card shadow miniCard">
+                                            <img src="~/assets\img\Lined Sticky Notes 8 pads 100 Sheets_pad Adhesive.jpg" class="card-img-top" alt="Sticky Notes Pack 2">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title">Large Sticky Notes</h6>
+                                                    <p class="card-text">Wide sticky notes for detailed notes and ideas.</p>
+                                                    <button class="btn btn-outline-primary btn-sm">View</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Highlighters Slider -->
+                        <div class="carousel-item">
+                            <div class="row align-items-center">
+                                <!-- Main Featured Product -->
+                                <div class="col-lg-6">
+                                    <div class="featured-product-card card shadow">
+                                    <img src="~/assets\img\color2.jpg" class="card-img-top" alt="Highlighters">
+                                        <div class="card-body text-center">
+                                            <h4 class="card-title">Vibrant Highlighters</h4>
+                                            <p class="card-text">Highlight important notes with these smooth, long-lasting highlighters available in multiple colors.</p>
+                                            <button class="btn btn-primary">View Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Smaller Featured Products -->
+                                <div class="col-lg-6">
+                                    <div class="row g-3">
+                                        <div class="col-6">
+                                            <div class="card shadow miniCard">
+                                            <img src="~/assets\img\color3.jpg" class="card-img-top" alt="Highlighter Pack 1">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title">Classic Highlighters</h6>
+                                                    <p class="card-text">Pack of vibrant highlighters perfect for textbooks and documents.</p>
+                                                    <button class="btn btn-outline-primary btn-sm">View</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card shadow miniCard">
+                                            <img src="~/assets\img\PASTEL pens.jpg" class="card-img-top" alt="Highlighter Pack 2">
+                                                <div class="card-body text-center">
+                                                    <h6 class="card-title">Pastel Highlighters</h6>
+                                                    <p class="card-text">Soft pastel shades for subtle and stylish highlights.</p>
+                                                    <button class="btn btn-outline-primary btn-sm">View</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#featuredProductsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#featuredProductsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+
+
+            <!-- On Sale Tab -->
+            <div class="tab-pane fade" id="onsale" role="tabpanel" aria-labelledby="onsale-tab">
+                <div class="row">
+                    <!-- Card 1 -->
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="~/assets\img\2646a42e-8af3-4f6a-bc27-7859725e639e.jpg" class="card-img-top" alt="On Sale Product 1">
+                            <div class="card-body">
+                                <h5 class="card-title">Elegant Notebook</h5>
+                                <p class="card-text">A stylish notebook perfect for students and professionals. Now available at a special discount!</p>
+                                <button class="btn btn-success" style="background-color: #0097B2; color: #f0f0f0; border: none;">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="~/assets\img\setColor.jpg" class="card-img-top" alt="On Sale Product 2">
+                            <div class="card-body">
+                                <h5 class="card-title">Premium Pen Set</h5>
+                                <p class="card-text">A variety of colorful pens ideal for writing and drawing. Don't miss this deal!</p>
+                                <button class="btn btn-success" style="background-color: #0097B2; color: #f0f0f0; border: none;">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="~/assets\img\pexels-divinetechygirl-1181671.jpg" class="card-img-top" alt="On Sale Product 3">
+                            <div class="card-body">
+                                <h5 class="card-title">Self-Development Book</h5>
+                                <p class="card-text">A comprehensive book to help you improve your skills and achieve your goals. Get it now!</p>
+                                <button class="btn btn-success" style="background-color: #0097B2; color: #f0f0f0; border: none;">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Most View Tab -->
+            <div class="tab-pane fade" id="mostview" role="tabpanel" aria-labelledby="mostview-tab">
+                <div class="row">
+                    <!-- Card 1 -->
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="~/assets\img\bag2.jpg" class="card-img-top" alt="Most Viewed Product 1">
+                            <div class="card-body">
+                                <h5 class="card-title">Stylish Backpack</h5>
+                                <p class="card-text">A durable and spacious backpack, perfect for school or travel. Highly recommended!</p>
+                                <button class="btn btn-warning" style="background-color: #0097B2; color: #f0f0f0; border: none;">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="~/assets\img\pen1.jpg" class="card-img-top" alt="Most Viewed Product 2">
+                            <div class="card-body">
+                                <h5 class="card-title">Luxury Pen Set</h5>
+                                <p class="card-text">A premium set of pens with elegant design. Loved by professionals.</p>
+                                <button class="btn btn-warning" style="background-color: #0097B2; color: #f0f0f0; border: none;">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="col-md-4">
+                        <div class="card">
+                        <img src="~/assets\img\pexels-thngocbich-636243.jpg" class="card-img-top" alt="Most Viewed Product 3">
+                            <div class="card-body">
+                                <h5 class="card-title">Inspirational Journal</h5>
+                                <p class="card-text">A beautifully designed journal to organize your thoughts and goals. A customer favorite!</p>
+                                <button class="btn btn-warning" style="background-color: #0097B2; color: #f0f0f0; border: none;">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- FAQ -->
+        <section class="py-3 py-md-5" style="margin-top: 20px;">
+            <div class="container">
+                <div class="row gy-5 gy-lg-0 align-items-lg-center">
+                    <div class="col-12 col-lg-6">
+                    <img class="img-fluid rounded" loading="lazy" src="~/assets\img\phone.png" alt="How can we help you?">
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="row justify-content-xl-end">
+                            <div class="col-12 col-xl-11" style="margin-top:100px!important;">
+                                <h2 class="h1 mb-3" style="color: #0097b2; text-shadow: 2px 2px 5px rgba(0,0,0,0.1);">How can we help you?</h2>
+                                <p class="lead fs-4 text-secondary mb-5">If you need assistance or have any queries, feel free to explore our Support Center or contact us via email. We're here to help!</p>
+                                <div class="accordion accordion-flush" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="background-color: #fa65b1; color: white; border-radius: 5px;">
+                                                <strong>How Do I Change My Billing Information?</strong>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body" style="font-size: 1.1rem;">
+                                                <p>To change your billing information, follow these steps:</p>
+                                                <ul>
+                                                    <li>Sign in to your account on our website.</li>
+                                                    <li>Click your profile picture in the top-right corner and select "Account Settings."</li>
+                                                    <li>Under "Billing Information," click "Edit."</li>
+                                                    <li>Update your details and click "Save."</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="background-color: #fa65b1; color: white; border-radius: 5px;">
+                                                <strong>How Does the Payment System Work?</strong>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body" style="font-size: 1.1rem;">
+                                                Our payment system securely processes transactions between buyers and sellers using trusted financial institutions. Here’s how it works:
+                                                <ul>
+                                                    <li>Choose your payment method.</li>
+                                                    <li>Confirm your transaction.</li>
+                                                    <li>Wait for your payment to be processed.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="background-color: #fa65b1; color: white; border-radius: 5px;">
+                                                <strong>How Do I Cancel My Account?</strong>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body" style="font-size: 1.1rem;">
+                                                <p>To cancel your account:</p>
+                                                <ul>
+                                                    <li>Log into your account.</li>
+                                                    <li>Go to "Account Settings" by clicking your profile picture.</li>
+                                                    <li>Scroll down and click "Cancel Account."</li>
+                                                    <li>Confirm your decision by entering your password.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- testimonial -->
+        <section class="py-3 py-md-5 py-xl-8">
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6 text-center">
+                        <h2 class="mb-4 display-5" style="color: #0097B2; font-size: 36px; font-weight: 900;">Customer Testimonials</h2>
+                        <p class="text-secondary mb-5 lead fs-4" style="color: #E65100;">Here are a few testimonials from our valued customers who have enjoyed shopping with us. We are always committed to providing the best products and services.</p>
+                        <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle">
+                    </div>
+                </div>
+            </div>
+
+            <div class="container overflow-hidden testimonial">
+                <div class="row justify-content-md-center gy-5 gy-md-6">
+                    <!-- Testimonial 1 -->
+                    <div class="col-12 col-md-3 d-flex">
+                        <div class="text-center d-flex flex-column align-items-center justify-content-between ">
+                        <img class="img-fluid rounded-circle mb-4" loading="lazy" src="~/assets\img\student.jpg" alt="Fatima Al-Munir - Student" style="height: 200px; width: 200px; object-fit: cover;">
+                            <p class="mb-2" style="color: #333;">
+                                <i class="bi bi-quote"></i> "My experience with this bookstore was wonderful. They had all the books I was looking for at a great price, and the delivery was fast. I’ll definitely return!"
+                            </p>
+                            <p class="m-0 fw-bold">Fatima Al-Munir - Student</p>
+                        </div>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="col-12 col-md-3 d-flex">
+                        <div class="text-center d-flex flex-column align-items-center justify-content-between">
+                        <img class="img-fluid rounded-circle mb-4" loading="lazy" src="~/assets\img\teacher.jpg" alt="Ahmed Samir - Teacher" style="height: 200px; width: 200px; object-fit: cover;">
+                            <p class="mb-2" style="color: #333;">
+                                <i class="bi bi-quote"></i> "This bookstore provides a wide range of educational books and references that I need regularly. Their customer service was excellent and very responsive."
+                            </p>
+                            <p class="m-0 fw-bold">Ahmed Samir - Teacher</p>
+                        </div>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="col-12 col-md-3 d-flex">
+                        <div class="text-center d-flex flex-column align-items-center justify-content-between">
+                        <img class="img-fluid rounded-circle mb-4" loading="lazy" src="~/assets\img\mother.jpg" alt="Salma Hussein - Mother" style="height: 200px; width: 200px; object-fit: cover;">
+                            <p class="mb-2" style="color: #333;">
+                                <i class="bi bi-quote"></i> "I needed to buy school supplies for my kids in a short time. This bookstore was the perfect choice, they had everything I needed at affordable prices."
+                            </p>
+                            <p class="m-0 fw-bold">Salma Hussein - Mother</p>
+                        </div>
+                    </div>
+                    <!-- Testimonial 4 -->
+                    <div class="col-12 col-md-3 d-flex">
+                        <div class="text-center d-flex flex-column align-items-center justify-content-between">
+                        <img class="img-fluid rounded-circle mb-4" loading="lazy" src="~/assets\img\employee.jpg" alt="Ali Abdullah - Employee" style="height: 200px; width: 200px; object-fit: cover;">
+                            <p class="mb-2" style="color: #333;">
+                                <i class="bi bi-quote"></i> "I bought some technical books from here and it was easy to find them. Shipping was quick. I love visiting this website regularly."
+                            </p>
+                            <p class="m-0 fw-bold">Ali Abdullah - Employee</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        

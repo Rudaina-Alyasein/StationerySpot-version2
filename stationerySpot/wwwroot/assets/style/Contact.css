@@ -1,0 +1,153 @@
+.hero {
+    position: relative;
+    width: 100%;
+    height: 400px; /* الارتفاع المحدد */
+    overflow: hidden;
+    border-radius: 15px; /* لإضافة زوايا مستديرة للصورة */
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* لجعل الصورة تغطي الحاوية بالكامل */
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* لجعل النص في منتصف الصورة */
+    color: white; /* لون النص */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* ظل خفيف للنص */
+    font-size: 3rem; /* حجم الخط */
+    text-align: center;
+    font-weight: bold;
+    z-index: 2;
+}
+/* contact */
+
+
+.contact {
+    padding: 40px 10%;
+    background-color: #f4f4f4; /* لون خلفية ناعم */
+}
+
+.content {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.content h2 {
+    font-size: 2.5rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.content p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.contactInfo {
+    width: 40%;
+}
+
+.box {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.box .icon {
+    font-size: 2rem;
+    margin-right: 15px;
+    color: #fa65b1
+}
+
+.box .text h3 {
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.box .text p {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.contactForm {
+    width: 55%;
+}
+
+.contactForm h2 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.inputBox {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.inputBox input,
+.inputBox textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+}
+
+.inputBox textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.inputBox span {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: #aaa;
+    transition: 0.3s;
+}
+
+.inputBox input:focus ~ span,
+.inputBox textarea:focus ~ span {
+    top: -10px;
+    font-size: 0.9rem;
+    color: #0097B2; /* تغيير اللون عند الفوكس */
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    color: #fa65b1;
+    background-color: #f7f7f7;
+    border: 1px solid #fa65b1;
+    border-radius: 23px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #fa65b1;
+    color: #f7f7f7;
+}

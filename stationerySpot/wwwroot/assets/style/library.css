@@ -1,0 +1,904 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+    font-family: "Open Sans", serif;
+    color: #333;
+    /* background-color: #F5F5F5; */
+    /* background: linear-gradient(to bottom, #f5f5f5, #e8e8e8); */
+}
+/* Hero Section */
+.hero {
+  position: relative;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  color: white;
+  background: linear-gradient(#FDE1E0, #B6E3ED, #DCE2E6);
+  z-index: 1; 
+}
+
+
+.hero-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* filter: blur(1px);  */
+  /* opacity: 0.9;  */
+  z-index: 0;
+}
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #fa65b1; /* لون مميز */
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3); /* تأثير ظل */
+  background: linear-gradient(to right, #0097B2, #fa65b1); /* تدرج لوني */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* تأثير ظهور ناعم */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+
+
+  
+  /* Overlay for Additional Blur */
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+/* Hero Content */
+.hero-content {
+    position: relative;
+    z-index: 10;
+    padding: 20px;
+    color: #eee; ;
+    font-size: 30px;
+    font-weight: 300;
+
+   
+    border-radius: 10px; 
+  }
+  
+  /* Button Styling */
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #f9f3f3;
+    background-color: #0097B2; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color:#e4dfe4; 
+    color: #0097B2; 
+  }
+  /* tabs */
+  /* تصميم التاب النشط */
+.nav-tabs .nav-link.active {
+  background-color: #fa65b1;
+  color: white;
+  border-color: #fa65b1;/* لتتناسب الحواف */
+}
+
+/* تصميم التابات غير النشطة */
+.nav-tabs .nav-link {
+  background-color: #f8f9fa; /* لون خلفية رمادي فاتح */
+  color: #212529; /* لون النص أسود */
+  border: 1px solid #dee2e6; /* لون الحواف */
+  transition: all 0.3s ease-in-out; /* تأثير انسيابي */
+}
+
+/* تأثير التمرير على التابات غير النشطة */
+.nav-tabs .nav-link:hover {
+  background-color: #e9ecef;
+  color: #495057;
+}
+/* إضافة مساحة بين التابات */
+.nav-tabs .nav-item {
+  margin-right: 10px; /* مسافة بين التابات */
+}
+
+/* إزالة المسافة بعد آخر تاب */
+.nav-tabs .nav-item:last-child {
+  margin-right: 0;
+}
+/* General styles */
+.library-info{
+  /* font-family: 'Roboto', sans-serif; */
+  /* background-color: #f0f4f8; */
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+/* Contact Section - Modern & Clean Design */
+.contact-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 100px;
+  padding: 40px 0;
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Headings */
+.contact-info h3, .working-hours h3 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+/* Lists Styling */
+.contact-info ul, .working-hours ul {
+  list-style: none;
+  padding: 0;
+}
+
+.contact-info li, .working-hours li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: #fa65b1 !important; 
+
+}
+ .working-hours li {
+  color: #363535 !important; 
+
+ }
+.contact-info li a{
+  color: #363535 !important; 
+
+}
+
+.contact-info li i {
+  color: #fa65b1 !important;
+  font-size: 1.6rem;
+  min-width: 30px;
+}
+
+/* Links */
+.contact-info li a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-info li a:hover {
+  color: #007bff;
+}
+
+/* Working Hours */
+.working-hours li span {
+  font-weight: bold;
+  color: #fa65b1 !important; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Animation for smooth appearance */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.contact-info, .working-hours {
+  animation: fadeInUp 0.8s ease-in-out;
+}
+
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .contact-info, .working-hours {
+    width: 90%;
+    margin: 10px auto;
+  }
+}
+
+/* services */
+/* تنسيق القسم العام */
+.services-section {
+  text-align: center;
+  padding: 40px;
+  /* background-color: #f8f9fa;  */
+}
+
+.section-title {
+  font-size: 28px;
+  color: #0097b2;
+  margin-bottom: 30px;
+}
+
+/* تنسيق حاوية البطاقات */
+.services-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 بطاقات بكل صف */
+  gap: 20px; /* المسافة بين البطاقات */
+  max-width: 1200px;
+  margin: 0 auto; /* توسيط البطاقات */
+}
+
+/* تنسيق البطاقات */
+.service-card {
+  background-color: white; /* خلفية البطاقة */
+  border-radius: 10px; /* حواف دائرية */
+  
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* تأثير الحركة */
+  padding: 20px;
+}
+
+
+.service-card:hover {
+  transform: translateY(-10px); /* رفع البطاقة قليلاً عند التمرير */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* زيادة الظل */
+}
+
+.service-card i {
+  font-size: 40px;
+  color: #fa65b1; /* لون الأيقونة */
+  margin-bottom: 15px;
+}
+
+.service-card h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.service-card p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+/* المنتجات */
+.filters {
+  margin-top: 90px ;
+  display: flex;
+  gap: 90px; /* المسافة بين العناصر */
+  justify-content: center; /* محاذاة العناصر أفقيًا في المنتصف */
+  align-items: center; /* محاذاة العناصر عموديًا في المنتصف */
+}
+
+.custom-select {
+  position: relative;
+  width: 200px; /* عرض العنصر */
+  cursor: pointer;
+  height: 40px; /* ارتفاع العنصر */
+}
+
+.selected-option {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between; /* لضمان المسافة بين النص والأيقونة */
+  align-items: center;
+  height: 100%; /* لضمان أن العنصر يأخذ كامل الارتفاع */
+}
+
+.options-list {
+  display: none;
+  position: absolute;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  z-index: 10;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px; /* لضبط أقصى ارتفاع للقائمة */
+  overflow-y: auto; /* لتمكين التمرير في حال كانت الخيارات كثيرة */
+}
+
+.option-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.option-item:last-child {
+  border-bottom: none;
+}
+
+.option-item:hover {
+  background-color: #0097b2; /* لون عند التمرير */
+  color: #fff; /* لون النص عند التمرير */
+}
+
+/* عند فتح القائمة */
+.custom-select.open .options-list {
+  display: block;
+}
+
+/* الأيقونة */
+.icon-arrow-down {
+  position: absolute;
+  right: 10px; /* المسافة من اليمين */
+  pointer-events: none; /* لمنع التفاعل مع الأيقونة */
+  font-size: 16px; /* حجم الأيقونة */
+  color: #0097b2; /* لون الأيقونة */
+}
+/* search tab */
+/* Container */
+
+/* Search Input */
+  #search-bar {
+    font-size: 1.1rem;
+    padding: 0.8rem 1rem;
+  }
+  #search-bar:focus {
+    border: 1px solid #0097B2 !important; /* تحديد الحدود بلون مميز */
+    box-shadow: 0 0 5px rgba(0, 151, 178, 0.5) !important; /* إضافة تأثير الظل */
+    outline: none; /* إزالة التحديد الافتراضي */
+    transition: all 0.3s ease; /* إضافة تأثير التغيير السلس عند التركيز */
+  }
+  
+
+  #search-button {
+    padding: 0.8rem 1rem;
+    border: none;
+    background-color:#0097B2 ;
+    color: white;
+  }
+
+  #search-button:hover {
+    background-color: rgba(0, 151, 178, 0.5);
+  }
+
+  .container {
+    margin-top: 50px;
+  }
+/* pagination product */
+.pagination-container {
+  background-color: rgba(0, 151, 178, 0.1); 
+  margin-top: 45px !important;
+  padding: 20px 40px;
+  border-radius: 20px; 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+}
+/* Individual Cards */
+.card {
+  border: 1px solid #ccc; 
+  border-radius: 15px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  background-color: #f9f9f9; 
+  transition: transform 0.3s, box-shadow 0.3s; 
+}
+
+.card:hover {
+  transform: translateY(-5px); 
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); 
+}
+
+/* Card Title */
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0097b2; 
+  margin-bottom: 10px;
+}
+
+/* Card Content */
+.card-text {
+  font-size: 14px;
+  color: #555; 
+  line-height: 1.5;
+}
+
+/* Button Styling */
+.card .btn {
+  background-color: #fa65b1; 
+  color: #fff;
+  border-radius: 20px;
+  padding: 10px 20px;
+  transition: background-color 0.3s, transform 0.3s;
+  border: none!important;
+}
+.card .btn-secondary{
+  background-color: #f9f9f9;
+  border:1px solid  #fa65b1  !important; 
+  color:#fa65b1;
+
+
+}
+
+
+/* Card Image Styling */
+.card img {
+  width: 100%; 
+  height: 200px; 
+  object-fit: cover; 
+  border-radius: 15px 15px 0 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.3s, box-shadow 0.3s; 
+}
+
+.card img:hover {
+  transform: scale(1.05); 
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); 
+}
+
+
+/* Row and Column Spacing */
+.row {
+  margin-bottom: 30px; 
+}
+
+.card {
+  margin-bottom: 20px; 
+}
+/* pagination controls */
+.pagination .page-item .page-link{
+  color: #000!important;
+}
+.pagination .page-item .page-link:focus{
+  background-color: #0097b2!important;
+   border: none!important;
+   box-shadow: none!important;
+  
+}
+.pagination .page-item .page-link:hover {
+  color: #fff; 
+  background-color: #0097b2; 
+  border-color: #0097b2; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.pagination .page-item.active .page-link {
+  color: #fff; /* لون النص للعناصر النشطة */
+  background-color: #006580 !important; /* لون الخلفية للعناصر النشطة */
+  border-color: #006580 !important; /* لون الإطار للعناصر النشطة */
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #aaa; /* لون النص للعناصر المعطلة */
+  background-color: #f8f9fa; /* لون الخلفية للعناصر المعطلة */
+  border-color: #ddd; /* لون الإطار للعناصر المعطلة */
+}
+/* Reviews page  */
+ /* General Styles */
+ body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+/* Container and Review Section */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.reviews-section h4 {
+  color: #0097b2;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Review Item Styles */
+.review-item {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.review-item .d-flex {
+  align-items: center;
+}
+
+.review-item .me-3 {
+  margin-right: 15px;
+}
+
+.review-item img {
+  border-radius: 50%;
+}
+
+.review-item h6 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.review-item .text-muted {
+  color: #777;
+}
+
+.review-item .star-rating i {
+  color: #ffcc00;
+}
+
+.review-item p {
+  color: #555;
+  font-size: 0.95rem;
+  margin-top: 10px;
+}
+
+/* Add Review Section */
+.add-review {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.add-review h4 {
+  color: #0097b2;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.add-review label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.add-review .star-rating {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.add-review .star-rating i {
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.add-review textarea {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 12px;
+  width: 100%;
+  resize: vertical;
+}
+
+.add-review button {
+  background-color: #0097b2;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  margin-top: 15px;
+  transition: background-color 0.3s;
+}
+
+.add-review button:hover {
+  background-color: #007b8f;
+}
+.row-cols-1 .col .card {
+  height: 500px!important;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .review-item {
+    padding: 12px;
+  }
+
+  .add-review {
+    padding: 20px;
+  }
+
+  .star-rating i {
+    font-size: 1.25rem;
+  }
+
+  .add-review button {
+    width: 100%;
+  }
+}
+/* pdf files */
+.pdf-container{
+  margin-top: 50px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.pdf-container .primary-color {
+  color: #0097b2;
+}
+.pdf-container .btn-primary {
+  background-color: #ffffff;
+  border-color: #fa65b1;;
+  color:#fa65b1;;
+  width:50% !important;
+  margin-left: 300px!important;
+  padding: 40px auto;
+}
+.pdf-container .btn-primary:hover {
+  background-color: #fa65b1;
+color:#eee;}
+.form-check-input:checked {
+  background-color: #007a8e !important;
+  border-color: #007a8e !important;
+}
+.pdf-container .btn-secondary {
+  background-color: #E65100!important;
+  border-color: #E65100;
+}
+.pdf-container .btn-secondary:hover {
+  background-color: #c14000!important;
+  border-color: #c14000;
+}
+.pdf-container .file-drop {
+  border: 2px dashed #0097b2;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  color: #0097b2;
+}
+.pdf-container .file-drop:hover {
+  background-color: #f1f9fc;
+}
+.pdf-container .options {
+  margin-top: 20px;
+}
+/* Cost Summary Section */
+.pdf-container .mt-4 {
+margin-top: 1.5rem;
+}
+
+.pdf-container .border {
+border: 1px solid #ddd;
+}
+
+.pdf-container .bg-light {
+background-color: #f9f9f9;
+}
+
+.pdf-container #total-cost {
+font-weight: bold;
+font-size: 1.2rem;
+color: #0097b2;
+}
+/* contact us */
+/* Contact Section Styles */
+/* Contact Section Styles */
+#contact-container {
+  /* background: linear-gradient(145deg, #eaf7ff, #0097b2); */
+  padding: 70px 20px;
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+  transition: all 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+.section-title {
+  margin-bottom: 50px;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Stylish Section Title */
+.section-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 2px;
+  background: #fa65b1;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeSlideUp 1s ease-out forwards;
+}
+
+/* Animation */
+@keyframes fadeSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-title p {
+  font-size: 18px;
+  color: #333;
+  opacity: 0.8;
+  transform: translateY(10px);
+}
+
+/* Contact Form */
+.contact-area .form-control {
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding: 15px;
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.contact-area .form-control:focus {
+  border-color: #0097b2;
+  box-shadow: 0 0 8px rgba(0, 151, 178, 0.3);
+}
+
+.contact-area .form-group input,
+.contact-area .form-group textarea {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect on input fields */
+.contact-area .form-group input:focus,
+.contact-area .form-group textarea:focus {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 10px rgba(0, 151, 178, 0.2);
+}
+
+/* Button Style */
+.btn-contact-bg {
+  background: #f7f7f7;
+  border-color: #fa65b1;
+  border-radius: 26px;
+  padding: 15px 40px;
+  border-radius: 5px;
+  font-size: 18px;
+  color: #fa65b1;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.4s ease, transform 0.3s ease;
+}
+
+
+.btn-contact-bg:hover {
+  background: #fa65b1;
+  color: #eee;
+  transform: translateY(-3px);
+}
+.section-title h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #0097B2;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #0097B2, #004D66);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 10px 0;
+  position: relative;
+}
+
+.section-title h1::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #0097B2;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+.contact-area .form-group textarea {
+  height: 330px;
+}
+
+/* Contact Details */
+.single_address {
+  margin-bottom: 30px;
+  padding:20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.single_address i {
+  font-size: 30px;
+  color: #fa65b1;
+  margin-right: 15px;
+  transition: color 0.3s ease;
+}
+
+
+
+.single_address h4 {
+  font-size: 20px;
+  color: #fa65b1;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.single_address p {
+  font-size: 16px;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .contact-area .row {
+      flex-direction: column;
+  }
+
+  .contact-area .col-lg-7, .contact-area .col-lg-5 {
+      width: 100%;
+  }
+
+  .btn-contact-bg {
+      width: auto;
+      margin-top: 20px;
+  }
+}
+
+
+/* footer */
+footer {
+  position: absolute;
+  width: 100%!important; /* 100% من العرض الكامل */
+  left: 0;
+  margin: 0!important;
+    padding: 0!important;
+    box-sizing: border-box;
+
+}
+
+.bg-custom {
+  background-color: #334346;
+}
