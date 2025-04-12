@@ -9,7 +9,6 @@ namespace stationerySpot.Models
 
         public string Name { get; set; } = null!;
 
-        //public int OwnerId { get; set; } = 1;
 
         public string Location { get; set; } = null!;
 
@@ -37,7 +36,6 @@ namespace stationerySpot.Models
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
         public virtual ICollection<ContactU> ReceivedMessages { get; set; } = new List<ContactU>();
 
-        public virtual User Owner { get; set; } = null!;
 
         public virtual ICollection<PrintRequest> PrintRequests { get; set; } = new List<PrintRequest>();
 

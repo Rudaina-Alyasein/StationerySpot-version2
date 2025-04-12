@@ -20,7 +20,6 @@ public partial class User
     // العلاقات مع الجداول الأخرى
     public virtual ICollection<ContactU> ContactUs { get; set; } = new List<ContactU>();
 
-    public virtual ICollection<Library> Libraries { get; set; } = new List<Library>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 

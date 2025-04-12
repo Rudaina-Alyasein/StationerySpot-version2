@@ -111,9 +111,7 @@ public partial class MyDbContext : DbContext
                 .HasMaxLength(150)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Owner).WithMany(p => p.Libraries)
-                .HasForeignKey(d => d.OwnerId)
-                .HasConstraintName("FK__Libraries__Owner__3D5E1FD2");
+      
         });
 
         modelBuilder.Entity<LibraryAccount>(entity =>
