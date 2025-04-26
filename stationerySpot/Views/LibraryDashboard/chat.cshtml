@@ -8,38 +8,95 @@
         <!-- Sidebar: Students List -->
         <div class="col-md-3 border-end">
             <h5 class="mb-3">👥 Students</h5>
-            @foreach(var user in Model){
+            @foreach (var user in Model)
+            {
                 <div class="p-3 border-bottom chat-user" data-user-id="@user.Id" style="cursor: pointer;">
                     <strong>@user.Name</strong><br />
                     <small class="text-muted">@user.Email</small>
                 </div>
             }
-            
         </div>
 
         <!-- Chat Area -->
         <div class="col-md-9">
-            <h5 class="mb-3">💬 Chat with: <strong>Sara Khalid</strong></h5>
+            <h5 class="mb-3">💬 Chat with: <strong id="chatWithName">Select a user</strong></h5>
 
             <!-- Chat Box -->
-            <div class="border rounded p-3 mb-3" style="height: 400px; overflow-y: auto; background-color: #f8f9fa;">
-                <div class="mb-2">
-                    <strong>You:</strong> Hello Sara, how can I help you today?
-                </div>
-                <div class="mb-2">
-                    <strong>Sara:</strong> I have a question about my graduation project.
-                </div>
-                <div class="mb-2">
-                    <strong>You:</strong> Sure, go ahead.
-                </div>
+            <div class="border rounded p-3 mb-3" id="chatBox" style="height: 400px; overflow-y: auto; background-color: #f8f9fa;">
+                <!-- الرسائل ستظهر هنا -->
             </div>
 
             <!-- Message Input -->
             <div>
-                <textarea class="form-control" rows="3" placeholder="Type your message..."></textarea>
-                <button class="btn btn-primary mt-2">Send</button>
+                <textarea id="messageInput" class="form-control" rows="3" placeholder="Type your message..."></textarea>
+                <button id="sendMessageButton" class="btn btn-primary mt-2" disabled>Send</button>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // 1. عند النقر على مستخدم في القائمة الجانبية
+    document.querySelectorAll('.chat-user').forEach(userElement => {
+        userElement.addEventListener('click', function() {
+            const receiverId = this.getAttribute('data-user-id');
+            console.log(receiverId);
+            const receiverName = this.querySelector('strong').textContent;
+
+            // 2. تحديث عنوان الشات مع اسم المستخدم
+            document.getElementById('chatWithName').textContent = ` ${receiverName}`;
+
+            // 3. جلب الرسائل من السيرفر باستخدام الـ userId (مع التحقق من session)
+            fetch(`/chat/GetMessagesUser?libraryId=${receiverId}`)
+                .then(response => response.json())
+                .then(messages => {
+                    // 4. عرض الرسائل في الـ chatBox
+                    const chatBox = document.getElementById('chatBox');
+                    chatBox.innerHTML = ''; // تنظيف الـ chatBox قبل إضافة الرسائل الجديدة
+                    messages.forEach(message => {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.classList.add('mb-2');
+                        messageDiv.innerHTML = `<strong>${message.senderId === receiverId ? 'Sara' : 'You'}:</strong> ${message.message}`;
+                        chatBox.appendChild(messageDiv);
+                    });
+
+                    // 5. تمكين زر إرسال الرسالة
+                    document.getElementById('sendMessageButton').disabled = false;
+                })
+                .catch(err => console.error('Error fetching messages:', err));
+        });
+    });
+
+    // 6. إرسال الرسالة
+    document.getElementById('sendMessageButton').addEventListener('click', function() {
+        const messageContent = document.getElementById('messageInput').value;
+        if (!messageContent.trim()) return;
+
+        const receiverId = document.querySelector('.chat-user.active').getAttribute('data-user-id'); // يجب تحديد من هو المستخدم النشط
+        const message = {
+            senderId: 1, // الـ senderId من الـ session
+            receiverId: receiverId,
+            message: messageContent
+        };
+
+        // إرسال الرسالة إلى السيرفر
+        fetch('/chat/SendMessage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(message)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // تحديث الرسائل بعد الإرسال
+                document.getElementById('messageInput').value = ''; // مسح المدخل
+                document.getElementById('sendMessageButton').disabled = true; // تعطيل زر الإرسال
+                alert('Message sent successfully');
+            }
+        })
+        .catch(err => console.error('Error sending message:', err));
+    });
+</script>
 

@@ -11,10 +11,10 @@
 }
 
 <section class="hero">
-    <div>
+    <div class="hero-content">
         <h1>Discover Local Libraries</h1>
         <p>Find the best libraries near you with just one click!</p>
-        <button id="detectLocation" class="btn btn-light px-4 py-2 mt-3">Detect Nearest Libraries</button>
+        <button id="detectLocation" class="btn btn-pink px-4 py-2 mt-3">Detect Nearest Libraries</button>
     </div>
 </section>
 
@@ -42,8 +42,9 @@
             </div>
             <div class="col-md-4">
                 <div class="input-group SearchInput">
-                    <input type="text" class="form-control" placeholder="Search for library..." aria-label="search" id="search-library">
-                    <button class="btn btn-primary" type="button" id="search-btn">Search</button>
+                    <input type="text" class="form-control" placeholder="Search for library..." aria-label="search"
+                           id="search-library">
+                    <button class="btn btn-pink" type="button" id="search-btn">Search</button>
                 </div>
             </div>
         </div>
@@ -74,7 +75,8 @@
                                     <i class="fas fa-star"></i>
                                 }
                             </div>
-                            <a href="@Url.Action("pressure", "Home", new { id = library.Id })" class="btn btn-primary btn-sm w-100">View Details</a>
+                            <a href="@Url.Action("pressure", "Home" , new { id=library.Id })"
+                               class="btn btn-pink btn-sm w-100">View Details</a>
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace stationerySpot.Models;
+﻿namespace stationerySpot.Models;
 
 public partial class Product
 {
@@ -28,4 +25,10 @@ public partial class Product
     public virtual Library Library { get; set; } = null!;
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+
+    // إضافة الخاصية Reviews لربط التقييمات بالمنتج
+    // العلاقة مع ReviewsProduct (مراجعات المنتج)
+    public ICollection<ReviewsProduct> ReviewsProducts { get; set; }
+    public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+
 }

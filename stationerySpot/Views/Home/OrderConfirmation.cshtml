@@ -1,0 +1,31 @@
+﻿
+@{
+    Layout = "HomeLayout";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+
+            <div class="card shadow-lg border-0 p-4 rounded-4">
+                <div class="card-body">
+
+                    <div class="mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.97 10.97a.75.75 0 0 0 1.07 0l4.243-4.243a.75.75 0 1 0-1.06-1.06L7.5 9.44 5.78 7.72a.75.75 0 0 0-1.06 1.06l2.25 2.25z"/>
+                        </svg>
+                    </div>
+
+                    <h2 class="fw-bold text-success">Thank you for your order!</h2>
+                    <p class="text-muted fs-5 mb-4">
+                        Your order has been placed successfully. We'll start processing it and ship it to you soon.
+                    </p>
+
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-outline-success px-4 py-2">Back to Home</a>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

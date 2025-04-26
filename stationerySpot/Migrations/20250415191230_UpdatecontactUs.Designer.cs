@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using stationerySpot.Models;
 
@@ -11,9 +12,11 @@ using stationerySpot.Models;
 namespace stationerySpot.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250415191230_UpdatecontactUs")]
+    partial class UpdatecontactUs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,62 +24,6 @@ namespace stationerySpot.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("stationerySpot.Models.Cart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("IsCheckedOut")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.HasKey("Id")
-                        .HasName("PK__Cart__3214EC072B0D11C1");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Cart", (string)null);
-                });
-
-            modelBuilder.Entity("stationerySpot.Models.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CartId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id")
-                        .HasName("PK__CartItem__3214EC07721E6403");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CartItems");
-                });
 
             modelBuilder.Entity("stationerySpot.Models.Category", b =>
                 {
@@ -109,7 +56,7 @@ namespace stationerySpot.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("stationerySpot.Models.ContactUsMessage", b =>
+            modelBuilder.Entity("stationerySpot.Models.ContactU", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,11 +64,22 @@ namespace stationerySpot.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)");
+
+                    b.Property<bool?>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("LibraryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Message")
                         .IsRequired()
@@ -133,52 +91,22 @@ namespace stationerySpot.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<DateTime>("SubmittedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.HasKey("Id")
-                        .HasName("PK__ContactU__3214EC07C62DD71A");
-
-                    b.ToTable("ContactUsMessages");
-                });
-
-            modelBuilder.Entity("stationerySpot.Models.CustomerInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int?>("ReceiverId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int?>("SenderId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id")
+                        .HasName("PK__ContactU__3214EC071CDE7C47");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("LibraryId");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("ReceiverId");
 
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("SenderId");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StreetAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CustomerInfos");
+                    b.ToTable("ContactUs");
                 });
 
             modelBuilder.Entity("stationerySpot.Models.Faq", b =>
@@ -234,9 +162,7 @@ namespace stationerySpot.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LogoPath")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -245,23 +171,16 @@ namespace stationerySpot.Migrations
                         .HasColumnType("varchar(150)");
 
                     b.Property<string>("Phone")
-                        .HasMaxLength(15)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(15)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("WebsiteUrl")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("WebsiteURL");
+                    b.Property<string>("WebsiteURL")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WorkingHours")
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id")
                         .HasName("PK__Librarie__3214EC0780B78CCB");
@@ -598,41 +517,6 @@ namespace stationerySpot.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("stationerySpot.Models.ReviewsProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ReviewText")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id")
-                        .HasName("PK__ReviewsP__3214EC070759943A");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ReviewsProduct", (string)null);
-                });
-
             modelBuilder.Entity("stationerySpot.Models.Service", b =>
                 {
                     b.Property<int>("Id")
@@ -715,36 +599,26 @@ namespace stationerySpot.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("stationerySpot.Models.Cart", b =>
+            modelBuilder.Entity("stationerySpot.Models.ContactU", b =>
                 {
-                    b.HasOne("stationerySpot.Models.User", "User")
-                        .WithMany("Carts")
-                        .HasForeignKey("CustomerId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Cart__CustomerId__1E6F845E");
+                    b.HasOne("stationerySpot.Models.Library", null)
+                        .WithMany("ContactUs")
+                        .HasForeignKey("LibraryId");
 
-                    b.Navigation("User");
-                });
+                    b.HasOne("stationerySpot.Models.Library", "Receiver")
+                        .WithMany("ReceivedMessages")
+                        .HasForeignKey("ReceiverId")
+                        .HasConstraintName("FK__ContactUs__Recei__17F790F9");
 
-            modelBuilder.Entity("stationerySpot.Models.CartItem", b =>
-                {
-                    b.HasOne("stationerySpot.Models.Cart", "Cart")
-                        .WithMany("CartItems")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK__CartItems__CartI__22401542");
+                    b.HasOne("stationerySpot.Models.User", "Sender")
+                        .WithMany("ContactUs")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("FK__ContactUs__Sende__17036CC0");
 
-                    b.HasOne("stationerySpot.Models.Product", "Product")
-                        .WithMany("CartItems")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK__CartItems__Produ__2334397B");
+                    b.Navigation("Receiver");
 
-                    b.Navigation("Cart");
-
-                    b.Navigation("Product");
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("stationerySpot.Models.LibraryAccount", b =>
@@ -856,25 +730,6 @@ namespace stationerySpot.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("stationerySpot.Models.ReviewsProduct", b =>
-                {
-                    b.HasOne("stationerySpot.Models.Product", "Product")
-                        .WithMany("ReviewsProducts")
-                        .HasForeignKey("ProductId")
-                        .IsRequired()
-                        .HasConstraintName("FK__ReviewsPr__Produ__0C50D423");
-
-                    b.HasOne("stationerySpot.Models.User", "User")
-                        .WithMany("ReviewsProducts")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("FK__ReviewsPr__UserI__0D44F85C");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("stationerySpot.Models.Service", b =>
                 {
                     b.HasOne("stationerySpot.Models.Library", "Library")
@@ -887,11 +742,6 @@ namespace stationerySpot.Migrations
                     b.Navigation("Library");
                 });
 
-            modelBuilder.Entity("stationerySpot.Models.Cart", b =>
-                {
-                    b.Navigation("CartItems");
-                });
-
             modelBuilder.Entity("stationerySpot.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -899,6 +749,8 @@ namespace stationerySpot.Migrations
 
             modelBuilder.Entity("stationerySpot.Models.Library", b =>
                 {
+                    b.Navigation("ContactUs");
+
                     b.Navigation("LibraryAccounts");
 
                     b.Navigation("Orders");
@@ -906,6 +758,8 @@ namespace stationerySpot.Migrations
                     b.Navigation("PrintRequests");
 
                     b.Navigation("Products");
+
+                    b.Navigation("ReceivedMessages");
 
                     b.Navigation("Reviews");
 
@@ -919,24 +773,18 @@ namespace stationerySpot.Migrations
 
             modelBuilder.Entity("stationerySpot.Models.Product", b =>
                 {
-                    b.Navigation("CartItems");
-
                     b.Navigation("OrderDetails");
-
-                    b.Navigation("ReviewsProducts");
                 });
 
             modelBuilder.Entity("stationerySpot.Models.User", b =>
                 {
-                    b.Navigation("Carts");
+                    b.Navigation("ContactUs");
 
                     b.Navigation("Orders");
 
                     b.Navigation("PrintRequests");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("ReviewsProducts");
                 });
 #pragma warning restore 612, 618
         }

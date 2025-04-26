@@ -46,7 +46,7 @@ namespace stationerySpot.Controllers
                 Phone = request.Phone ?? "0000000000",
                 LogoPath = request.LogoPath ?? "/default-logo.png",
                 WorkingHours = request.WorkingHours ?? "9:00 AM - 5:00 PM",
-                WebsiteURL = request.WebsiteUrl ?? "N/A",
+                WebsiteUrl = request.WebsiteUrl ?? "N/A",
                 City = request.City
             };
 

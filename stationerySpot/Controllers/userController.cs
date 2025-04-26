@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using stationerySpot.Models;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace stationerySpot.Controllers
@@ -130,8 +132,57 @@ namespace stationerySpot.Controllers
             HttpContext.Session.Clear(); // حذف جميع بيانات الجلسة
             return RedirectToAction("Login", "User"); // إعادة التوجيه لصفحة تسجيل الدخول
         }
+        public IActionResult Profile()
+        {
+            // جلب بيانات المستخدم من الجلسة
+            var userId = HttpContext.Session.GetString("UserId");
 
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "User"); // إذا لم تكن هناك بيانات في الجلسة، إعادة التوجيه إلى صفحة تسجيل الدخول
+            }
 
+            // تحويل UserId إلى نوع int باستخدام TryParse لتجنب الاستثناءات
+            if (!int.TryParse(userId, out int id))
+            {
+                return RedirectToAction("Login", "User"); // إذا كانت القيمة غير صالحة، إعادة التوجيه إلى صفحة تسجيل الدخول
+            }
 
+            // جلب بيانات المستخدم من قاعدة البيانات
+            var user = _context.Users
+                               .Include(u => u.Orders)
+                               .Include(u => u.PrintRequests)
+                               .Include(u => u.Reviews)
+                               .FirstOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                return RedirectToAction("Login", "User"); // إذا لم يتم العثور على المستخدم، إعادة التوجيه إلى صفحة تسجيل الدخول
+            }
+
+            // إنشاء ViewModel مع البيانات
+            var profileModel = new ProfileViewModel
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                Role = user.Role,
+                CreatedAt = user.CreatedAt,
+                Orders = user.Orders.Select(order => new OrderViewModel
+                {
+                    Id = order.Id,
+                    Status = order.Status,
+                    TotalAmount = order.TotalAmount,
+                    CreatedAt = order.CreatedAt
+                }).ToList(),
+                // إذا كنت ترغب في إضافة PrintRequests و Reviews، قم بإلغاء تعليق الكود هنا
+                //PrintRequests = user.PrintRequests.Select(request => new PrintRequestViewModel {...}).ToList(),
+                //Reviews = user.Reviews.Select(review => new ReviewViewModel {...}).ToList()
+            };
+
+            // إرسال البيانات إلى الفيو
+            return View(profileModel);
+        }
+
+        }
     }
-}

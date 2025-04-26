@@ -15,9 +15,16 @@ public partial class MyDbContext : DbContext
     {
     }
 
+    public DbSet<CustomerInfo> CustomerInfos { get; set; }
+
+
+    public virtual DbSet<Cart> Carts { get; set; }
+
+    public virtual DbSet<CartItem> CartItems { get; set; }
+
     public virtual DbSet<Category> Categories { get; set; }
 
-    public virtual DbSet<ContactU> ContactUs { get; set; }
+    public virtual DbSet<ContactUsMessage> ContactUsMessages { get; set; }
 
     public virtual DbSet<Faq> Faqs { get; set; }
 
@@ -37,6 +44,8 @@ public partial class MyDbContext : DbContext
 
     public virtual DbSet<Review> Reviews { get; set; }
 
+    public virtual DbSet<ReviewsProduct> ReviewsProducts { get; set; }
+
     public virtual DbSet<Service> Services { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -47,7 +56,43 @@ public partial class MyDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+        modelBuilder.Entity<Cart>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Cart__3214EC072B0D11C1");
+
+            entity.ToTable("Cart");
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.IsCheckedOut).HasDefaultValue(false);
+
+            modelBuilder.Entity<Cart>()
+     .HasOne(d => d.User)  // العلاقة مع User
+     .WithMany(p => p.Carts)  // User يمكن أن يمتلك عدة Carts
+     .HasForeignKey(d => d.CustomerId)  // المفتاح الأجنبي الذي يشير إلى CustomerId
+     .OnDelete(DeleteBehavior.ClientSetNull)  // عندما يتم حذف User، لا يتم حذف Cart
+     .HasConstraintName("FK__Cart__CustomerId__1E6F845E");  // اسم القيد
+
+
+        });
+
+        modelBuilder.Entity<CartItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__CartItem__3214EC07721E6403");
+
+            entity.HasOne(d => d.Cart).WithMany(p => p.CartItems)
+                .HasForeignKey(d => d.CartId)
+                .OnDelete(DeleteBehavior.Cascade) // بدل ClientSetNull
+                .HasConstraintName("FK__CartItems__CartI__22401542");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.CartItems)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.Cascade) // بدل ClientSetNull
+                .HasConstraintName("FK__CartItems__Produ__2334397B");
+        });
+
+
         modelBuilder.Entity<Category>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Categori__3214EC07D05B03A0");
@@ -61,11 +106,10 @@ public partial class MyDbContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<ContactU>(entity =>
+        modelBuilder.Entity<ContactUsMessage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ContactU__3214EC071CDE7C47");
+            entity.HasKey(e => e.Id).HasName("PK__ContactU__3214EC07C62DD71A");
 
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
                 .IsUnicode(false);
@@ -73,18 +117,7 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .IsUnicode(false);
-
-            // حذف TargetType و TargetId وتعويضهم بـ ReceiverId
-            entity.HasOne(d => d.Sender)
-                .WithMany(p => p.ContactUs)
-                .HasForeignKey(d => d.SenderId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FK__ContactUs__Sende__17036CC0");
-
-            entity.HasOne(d => d.Receiver)
-                .WithMany(p => p.ReceivedMessages) // تأكد إنك عامل هالعلاقة بالـ Library model
-                .HasForeignKey(d => d.ReceiverId)
-                .HasConstraintName("FK__ContactUs__Recei__17F790F9");
+            entity.Property(e => e.SubmittedAt).HasDefaultValueSql("(getdate())");
         });
 
         modelBuilder.Entity<Faq>(entity =>
@@ -107,11 +140,22 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.Location).HasColumnType("text");
+            entity.Property(e => e.LogoPath)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.Name)
                 .HasMaxLength(150)
                 .IsUnicode(false);
-
-      
+            entity.Property(e => e.Phone)
+                .HasMaxLength(15)
+                .IsUnicode(false);
+            entity.Property(e => e.WebsiteUrl)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("WebsiteURL");
+            entity.Property(e => e.WorkingHours)
+                .HasMaxLength(100)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<LibraryAccount>(entity =>
@@ -277,6 +321,27 @@ public partial class MyDbContext : DbContext
                 .HasConstraintName("FK__Reviews__UserId__693CA210");
         });
 
+        modelBuilder.Entity<ReviewsProduct>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ReviewsP__3214EC070759943A");
+
+            entity.ToTable("ReviewsProduct");
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ReviewsProducts)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ReviewsPr__Produ__0C50D423");
+
+            entity.HasOne(d => d.User).WithMany(p => p.ReviewsProducts)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ReviewsPr__UserI__0D44F85C");
+        });
+
         modelBuilder.Entity<Service>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Services__3214EC073232CFBF");
@@ -313,7 +378,10 @@ public partial class MyDbContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
         });
-
+        modelBuilder.Entity<CustomerInfo>()
+            .HasOne(c => c.Order)
+            .WithMany()  // يمكنك تحديد العلاقة هنا حسب متطلباتك
+            .HasForeignKey(c => c.OrderId);
         OnModelCreatingPartial(modelBuilder);
     }
 

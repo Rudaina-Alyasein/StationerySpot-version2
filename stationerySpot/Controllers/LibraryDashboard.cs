@@ -255,7 +255,7 @@ namespace stationerySpot.Controllers
             library.Description = LibraryInfo.Description;
             library.Phone = LibraryInfo.Phone;
             library.WorkingHours = LibraryInfo.WorkingHours;
-            library.WebsiteURL = LibraryInfo.WebsiteURL;
+            library.WebsiteUrl = LibraryInfo.WebsiteUrl;
             library.City = LibraryInfo.City;
 
             // التعامل مع رفع الشعار الجديد

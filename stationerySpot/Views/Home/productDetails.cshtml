@@ -1,0 +1,92 @@
+﻿  @model stationerySpot.Models.Product   
+
+@{
+    Layout = "HomeLayout";
+}
+
+@section style {
+    <link rel="stylesheet" href="~/assets/style/productDetails.css">
+}
+
+<div class="product-container">
+    <!-- Product Header -->
+    <div class="product-header">
+        <div>
+            <h1 class="product-title">@Model.Name</h1>
+            <span class="product-category">@Model.Category.Name</span>
+            <p class="product-price">@Model.Price.ToString("C")</p>
+        </div>
+        <img src="@Model.ImagePath" alt="Product Image" class="product-image">
+    </div>
+
+    <!-- Product Description -->
+    <p class="product-description">
+        @Model.Description
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="btn btn-add-cart">
+            <i class="fas fa-shopping-cart me-2"></i>
+            Add to Cart
+        </button>
+        <button class="btn btn-wishlist">
+            <i class="fas fa-heart me-2"></i>
+            Add to Wishlist
+        </button>
+    </div>
+
+    <!-- Availability Section -->
+    <div class="availability-section">
+        <h3>Available at the following libraries:</h3>
+        @foreach (var library in Model.Library.Products)
+        {
+            <div class="availability-item">
+                <div class="library-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div>
+                    <h5 class="mb-1">@library.Name</h5>
+                    <p class="mb-0 text-success">Available - @library.Stock copies</p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Ratings Section -->
+    <div class="ratings-section">
+        <h3>Ratings and Reviews</h3>
+        <!-- Rating Form -->
+        <div class="rating-form">
+            <h4>Add Your Rating</h4>
+            <div class="rating-stars">
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+            </div>
+            <textarea placeholder="Write your review here..."></textarea>
+            <button>Submit Review</button>
+        </div>
+
+        <!-- Existing Reviews -->
+        @foreach (var review in Model.ReviewsProducts)
+        {
+            <div class="rating-item">
+                <div class="user-avatar"></div>
+                <div>
+                    <h5>@review.User.Name</h5>
+                    <div class="rating-stars">
+                        @for (int i = 0; i < review.Rating; i++)
+                        {
+                            <i class="fas fa-star"></i>
+                        }
+                    </div>
+                    <p>@review.ReviewText</p>
+                    <span class="rating-date">@review.CreatedAt</span>
+                </div>
+            </div>
+        }
+    </div>
+</div>

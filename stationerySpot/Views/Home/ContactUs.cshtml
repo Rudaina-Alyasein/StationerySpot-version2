@@ -1,6 +1,23 @@
-﻿@{
+﻿@model stationerySpot.Models.ContactUsMessage
+
+@{
     Layout = "HomeLayout";
 }
+@{
+    if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Sent successfully!',
+                text: '@TempData["SuccessMessage"]',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
+    }
+}
+
 @section style{
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
@@ -49,25 +66,25 @@
         </div>
         <div class="contactForm">
             <h2 style="color: #0097B2;">Send Message</h2>
-            <form id="contact-form">
+            <form id="contact-form" method="post" action="/Home/SendMessage">
                 <div class="inputBox">
-                    <input type="text" id="name" name="first_name" required="required" data-label="First Name">
-                    <span>First Name</span>
+                    <input type="text" id="name" name="Name" required value="@Model?.Name">
+                    <span>Full Name</span>
                 </div>
+
                 <div class="inputBox">
-                    <input type="text" id="lastName" name="last_name" required="required"
-                           data-label="Last Name">
-                    <span>Last Name</span>
-                </div>
-                <div class="inputBox">
-                    <input type="email" id="email" name="user_email" required="required" data-label="Email">
+                    <input type="email" id="email" name="Email" required value="@Model?.Email">
                     <span>Email</span>
                 </div>
+
                 <div class="inputBox">
-                    <textarea id="message" name="user_message" required="required"
-                              data-label="Type your message..."></textarea>
+                    <textarea id="message" name="Message" required>@Model?.Message</textarea>
                     <span>Type your message...</span>
                 </div>
+
+                <input type="hidden" name="SenderId" value="11" /> <!-- مثال لـ SenderId -->
+                <input type="hidden" name="ReceiverId" value="5" /> <!-- مثال لـ ReceiverId -->
+
                 <div class="inputBox">
                     <button type="submit">Send</button>
                 </div>

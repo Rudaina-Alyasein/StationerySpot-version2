@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<stationerySpot.Models.Product> 
+
+@{
     Layout = "HomeLayout";
 
     var userId = Context.Session.GetString("UserId");
@@ -11,47 +13,298 @@
     <link rel="stylesheet" href="~/assets\style\library.css">
 }
 <!-- CSS (for chat and styling) -->
+
 <style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #ff69b4;
+        --accent-color: #3498db;
+        --light-bg: #f8f9fa;
+        --dark-text: #2c3e50;
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        color: var(--dark-text);
+    }
+
+    /* Tabs Styling */
+    .nav-tabs {
+        border: none;
+        margin-bottom: 2rem;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: var(--dark-text);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+            .nav-tabs .nav-link:hover {
+                background: rgba(255, 105, 180, 0.1);
+                color: var(--secondary-color);
+            }
+
+            .nav-tabs .nav-link.active {
+                background: var(--secondary-color);
+                color: white;
+            }
+
+    /* Testimonials Carousel */
+    .testimonial-section {
+        background: linear-gradient(135deg, #f6f8fd 0%, #ffffff 100%);
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+    }
+
+    .testimonial-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        position: relative;
+    }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 4rem;
+            color: var(--secondary-color);
+            opacity: 0.1;
+            font-family: serif;
+        }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 40px;
+        height: 40px;
+        background: var(--secondary-color);
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 1;
+    }
+
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
+            background: #ff1493;
+            opacity: 1;
+        }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        filter: brightness(0) invert(1);
+    }
+
+    .carousel-control-prev {
+        left: -20px;
+    }
+
+    .carousel-control-next {
+        right: -20px;
+    }
+
+    /* Project Cards */
+    .project-card {
+        height: 100%;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: white;
+    }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-card .card-img-top {
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .project-card .card-body {
+            padding: 2rem;
+        }
+
+        .project-card .card-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .project-card .card-text {
+            color: #666;
+            line-height: 1.6;
+        }
+
+    /* Chat Components */
+    .chat-toggle {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--secondary-color);
+        color: white;
+        box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+        border: none;
+        transition: transform 0.3s ease;
+        z-index: 1000;
+    }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+        }
 
     .chat-box {
-        z-index: 100;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        padding: 20px;
-        max-height: 400px;
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        width: 350px;
+        height: 500px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+    }
+
+    .chat-header {
+        padding: 1rem;
+        background: var(--secondary-color);
+        color: white;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .chat-messages {
+        height: calc(100% - 140px);
         overflow-y: auto;
-
+        padding: 1rem;
     }
 
-    .message {
-        margin-bottom: 15px;
-        padding: 10px;
-        border-radius: 8px;
+    .chat-input {
+        padding: 1rem;
+        border-top: 1px solid #eee;
     }
 
-    .user-message {
-        background-color: #e0f7fa;
-        text-align: right;
+    /* Feedback Form */
+    .feedback-section {
+        background: linear-gradient(135deg, #ffffff 0%, #f6f8fd 100%);
+        padding: 4rem 0;
+        border-radius: 15px;
+        margin-top: 3rem;
     }
 
-    .library-message {
-        background-color: #e8f5e9;
+    .form-control {
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+        border: 1px solid #e0e0e0;
     }
 
-    .message-input {
-        margin-top: 15px;
-    }
-
-        .message-input textarea {
-            border-radius: 8px;
-            padding: 10px;
-            width: 100%;
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+            border-color: var(--secondary-color);
         }
 
-        .message-input button {
-            width: 100%;
+    .btn-submit {
+        background: var(--secondary-color);
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 10px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+        .btn-submit:hover {
+            background: #ff1493;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+            color: white;
         }
-</style><!-- hero -->
+
+    /* Testimonial Cards */
+    .testimonial-card {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        margin: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+
+    /* Project Cards */
+    .project-card {
+        height: 100%;
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.1);
+        }
+
+        .project-card .card-img-top {
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .project-card .card-body {
+            background: white;
+        }
+
+    /* Form Controls */
+    .form-floating > .form-control:focus,
+    .form-floating > .form-control:not(:placeholder-shown) {
+        padding-top: 1.625rem;
+        padding-bottom: 0.625rem;
+    }
+
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            opacity: .65;
+            transform: scale(.85) translateY(-0.5rem) translateX(0.15rem);
+        }
+
+    .form-control:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 0.25rem rgba(255, 105, 180, 0.25);
+    }
+</style>
+
+
+
+
+
+
+
+
+
+<!-- hero -->
 <div class="hero">
     <img source src="~/assets\img\Frame 1 (4).png" alt="library-image" class="hero-img">
     </img>
@@ -202,197 +455,39 @@
 
             </div>
             <!-- Pagination with Cards -->
-            <div class="container my-4 pagination-container">
-
-                <!-- Row 1 -->
-                <div class="row row-cols-1 row-cols-md-3 g-4 ">
-
-                    <div class="col">
-                        <div class="card pagination-card">
-                            <img src="~/assets\img\Sticky1.jpg" class="card-img-top" alt="Product 1">
-                            <div class="card-body">
-                                <h5 class="card-title">Sticky Notes</h5>
-                                <p class="card-text">Perfect for leaving reminders, jotting down quick notes, or organizing tasks. Available in multiple colors and sizes.</p>
-                                <p class="card-price">JD 2</p>
-
-                                <div class="d-flex flex-column flex-sm-row justify-content-between g-2">
-                                    <a href="#" class="btn btn-primary add-to-cart-btn mb-2 mb-sm-0">Add to Cart</a>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productModal">View Details</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Toast message -->
-                    <!-- Toast Structure -->
-                    <div class="toast-container position-fixed top-0 end-0 p-3">
-                        <div id="toastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #0097b2!important;">
-                            <div class="d-flex">
-                                <div class="toast-body">
-                                    Product added successfully!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="col">
-                        <div class="card">
-                            <img src="~/assets\img\setColor.jpg" class="card-img-top" alt="Product 2">
-                            <div class="card-body">
-                                <h5 class="card-title">Colors</h5>
-                                <p class="card-text">A stylish and versatile product available in multiple colors. Perfect for everyday use!</p>
-                                <p class="card-price">JD 1</p>
-
-                                <div class="d-flex flex-column flex-sm-row justify-content-between">
-                                    <a href="#" class="btn btn-primary add-to-cart-btn mb-2 mb-sm-0">Add to Cart</a>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productModal">View Details</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <img src="~/assets\img\bag2.jpg" class="card-img-top" alt="Product 3">
-                            <div class="card-body">
-                                <h5 class="card-title">Backpack</h5>
-                                <p class="card-text">A durable and spacious backpack, perfect for school, work, or travel.</p>
-                                <p class="card-price">JD 10</p>
-
-                                <div class="d-flex flex-column flex-sm-row justify-content-between">
-                                    <a href="#" class="btn btn-primary add-to-cart-btn mb-2 mb-sm-0">Add to Cart</a>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productModal">View Details</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Row 2 -->
+            @if (Model != null && Model.Any())
+            {
                 <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <div class="col">
-                        <div class="card">
-                            <img src="~/assets\img\Lined Sticky Notes 8 pads 100 Sheets_pad Adhesive.jpg" class="card-img-top" alt="Product 4">
-                            <div class="card-body">
-                                <h5 class="card-title">Sticky Notes</h5>
-                                <p class="card-text">Essential for organizing your thoughts, reminders, and notes. Available in vibrant colors and various sizes.</p>
-                                <p class="card-price">JD .75</p>
-
-                                <div class="d-flex flex-column flex-sm-row justify-content-between">
-                                    <a href="#" class="btn btn-primary add-to-cart-btn mb-2 mb-sm-0">Add to Cart</a>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productModal">View Details</button>
+                    @foreach (var product in Model)
+                    {
+                        if (product != null)
+                        {
+                            <div class="col">
+                                <div class="card pagination-card">
+                                    <img src="@(string.IsNullOrEmpty(product.ImagePath) ? "/path/to/default-image.jpg" : product.ImagePath)" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@product.Name</h5>
+                                        <p class="card-text">@product.Description</p>
+                                        <p class="card-price">JD @product.Price</p>
+                                        <div class="d-flex flex-column flex-sm-row justify-content-between">
+                                            <button type="button" class="btn btn-primary add-to-cart-btn mb-2 mb-sm-0"
+                                                    data-product-id="@product.Id">
+                                                Add to Cart
+                                            </button>
+                                            <a href="@Url.Action("ProductDetails", "Home", new { id = product.Id })" class="btn btn-secondary">View Details</a>
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <img src="~/assets\img\pexels-thisbrandstudio-254717.jpg" class="card-img-top" alt="Product 5">
-                            <div class="card-body">
-                                <h5 class="card-title">Colors</h5>
-                                <p class="card-text">A collection of vibrant colors perfect for any creative project or personal use.</p>
-                                <p class="card-price">JD 2</p>
+                        }
+                    }
 
-                                <div class="d-flex flex-column flex-sm-row justify-content-between">
-                                    <a href="#" class="btn btn-primary add-to-cart-btn mb-2 mb-sm-0">Add to Cart</a>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productModal">View Details</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <img src="~/assets\img\PASTEL pens.jpg" class="card-img-top" alt="Product 6">
-                            <div class="card-body">
-                                <h5 class="card-title">Highlighter</h5>
-                                <p class="card-text">Illuminate your notes and documents with this vibrant, long-lasting highlighter. Perfect for studying or organizing.</p>
-                                <p class="card-price">JD 2.5</p>
-
-                                <div class="d-flex flex-column flex-sm-row justify-content-between">
-                                    <a href="#" class="btn btn-primary add-to-cart-btn mb-2 mb-sm-0">Add to Cart</a>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productModal">View Details</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
-                <!-- Row 3 -->
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <div class="col">
-                        <div class="card">
-                            <img src="~/assets\img\0d85eb79-df02-4ed2-8e2c-39d2da975124.jpg" class="card-img-top" alt="Product 7">
-                            <div class="card-body">
-                                <h5 class="card-title">Note Pads</h5>
-                                <p class="card-text">Perfect for jotting down quick notes, ideas, or to-do lists. Compact and convenient for everyday use.</p>
-                                <p class="card-price">JD 1.5</p>
-
-                                <div class="d-flex flex-column flex-sm-row justify-content-between">
-                                    <a href="#" class="btn btn-primary add-to-cart-btn mb-2 mb-sm-0">Add to Cart</a>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productModal">View Details</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <img src="~/assets\img\8ac413c9-caea-4a6b-8cfa-6477962506c4.jpg" class="card-img-top" alt="Product 8">
-                            <div class="card-body">
-                                <h5 class="card-title">Sticky Notes</h5>
-                                <p class="card-text">Ideal for quick reminders, organizing tasks, or leaving messages. Available in a variety of colors and sizes for all your needs.</p>
-                                <p class="card-price">JD 2.5</p>
-
-                                <div class="d-flex flex-column flex-sm-row justify-content-between">
-                                    <a href="#" class="btn btn-primary add-to-cart-btn mb-2 mb-sm-0">Add to Cart</a>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productModal">View Details</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <img src="~/assets\img\StockSnap_H2ENNMXKNZ.jpg" class="card-img-top" alt="Product 9">
-                            <div class="card-body">
-                                <h5 class="card-title">Paper Clip</h5>
-                                <p class="card-text">A simple and reliable way to organize your documents and keep them secure. Available in various sizes and quantities.</p>
-                                <p class="card-price">JD 3.5</p>
-                                <div class="d-flex flex-column flex-sm-row justify-content-between">
-                                    <a href="#" class="btn btn-primary add-to-cart-btn mb-2 mb-sm-0">Add to Cart</a>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productModal">View Details</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pagination Controls -->
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            }
+            else
+            {
+                <p>No products available.</p>
+            }
 
 
 
@@ -660,123 +755,248 @@
             </div>
         </div>
         <!-- project-tabs -->
+        <!-- Projects Tab Content -->
         <div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="projects-tab">
-            <div class="container py-5">
-
-                <!-- Section 1: Testimonials Slider -->
-                <h3 class="mb-4">What Students Say</h3>
-                <div id="testimonialCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
-                    <div class="carousel-inner rounded shadow">
-                        <div class="carousel-item active p-4 bg-light text-center">
-                            <p class="fs-5 fst-italic">"This library helped me complete my graduation project smoothly. The guidance was excellent!"</p>
-                            <h6 class="fw-bold mt-3">— Sara Khalid, Software Engineering</h6>
+            <!-- Testimonials Section -->
+            <section class="testimonials-section py-5 mb-5"
+                     style="background: linear-gradient(135deg, #fff1f6 0%, #fff 100%);">
+                <div class="container">
+                    <h2 class="text-center mb-5" style="color: var(--primary-color); font-weight: 600;">
+                        What Our
+                        Students Say
+                    </h2>
+                    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <div class="quote-icon mb-3">
+                                            <i class="fas fa-quote-left"
+                                               style="color: var(--secondary-color); font-size: 2rem; opacity: 0.2;"></i>
+                                        </div>
+                                        <p class="fs-5 mb-4">
+                                            "This library helped me complete my graduation project
+                                            smoothly. The guidance was excellent!"
+                                        </p>
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <img src="https://i.pravatar.cc/150?img=1" class="rounded-circle me-3"
+                                                 width="60" height="60" alt="Sara">
+                                            <div class="text-start">
+                                                <h6 class="fw-bold mb-1">Sara Khalid</h6>
+                                                <p class="text-muted mb-0">Software Engineering</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <div class="quote-icon mb-3">
+                                            <i class="fas fa-quote-left"
+                                               style="color: var(--secondary-color); font-size: 2rem; opacity: 0.2;"></i>
+                                        </div>
+                                        <p class="fs-5 mb-4">
+                                            "Their project support saved me a lot of time. I got
+                                            great help with my master's thesis."
+                                        </p>
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <img src="https://i.pravatar.cc/150?img=2" class="rounded-circle me-3"
+                                                 width="60" height="60" alt="Omar">
+                                            <div class="text-start">
+                                                <h6 class="fw-bold mb-1">Omar Mahmoud</h6>
+                                                <p class="text-muted mb-0">Master's in AI</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-content">
+                                        <div class="quote-icon mb-3">
+                                            <i class="fas fa-quote-left"
+                                               style="color: var(--secondary-color); font-size: 2rem; opacity: 0.2;"></i>
+                                        </div>
+                                        <p class="fs-5 mb-4">
+                                            "We built a full website for our graduation project
+                                            with the library's help. Highly recommend!"
+                                        </p>
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <img src="https://i.pravatar.cc/150?img=3" class="rounded-circle me-3"
+                                                 width="60" height="60" alt="Lina">
+                                            <div class="text-start">
+                                                <h6 class="fw-bold mb-1">Lina Saleh</h6>
+                                                <p class="text-muted mb-0">Web Development</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="carousel-item p-4 bg-light text-center">
-                            <p class="fs-5 fst-italic">"Their project support saved me a lot of time. I got great help with my master's thesis."</p>
-                            <h6 class="fw-bold mt-3">— Omar Mahmoud, Master's in AI</h6>
-                        </div>
-                        <div class="carousel-item p-4 bg-light text-center">
-                            <p class="fs-5 fst-italic">"We built a full website for our graduation project with the library's help. Highly recommend!"</p>
-                            <h6 class="fw-bold mt-3">— Lina Saleh, Web Development</h6>
-                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel"
+                                data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel"
+                                data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
                 </div>
+            </section>
 
-                <!-- Section 2: Project Types -->
-                <h3 class="mb-4">Types of Graduation Projects We Offer</h3>
-                <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
-                    <div class="col">
-                        <div class="card h-100 shadow">
-                            <img src="https://source.unsplash.com/400x250/?technology" class="card-img-top" alt="AI Projects">
-                            <div class="card-body">
-                                <h5 class="card-title">AI & Data Science Projects</h5>
-                                <p class="card-text">We assist with master's and undergraduate AI-focused projects such as predictive modeling and ML applications.</p>
+            <!-- Project Types Section -->
+            <section class="project-types-section py-5">
+                <div class="container">
+                    <h2 class="text-center mb-5" style="color: var(--primary-color); font-weight: 600;">
+                        Types of
+                        Graduation Projects We Offer
+                    </h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="project-card">
+                                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3"
+                                     class="card-img-top" alt="AI Projects">
+                                <div class="card-body p-4">
+                                    <div class="card-icon mb-3">
+                                        <i class="fas fa-brain"
+                                           style="color: var(--secondary-color); font-size: 2rem;"></i>
+                                    </div>
+                                    <h5 class="card-title mb-3">AI & Data Science Projects</h5>
+                                    <p class="card-text text-muted">
+                                        Advanced machine learning, deep learning, and
+                                        data analytics projects with state-of-the-art tools and frameworks.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="project-card">
+                                <img src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3"
+                                     class="card-img-top" alt="Web Projects">
+                                <div class="card-body p-4">
+                                    <div class="card-icon mb-3">
+                                        <i class="fas fa-code"
+                                           style="color: var(--secondary-color); font-size: 2rem;"></i>
+                                    </div>
+                                    <h5 class="card-title mb-3">Web Development Projects</h5>
+                                    <p class="card-text text-muted">
+                                        Modern web applications using React, Angular, or
+                                        Vue.js with robust backend technologies.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="project-card">
+                                <img src="https://i.pinimg.com/736x/cf/55/4a/cf554aa52a101aa4ba5f81f65ae2e382.jpg"
+                                     class="card-img-top" alt="IoT Projects">
+                                <div class="card-body p-4">
+                                    <div class="card-icon mb-3">
+                                        <i class="fas fa-microchip"
+                                           style="color: var(--secondary-color); font-size: 2rem;"></i>
+                                    </div>
+                                    <h5 class="card-title mb-3">IoT & Hardware Projects</h5>
+                                    <p class="card-text text-muted">
+                                        Innovative IoT solutions and hardware projects
+                                        using Arduino, Raspberry Pi, and other platforms.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="card h-100 shadow">
-                            <img src="https://source.unsplash.com/400x250/?coding" class="card-img-top" alt="Web Projects">
-                            <div class="card-body">
-                                <h5 class="card-title">Web Development Projects</h5>
-                                <p class="card-text">Get help creating complete websites using modern technologies like ASP.NET, Angular, or PHP.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card h-100 shadow">
-                            <img src="https://source.unsplash.com/400x250/?engineering" class="card-img-top" alt="Engineering Projects">
-                            <div class="card-body">
-                                <h5 class="card-title">Embedded & Hardware Projects</h5>
-                                <p class="card-text">Support for hardware-related graduation projects such as Arduino, Raspberry Pi, and automation systems.</p>
-                            </div>
+                </div>
+            </section>
+
+            <!-- Feedback Section -->
+            <section class="feedback-section py-5"
+                     style="background: linear-gradient(135deg, #fff1f6 0%, #fff 100%);">
+                <div class="container">
+                    <h2 class="text-center mb-4" style="color: var(--primary-color); font-weight: 600;">
+                        Share Your
+                        Experience
+                    </h2>
+                    <p class="text-center text-muted mb-5">
+                        Help future students by sharing your graduation project
+                        journey with us
+                    </p>
+
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <form class="feedback-form p-4 bg-white rounded-3 shadow-sm">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="name"
+                                                   placeholder="Your Name" required>
+                                            <label for="name">Your Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="email" class="form-control" id="email"
+                                                   placeholder="Your Email" required>
+                                            <label for="email">Your Email</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="project"
+                                                   placeholder="Project Title" required>
+                                            <label for="project">Project Title</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <textarea class="form-control" id="feedback"
+                                                      placeholder="Share your feedback..." style="height: 150px"
+                                                      required></textarea>
+                                            <label for="feedback">Share your feedback...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <button type="submit" class="btn btn-submit px-5 py-3">
+                                            <i class="fas fa-paper-plane me-2"></i>Submit Feedback
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-
-                <!-- Hidden Message above the Chat Button -->
-                <div id="chatMessage" style="position: fixed; bottom: 80px; right: 20px; background-color: #e8f5e9; padding: 10px 15px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display: none;">
-                    <p style="margin: 0; color: #333;">Need help? Click here to chat with us!</p>
-                </div>
-
-                <!-- Chat Button (toggle visibility) -->
-                <button id="chatToggle" class="btn btn-primary" style="position: fixed; bottom: 20px; right: 20px;">
-                    💬 Chat with Library
-                </button>
-
-                <!-- Chat Box (hidden by default) -->
-                <div class="chat-box" id="chatBox" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; height: 400px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px;">
-                    <!-- Chat Content -->
-                    <div class="chat-content" style="height: 320px; overflow-y: auto;">
-                        <!-- Messages will be dynamically added here -->
-                    </div>
-
-                    <!-- Message Input -->
-                    <div class="message-input">
-                        <textarea class="form-control" placeholder="Type your message..." rows="3"></textarea>
-                        <button class="btn btn-primary mt-2" id="sendMessage">Send</button>
-                    </div>
-                </div>
-                <div id="chatBox1"
-                     data-user-id="@userId"
-                     data-library-id="@ViewBag.LibraryId">
-                </div>
-
-
-                <!-- Section 4: Submit Feedback -->
-                <h3 class="mb-3">Submit Your Feedback</h3>
-                <p class="text-muted">If you've completed your graduation project with us, share your experience below.</p>
-
-                <form>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Your Name" required />
-                        </div>
-                        <div class="col-md-6">
-                            <input type="email" class="form-control" placeholder="Your Email" required />
-                        </div>
-                        <div class="col-12">
-                            <input type="text" class="form-control" placeholder="Project Title" required />
-                        </div>
-                        <div class="col-12">
-                            <textarea class="form-control" rows="4" placeholder="Share your feedback..." required></textarea>
-                        </div>
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-success">Submit Feedback</button>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
+            </section>
         </div>
-
         @section Scripts {
-            <script src="~/js/pressure.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $('.add-to-cart-btn').on('click', function () {
+                        var productId = $(this).data('product-id');  // نأخذ الـ ID من الزر
+
+                        $.ajax({
+                            url: '@Url.Action("AddToCart", "Home")',  // المسار الذي ستتم عليه إضافة المنتج
+                            type: 'POST',
+                            data: { productId: productId },  // نرسل الـ ID للـ Server
+                            success: function (response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: response.message || 'Product added to cart!',
+                                    confirmButtonText: 'OK'
+                                });
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Something went wrong. Please try again.',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                        });
+                    });
+                });
+            </script>
 
         }
+      

@@ -20,7 +20,7 @@ namespace stationerySpot.Models
 
         public string? WorkingHours { get; set; }  // العمود الجديد
 
-        public string? WebsiteURL { get; set; }  // العمود الجديد
+        public string? WebsiteUrl { get; set; }  // URL → Url
         public string? Status { get; set; } = "New";
 
 
@@ -29,12 +29,12 @@ namespace stationerySpot.Models
         public DateTime? CreatedAt { get; set; }
 
         // العلاقة مع حساب المكتبة
-        public virtual ICollection<ContactU> ContactUs { get; set; } = new List<ContactU>();
+        //public virtual ICollection<ContactU> ContactUs { get; set; } = new List<ContactU>();
 
         public virtual ICollection<LibraryAccount> LibraryAccounts { get; set; } = new List<LibraryAccount>();
 
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
-        public virtual ICollection<ContactU> ReceivedMessages { get; set; } = new List<ContactU>();
+        //public virtual ICollection<ContactU> ReceivedMessages { get; set; } = new List<ContactU>();
 
 
         public virtual ICollection<PrintRequest> PrintRequests { get; set; } = new List<PrintRequest>();

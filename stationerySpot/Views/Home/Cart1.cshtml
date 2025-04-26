@@ -1,0 +1,557 @@
+﻿@model stationerySpot.Models.Cart
+
+
+@{
+    Layout = "HomeLayout";
+}
+<style>
+    /* General Styles */
+    .wrapper {
+        font-family: 'Poppins', sans-serif;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    /* Breadcrumb Styles */
+    .breadcrumb-style1 {
+        background-color: #f8f9fa;
+        padding: 20px 0;
+        margin-bottom: 40px;
+    }
+
+        .breadcrumb-style1 .breadcrumb {
+            margin: 0;
+        }
+
+        .breadcrumb-style1 .breadcrumb-item a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+            .breadcrumb-style1 .breadcrumb-item a:hover {
+                color: #007bff;
+            }
+
+    /* Shopping Cart Table Styles */
+    .shopping-cart-form {
+        margin-bottom: 40px;
+    }
+
+    .table {
+        border: 1px solid #e9ecef;
+    }
+
+        .table thead th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            padding: 15px;
+            font-weight: 600;
+        }
+
+        .table tbody td {
+            padding: 20px 15px;
+            vertical-align: middle;
+        }
+
+    .product-remove .remove {
+        color: #dc3545;
+        font-size: 20px;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .product-remove .remove:hover {
+            color: #c82333;
+        }
+
+    .product-thumbnail .thumb img {
+        border-radius: 4px;
+        transition: transform 0.3s ease;
+    }
+
+        .product-thumbnail .thumb img:hover {
+            transform: scale(1.05);
+        }
+
+    .product-name .title {
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+        .product-name .title:hover {
+            color: #007bff;
+        }
+
+    .product-price .price {
+        font-weight: 600;
+        color: #28a745;
+    }
+
+    /* Quantity Input Styles */
+    .pro-qty {
+        display: flex;
+        align-items: center;
+        max-width: 120px;
+    }
+
+        .pro-qty .quantity {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 0 10px;
+        }
+
+    /* Coupon Section Styles */
+    .coupon-wrap {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+
+        .coupon-wrap .title {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .coupon-wrap .desc {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .coupon-wrap .form-control {
+            height: 45px;
+            margin-bottom: 15px;
+        }
+
+    .btn-coupon {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-coupon:hover {
+            background-color: #0056b3;
+        }
+
+    /* Cart Totals Styles */
+    .cart-totals-wrap {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 8px;
+    }
+
+        .cart-totals-wrap .title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .cart-totals-wrap table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+            .cart-totals-wrap table tr {
+                border-bottom: 1px solid #dee2e6;
+            }
+
+            .cart-totals-wrap table th,
+            .cart-totals-wrap table td {
+                padding: 15px 0;
+            }
+
+        .cart-totals-wrap .amount {
+            font-weight: 600;
+            color: #28a745;
+        }
+
+    /* Shipping Options Styles */
+    .shipping-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .shipping-list .radio {
+            margin-bottom: 10px;
+        }
+
+        .shipping-list label {
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+    /* Checkout Button Styles */
+    .checkout-button {
+        display: inline-block;
+        background-color: #28a745;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+
+        .checkout-button:hover {
+            background-color: #218838;
+            color: white;
+        }
+
+    /* Scroll Top Button */
+    .scroll-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 40px;
+        height: 40px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+        .scroll-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+    /* Modal Styles */
+    .product-action-modal .modal-content {
+        border-radius: 8px;
+    }
+
+    .product-action-modal .modal-body {
+        padding: 30px;
+    }
+
+    .modal-action-messages {
+        color: #28a745;
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .modal-action-product .thumb img {
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    /* Responsive Styles */
+  
+
+    .cart-totals-wrap,
+    .coupon-wrap {
+        margin-top: 30px;
+    }
+
+    }
+</style>
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!--== Wrapper Start ==-->
+    <div class="wrapper">
+        <main class="main-content">
+            <!--== Start Page Header Area Wrapper ==-->
+            <nav aria-label="breadcrumb" class="breadcrumb-style1">
+                <div class="container">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                    </ol>
+                </div>
+            </nav>
+            <!--== End Page Header Area Wrapper ==-->
+            <!--== Start Product Area Wrapper ==-->
+            <section class="section-space">
+                <div class="container">
+                    <div class="shopping-cart-form table-responsive">
+                        <form asp-action="UpdateCart" method="post">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th class="product-remove">&nbsp;</th>
+                                        <th class="product-thumbnail">&nbsp;</th>
+                                        <th class="product-name">Product</th>
+                                        <th class="product-price">Price</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th class="product-subtotal">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.CartItems)
+                                    {
+                                        <tr class="tbody-item cart-item" data-item-id="@item.ProductId">
+                                            <!-- أضفنا cart-item و data-item-id -->
+                                            <td class="product-remove">
+                                                <a class="remove" href="@Url.Action("RemoveFromCart", "Home", new { id = item.ProductId })">×</a>
+                                            </td>
+                                            <td class="product-thumbnail">
+                                                <div class="thumb">
+                                                    <a href="@Url.Action("ProductDetails", "Home", new { id = item.ProductId })">
+                                                        <img src="@item.Product.ImagePath" width="68" height="84" alt="@item.Product.Name">
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td class="product-name">
+                                                <a class="title" href="@Url.Action("ProductDetails", "Home", new { id = item.ProductId })">
+                                                    @item.Product.Name
+                                                </a>
+                                            </td>
+                                            <td class="product-price">
+                                                <span class="price">JD @item.Product.Price.ToString("F2")</span>
+                                            </td>
+                                            <td class="product-quantity">
+                                                <div class="pro-qty">
+                                                    <input type="number" class="quantity" value="@item.Quantity" min="1">
+                                                </div>
+                                            </td>
+                                            <td class="product-subtotal">
+                                                <span class="price">JD @(item.Product.Price * item.Quantity)</span>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                    <tr class="tbody-item-actions">
+                                        <td colspan="6">
+                                            <button type="button" class="update-cart btn btn-primary">Update Cart</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="coupon-wrap">
+                                <h4 class="title">Coupon</h4>
+                                <p class="desc">Enter your coupon code if you have one.</p>
+                                <form method="get" asp-action="Cart1">
+                                    <input type="text" name="couponCode" class="form-control" placeholder="Coupon code" />
+                                    <button type="submit" class="btn-coupon mt-2">Apply coupon</button>
+                                </form>
+                                @{
+                                    var appliedCoupon = Context.Session.GetString("AppliedCoupon");
+                                }
+
+                                @if (!string.IsNullOrEmpty(appliedCoupon))
+                                {
+                                    <p class="text-success mt-2">Coupon <strong>@appliedCoupon</strong> applied successfully! 🎉</p>
+                                }
+
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <div class="cart-totals-wrap">
+                                <h2 class="title">Cart totals</h2>
+                                <table>
+                                    <tbody>
+                                        <tr class="cart-subtotal">
+                                            <th>Subtotal</th>
+                                            <td><span class="amount">@($"{ViewBag.Subtotal:0.00} JD")</span></td>
+                                        </tr>
+
+                                        <tr class="shipping-totals">
+                                            <th>Shipping</th>
+                                            <td>
+                                                <ul class="shipping-list">
+                                                    <li class="radio">
+                                                        <input type="radio" name="shipping" id="radio1" checked />
+                                                        <label for="radio1">Flat rate: <span>@($"{ViewBag.Shipping:0.00} JD")</span></label>
+                                                    </li>
+                                                    <li class="radio">
+                                                        <input type="radio" name="shipping" id="radio2" />
+                                                        <label for="radio2">Local delivery</label>
+                                                    </li>
+                                                </ul>
+                                                <p class="destination">Shipping to <strong>Local Area</strong>.</p>
+                                                <a href="javascript:void(0)" class="btn-shipping-address">Change address</a>
+                                            </td>
+                                        </tr>
+
+                                        @if (ViewBag.Discount > 0)
+                                        {
+                                            <tr class="discount">
+                                                <th>Discount</th>
+                                                <td><span class="amount text-success">@($"-{ViewBag.Discount:0.00} JD")</span></td>
+                                            </tr>
+                                        }
+
+                                        <tr class="order-total">
+                                            <th>Total</th>
+                                            <td><span class="amount fw-bold">@($"{ViewBag.Total:0.00} JD")</span></td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                                <div class="text-end">
+                                    <a asp-controller="Home" asp-action="CheckoutProcess" class="checkout-button">Proceed to checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--== End Product Area Wrapper ==-->
+        </main>
+
+        <!--== Scroll Top Button ==-->
+        <div id="scroll-to-top" class="scroll-to-top"><span class="fa fa-angle-up"></span></div>
+
+        <!--== Start Product Quick Wishlist Modal ==-->
+        <aside class="product-action-modal modal fade" id="action-WishlistModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="product-action-view-content">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                <i class="fa fa-times"></i>
+                            </button>
+                            <div class="modal-action-messages">
+                                <i class="fa fa-check-square-o"></i> Added to wishlist successfully!
+                            </div>
+                            <div class="modal-action-product">
+                                <div class="thumb">
+                                    <img src="assets/images/shop/modal1.webp" alt="Organic Food Juice" width="466"
+                                         height="320">
+                                </div>
+                                <h4 class="product-name"><a href="product-details.html">Readable content DX22</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!--== End Product Quick Wishlist Modal ==-->
+        <!--== Start Product Quick Add Cart Modal ==-->
+        <aside class="product-action-modal modal fade" id="action-CartAddModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="product-action-view-content">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                <i class="fa fa-times"></i>
+                            </button>
+                            <div class="modal-action-messages">
+                                <i class="fa fa-check-square-o"></i> Added to cart successfully!
+                            </div>
+                            <div class="modal-action-product">
+                                <div class="thumb">
+                                    <img src="assets/images/shop/modal1.webp" alt="Organic Food Juice" width="466"
+                                         height="320">
+                                </div>
+                                <h4 class="product-name"><a href="product-details.html">Readable content DX22</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!--== End Product Quick Add Cart Modal ==-->
+    </div>
+    <!--== Wrapper End ==-->
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Custom JS -->
+    <script>
+        // Scroll to top button functionality
+        window.onscroll = function () {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("scroll-to-top").classList.add("show");
+            } else {
+                document.getElementById("scroll-to-top").classList.remove("show");
+            }
+        };
+
+        document.getElementById("scroll-to-top").onclick = function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+                         $(document).ready(function () {
+            $(".update-cart").on("click", function () {
+                let updatedCartItems = [];
+
+                $(".cart-item").each(function () {
+                    console.log("higuys");
+                    var itemId = $(this).data('item-id');
+                    var quantity = $(this).find(".quantity").val();
+                    updatedCartItems.push({
+                        ProductId: itemId,
+                        Quantity: quantity
+                    });
+                });
+
+                console.log("Data to send:", updatedCartItems); // Check the data being sent
+
+                // Send data to the server
+                $.ajax({
+                    url: '@Url.Action("UpdateCart", "Home")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ updatedCartItems: updatedCartItems }),
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'The Cart Updated successfully',
+                                showConfirmButton: false,
+                                timer: 3000 // Show for 3 seconds
+                            });
+
+                            // Delay the page reload to allow the alert to be seen
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3100); // Wait 3.1 seconds before reloading (slightly longer than the alert timer)
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error occurred!',
+                            text: 'The cart could not be updated.',
+                            showConfirmButton: true
+                        });
+                    }
+                });
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>
