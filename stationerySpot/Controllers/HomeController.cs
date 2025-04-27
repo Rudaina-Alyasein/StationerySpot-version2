@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using stationerySpot.Models;
 
 
-namespace stationerySpot.Controllers
+namespace stationerySpot.ControllersF
 {
     public class HomeController : Controller
     {
@@ -50,48 +50,40 @@ namespace stationerySpot.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // إضافة الأخطاء إلى ModelState بشكل مباشر
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
                 {
                     ModelState.AddModelError("", error.ErrorMessage);
                 }
-                return View(request);  // في حال وجود أخطاء، قم بإرجاع نفس الصفحة مع الأخطاء
+                return View(request);
             }
 
-            // التحقق إذا كانت الصورة موجودة في الحقل
             if (request.LogoPathFile != null && request.LogoPathFile.Length > 0)
             {
-                // تحديد مسار حفظ الصورة على الخادم (ضمن مجلد wwwroot/images)
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "assets", "images", request.LogoPathFile.FileName);
-
-                // التأكد من وجود المجلد، إذا لم يكن موجودًا، أنشئه
                 var directoryPath = Path.GetDirectoryName(filePath);
                 if (!Directory.Exists(directoryPath))
                 {
                     Directory.CreateDirectory(directoryPath);
                 }
-
-                // حفظ الصورة على الخادم
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await request.LogoPathFile.CopyToAsync(stream);
                 }
-
-                // حفظ المسار النسبي للصورة في الحقل LogoPath
                 request.LogoPath = "/assets/images/" + request.LogoPathFile.FileName;
             }
             else
             {
-                // إضافة رسالة خطأ إذا لم يتم رفع صورة
                 ModelState.AddModelError("LogoPathFile", "Please upload a logo image.");
-                return View(request);  // إعادة نفس الصفحة مع الرسالة
+                return View(request);
             }
 
-            // إضافة البيانات إلى قاعدة البيانات
             _context.LibraryRegistrationRequests.Add(request);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Register");  // إعادة التوجيه إلى صفحة التسجيل بعد النجاح
+            // بدل Redirect
+            TempData["SuccessMessage"] = "Your registration request has been submitted successfully. Please wait for approval. Best wishes!";
+
+            return View(new LibraryRegistrationRequest());  // رجع View فاضي جديد
         }
 
         public IActionResult ContactUs()
@@ -144,29 +136,62 @@ namespace stationerySpot.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult pressure(int id)
+        public IActionResult Pressure(int id)
         {
-            // نمرر القيمة للـ View
-            ViewBag.LibraryId = id;
+            // تحميل المكتبة باستخدام الـ id
+            var library = _context.Libraries
+                                  .FirstOrDefault(l => l.Id == id);
 
-            // تحميل المنتجات المرتبطة بالمكتبة
-            var products = _context.Products
-                .Include(p => p.Category)     // تحميل الكاتيجوري
-                .Include(p => p.Library)      // تحميل معلومات المكتبة (اختياري)
-                .Where(p => p.LibraryId == id)
-                .ToList();
-
-            // تحقق إذا كانت هناك منتجات لهذه المكتبة
-            if (!products.Any())
+            if (library == null)
             {
-                // إذا لم توجد منتجات، إظهار رسالة للمستخدم
-                ViewBag.Message = "No products available for this library.";
-                return View("NoProducts"); // عرض صفحة أو View مع رسالة
+                return NotFound(); // إذا لم يتم العثور على المكتبة
             }
 
-            // تعيين اسم المكتبة من أول منتج
-            ViewBag.LibraryName = products.First().Library.Name;
-            return View(products); // تمرير المنتجات إلى الـ View
+            // تحميل المنتجات المتعلقة بالمكتبة
+            var products = _context.Products
+                                   .Include(p => p.Category)  // تحميل الكاتيجوري
+                                   .Where(p => p.LibraryId == id)
+                                   .ToList();
+
+            // تحميل التقييمات المتعلقة بالمكتبة
+            var reviews = _context.Reviews
+                        .Include(r => r.User)   // <<< ضروري!!
+                        .Where(r => r.LibraryId == id)
+                        .ToList();
+
+
+            // تحميل الخدمات المتعلقة بالمكتبة
+            var services = _context.Services
+                                   .Where(s => s.LibraryId == id)
+                                   .ToList();
+
+            // تحميل طلبات الطباعة المتعلقة بالمكتبة
+            var printRequests = _context.PrintRequests
+                                        .Where(pr => pr.LibraryId == id)
+                                        .ToList();
+            // تحميل حسابات المكتبة
+            var libraryAccounts = _context.LibraryAccounts
+                                          .Where(la => la.LibraryId == id)
+                                          .ToList();
+
+            // التحقق إذا كانت هناك منتجات للمكتبة
+            if (!products.Any())
+            {
+                ViewBag.Message = "No products available for this library.";
+                return View("NoProducts");
+            }
+
+            // بناء الـ ViewModel
+            var viewModel = new LibraryViewModel
+            {
+                Library = library,
+                Products = products,
+                Reviews = reviews,
+                Services = services,
+                PrintRequests = printRequests  // إضافة بيانات الطلبات للطباعة
+            };
+
+            return View(viewModel);  // تمرير الـ ViewModel إلى الـ View
         }
 
 
@@ -561,6 +586,83 @@ namespace stationerySpot.Controllers
             return View();
         }
 
+        //Review Library Section 
+        [HttpPost]
+        public IActionResult AddReview(int rating, string comment, int libraryId)
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
+            {
+                TempData["ReviewMessage"] = "Please log in first to add products to your cart..";
+                return RedirectToAction("Login", "User");
+            }
+
+            int userId = int.Parse(userIdStr);
+          
+                var newReview = new Review
+                {
+                    UserId = userId,
+                    LibraryId = libraryId,
+                    Rating = rating,
+                    Comment = comment,
+                    CreatedAt = DateTime.Now
+                };
+                _context.Reviews.Add(newReview);
+            
+
+            _context.SaveChanges();
+
+            return Json(new { success = true });
+        }
+        //pdf library section 
+        [HttpPost]
+        public async Task<IActionResult> SubmitPrintRequest(IFormFile pdfFile, int copies, string color, string printSide, string? message, int libraryId)
+        {
+            if (pdfFile == null || pdfFile.Length == 0 || !pdfFile.FileName.EndsWith(".pdf"))
+            {
+                return Json(new { success = false, message = "Invalid PDF file." });
+            }
+
+            // احفظ الملف
+            var fileName = $"{Guid.NewGuid()}_{Path.GetFileName(pdfFile.FileName)}";
+            var filePath = Path.Combine("wwwroot/uploads/pdfs", fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await pdfFile.CopyToAsync(stream);
+            }
+
+            // احصل على ID المستخدم الحالي من الجلسة
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
+            {
+                return Json(new { success = false, message = "User not logged in." });
+            }
+
+            int userId = int.Parse(userIdStr);
+            // خزّن البيانات في قاعدة البيانات
+            var printRequest = new PrintRequest
+            {
+                CustomerId = userId,
+                LibraryId = libraryId,
+                DocumentPath = $"/uploads/pdfs/{fileName}",
+                Copies = copies,
+                Color = color,
+                PrintSide = printSide,
+                Message = message,
+                Status = "Pending",
+                CreatedAt = DateTime.Now
+            };
+
+            _context.PrintRequests.Add(printRequest);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Print request submitted successfully!" });
+        }
+        public IActionResult AcademicProject()
+        {
+            return View();
+        }
 
     }
 }

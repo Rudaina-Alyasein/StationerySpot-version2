@@ -347,75 +347,74 @@
           </div>
         </div>
         <div class="col-lg-12 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
-          <form id="contact" action="" method="post">
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="contact-dec">
+                <form id="contact" asp-action="SendMessage" asp-controller="Home" method="post">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="contact-dec">
                                 <img src="~/assets/images/contact-dec.png" alt="">
-                </div>
-              </div>
-              <div class="col-lg-5">
-                <div id="map">
-                  <iframe
-                    src="https://maps.google.com/maps?q=Av.+L%C3%BAcio+Costa,+Rio+de+Janeiro+-+RJ,+Brazil&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                    width="100%" height="636px" frameborder="0" style="border:0" allowfullscreen></iframe>
-                </div>
-              </div>
-              <div class="col-lg-7">
-                <div class="fill-form">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <div class="info-post">
-                        <div class="icon">
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div id="map">
+                                <iframe src="https://maps.google.com/maps?q=Amman,+Jordan&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                                        width="100%" height="636px" frameborder="0" style="border:0" allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="fill-form">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="info-post">
+                                            <div class="icon">
                                                 <img src="~/assets/images/phone-icon.png" alt="">
-                          <a href="#">010-020-0340</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="info-post">
-                        <div class="icon">
+                                                <a href="#">010-020-0340</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="info-post">
+                                            <div class="icon">
                                                 <img src="~/assets/images/email-icon.png" alt="">
-                          <a href="#">Spot@Stationary.com</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="info-post">
-                        <div class="icon">
+                                                <a href="#">StationerySpot@Staionery.com</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="info-post">
+                                            <div class="icon">
                                                 <img src="~/assets/images/location-icon.png" alt="">
-                          <a href="#">IRBID</a>
+                                                <a href="#">Amman</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <input type="text" name="Name" id="name" placeholder="Name" autocomplete="on" required>
+                                        </fieldset>
+                                        <fieldset>
+                                            <input type="email" name="Email" id="email" placeholder="Your Email" required="">
+                                        </fieldset>
+                                        <fieldset>
+                                            <input type="text" name="Subject" id="subject" placeholder="Subject" autocomplete="on">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <textarea name="Message" class="form-control" id="message" placeholder="Message" required=""></textarea>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <fieldset>
+                                            <button type="submit" id="form-submit" class="main-button ">Send Message Now</button>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                    <div class="col-lg-6">
-                      <fieldset>
-                        <input type="name" name="name" id="name" placeholder="Name" autocomplete="on" required>
-                      </fieldset>
-                      <fieldset>
-                        <input type="text" name="email" id="email"  placeholder="Your Email"
-                          required="">
-                      </fieldset>
-                      <fieldset>
-                        <input type="subject" name="subject" id="subject" placeholder="Subject" autocomplete="on">
-                      </fieldset>
-                    </div>
-                    <div class="col-lg-6">
-                      <fieldset>
-                        <textarea name="message" type="text" class="form-control" id="message" placeholder="Message"
-                          required=""></textarea>
-                      </fieldset>
-                    </div>
-                    <div class="col-lg-12">
-                      <fieldset>
-                        <button type="submit" id="form-submit" class="main-button ">Send Message Now</button>
-                      </fieldset>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
+                </form>
+
         </div>
       </div>
     </div>
@@ -427,4 +426,20 @@
     <script src="assets/js/animation.js"></script>
     <script src="assets/js/imagesloaded.js"></script>
     <script src="assets/js/custom.js"></script>
+    <script>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '@TempData["SuccessMessage"]',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        popup: 'colored-popup'
+                    }
+                  });
+            </text>
+        }
+    </script>
 }

@@ -28,4 +28,5 @@ public partial class PrintRequest
     public virtual User Customer { get; set; } = null!;
 
     public virtual Library Library { get; set; } = null!;
+
 }

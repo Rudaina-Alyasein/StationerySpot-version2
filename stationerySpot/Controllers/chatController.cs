@@ -50,7 +50,7 @@ namespace stationerySpot.Controllers
             // استرجاع الـ userId من الجلسة
             var libraryId = HttpContext.Session.GetInt32("LibraryId");
 
-            if (userId == null)
+            if (userId == 0)
             {
                 return Unauthorized(); // في حال عدم وجود المستخدم في الجلسة
             }

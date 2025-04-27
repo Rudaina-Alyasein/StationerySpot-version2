@@ -1,7 +1,10 @@
-﻿
+﻿@model List<stationerySpot.ViewModels.OrderViewModel>
+
 @{
     Layout = "LibraryDashboard";
 }
+
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <h3 class="mb-4">Order Management - Library</h3>
@@ -12,6 +15,7 @@
             <select class="form-select" id="statusFilter">
                 <option value="">All Statuses</option>
                 <option value="Pending">Pending</option>
+                <option value="Processing">Processing</option>
                 <option value="Completed">Completed</option>
                 <option value="Cancelled">Cancelled</option>
             </select>
@@ -40,34 +44,54 @@
             </tr>
         </thead>
         <tbody id="ordersTable">
-            <!-- Example Order Row -->
-            <tr>
-                <td>1001</td>
-                <td>John Doe</td>
-                <td>$150.00</td>
-                <td><span class="badge bg-warning">Pending</span></td>
-                <td>2025-04-02</td>
-                <td>
-                    <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#orderDetailsModal">View Details</button>
-                    <button class="btn btn-success btn-sm">Complete</button>
-                    <button class="btn btn-danger btn-sm">Cancel</button>
-                </td>
-            </tr>
-            <tr>
-                <td>1002</td>
-                <td>Jane Smith</td>
-                <td>$220.50</td>
-                <td><span class="badge bg-success">Completed</span></td>
-                <td>2025-04-01</td>
-                <td>
-                    <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#orderDetailsModal">View Details</button>
-                </td>
-            </tr>
-            <!-- More Orders can be added dynamically -->
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.Name</td>
+                    <td>@order.TotalAmount.ToString("C")</td>
+                    <td>
+                        @if (order.Status == "Pending")
+                        {
+                            <span class="badge bg-warning">Pending</span>
+                        }
+                        else if (order.Status == "Processing")
+                        {
+                            <span class="badge bg-info">Processing</span>
+                        }
+                        else if (order.Status == "Completed")
+                        {
+                            <span class="badge bg-success">Completed</span>
+                        }
+                        else if (order.Status == "Cancelled")
+                        {
+                            <span class="badge bg-danger">Cancelled</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">@order.Status</span>
+                        }
+                    </td>
+                    <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <button class="btn btn-info btn-sm view-details-btn"
+                                data-orderid="@order.OrderId"
+                                data-customername="@order.Name"
+                                data-totalamount="@order.TotalAmount"
+                                data-status="@order.Status"
+                                data-products='@System.Text.Json.JsonSerializer.Serialize(order.Products)'
+                                data-bs-toggle="modal" data-bs-target="#orderDetailsModal">
+                            View Details
+                        </button>
+
+
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 
-    <!-- Order Details Modal -->
+    <!-- Modal to show order details -->
     <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -76,16 +100,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Order Details (Example) -->
-                    <h5>Order #1001</h5>
-                    <p><strong>Customer:</strong> John Doe</p>
-                    <p><strong>Total Amount:</strong> $150.00</p>
+                    <h5>Order #<span id="modalOrderId"></span></h5>
+                    <p><strong>Customer:</strong> <span id="modalCustomerName"></span></p>
+                    <p><strong>Total Amount:</strong> <span id="modalTotalAmount"></span></p>
+                    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
                     <p><strong>Products:</strong></p>
-                    <ul>
-                        <li>Book A - Quantity: 2 - $50.00</li>
-                        <li>Book B - Quantity: 1 - $50.00</li>
+                    <ul id="modalProductList">
+                        <!-- Products will be listed here -->
                     </ul>
-                    <p><strong>Status:</strong> Pending</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -95,4 +117,45 @@
             </div>
         </div>
     </div>
-</div>
+
+</div> 
+@section Scripts {
+    <script>
+                     $('#orderDetailsModal').on('show.bs.modal', function (event) {
+            // استرجاع البيانات من الزر
+            var button = $(event.relatedTarget); // الزر الذي تم النقر عليه
+            var orderId = button.data('orderid');
+            var customerName = button.data('customername');
+            var totalAmount = button.data('totalamount');
+            var status = button.data('status');
+
+            // التحقق مما إذا كانت البيانات غير فارغة
+            var productsData = button.data('products');
+            var products = [];
+
+            // إذا كانت البيانات غير فارغة، قم بتحويلها من JSON إلى كائن JavaScript
+            if (productsData) {
+                try {
+                    products = JSON.parse(productsData);
+                } catch (e) {
+                    console.error("Error parsing products data:", e);
+                }
+            }
+
+            // ضبط البيانات داخل الـ Modal
+            $('#modalOrderId').text(orderId);
+            $('#modalCustomerName').text(customerName);
+        $('#modalTotalAmount').text('$' + parseFloat(totalAmount).toFixed(2));
+                    $('#modalStatus').text(status);
+
+            // عرض المنتجات
+            var productList = '';
+            products.forEach(function(product) {
+                productList += `<li>${product.ProductName} - Quantity: ${product.Quantity} - $${product.UnitPrice.toFixed(2)}</li>`;
+            });
+            $('#modalProductList').html(productList); // تحديث قائمة المنتجات في الـ Modal
+        });
+
+
+    </script>
+}

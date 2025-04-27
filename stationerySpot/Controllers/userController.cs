@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using stationerySpot.Models;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using stationerySpot.ViewModels;
 
 namespace stationerySpot.Controllers
 {
@@ -170,10 +171,10 @@ namespace stationerySpot.Controllers
                 CreatedAt = user.CreatedAt,
                 Orders = user.Orders.Select(order => new OrderViewModel
                 {
-                    Id = order.Id,
+                    OrderId = order.Id,
                     Status = order.Status,
                     TotalAmount = order.TotalAmount,
-                    CreatedAt = order.CreatedAt
+                    OrderDate = order.CreatedAt ?? DateTime.Now
                 }).ToList(),
                 // إذا كنت ترغب في إضافة PrintRequests و Reviews، قم بإلغاء تعليق الكود هنا
                 //PrintRequests = user.PrintRequests.Select(request => new PrintRequestViewModel {...}).ToList(),

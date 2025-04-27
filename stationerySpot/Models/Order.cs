@@ -17,7 +17,7 @@ public partial class Order
 
     public DateTime? CreatedAt { get; set; }
 
-    public virtual User Customer { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 
     public virtual Library Library { get; set; } = null!;
 

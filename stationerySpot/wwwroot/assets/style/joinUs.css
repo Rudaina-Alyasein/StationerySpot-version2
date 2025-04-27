@@ -1,397 +1,1129 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+<!DOCTYPE html >
+<html lang="en" >
+
+<head >
+<meta charset="UTF-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+<title > Academic Projects</title >
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" >
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" >
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" >
+<!-- Add Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" >
+<style >
+:root {
+    --primary-color: #0097b2;
+    /* Light Blue */
+    --secondary-color: #d284a9;
+    /* Pink */
+    --accent-color: #d284a9;
+    /* Pink */
+    --light-bg: #f8f9fa;
+    --gradient: linear-gradient(135deg, #0097b2 0%, #d284a9 100%);
+    --card-gradient: linear-gradient(135deg, #0097b2 0%, #00b4d8 100%);
+    --button-gradient: linear-gradient(135deg, #0097b2 0%, #00b4d8 100%);
+}
 
 body {
-    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--light-bg);
+    color: #333;
+}
+
+.page-header {
+    background: var(--gradient);
+    color: white;
+    padding: 4rem 0;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover;
+        opacity: 0.1;
+    }
+
+.ready-projects {
+    background-color: white;
+    border-radius: 15px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+}
+
+.project-card {
+    border: 1px solid rgba(0, 151, 178, 0.1);
+    border-radius: 12px;
     padding: 0;
-    box-sizing: border-box;
-    font-family: "Open Sans", serif;
-    color: #333;
-    background: linear-gradient(to bottom, #f5f5f5, #e8e8e8);
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Hero Section Styling */
-.hero-section {
+    .project-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        border-color: var(--primary-color);
+    }
+
+.project-image {
+    height: 200px;
+    overflow: hidden;
     position: relative;
-    width: 100%;
-    height: 90vh; 
+    flex-shrink: 0;
 }
-.hero-section h2 {
-    font-size: 3rem; /* Adjust text size */
-    font-weight: bold;
-    text-align: center;
-    color: #fff; /* White text */
+
+    .project-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+.project-card:hover .project-image img {
+    transform: scale(1.1);
+}
+
+.project-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+    .project-content h3 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+        line-height: 1.4;
+        height: 2.8em;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .project-content p {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        height: 3em;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+.project-tags {
+    margin-bottom: 1rem;
+    min-height: 2.5rem;
+}
+
+.project-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-md-4 {
+    display: flex;
+    margin-bottom: 2rem;
+}
+
+.project-form {
+    background-color: white;
+    border-radius: 15px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.form-control,
+.form-select {
+    border: 2px solid #eee;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(0, 151, 178, 0.15);
+    }
+
+.btn-submit {
+    background: var(--button-gradient);
+    color: white;
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    background: linear-gradient(45deg, #fa65b1, #ff8c94);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; /* Gradient text effect */
-    text-shadow: 2px 2px 15px rgba(250, 101, 177, 0.4);
-    padding: 10px 20px;
+    letter-spacing: 1px;
 }
-.hero-section h2 {
-    font-size: 2.8rem;
-    font-weight: bold;
-    text-align: center;
-    color: #fa65b1;
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 151, 178, 0.3);
+        color: white;
+    }
+
+.section-title {
+    color: var(--primary-color);
+    margin-bottom: 2rem;
     position: relative;
+    padding-bottom: 1rem;
+    font-weight: 700;
 }
 
-.hero-section h2::after {
-    content: "";
-    display: block;
-    width: 80px;
-    height: 4px;
-    background: #fa65b1;
-    margin: 10px auto 0;
-    transition: width 0.3s ease-in-out;
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 80px;
+        height: 4px;
+        background: var(--card-gradient);
+        border-radius: 2px;
+    }
+
+.project-tag {
+    background: var(--light-bg);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 0.5rem;
 }
 
-.hero-section h2:hover::after {
-    width: 150px;
+.project-price {
+    color: var(--secondary-color);
+    font-weight: 700;
+    font-size: 1.4rem;
 }
 
-
-
-.hero-img-container {
+.project-type {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0, 151, 178, 0.9);
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
 }
 
-
-
-.hero-content-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* background: rgb(243 243 243); */
+.form-label {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
 }
 
-.hero-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: rgb(225, 215, 215);
-    padding: 20px;
+.form-section {
+    background: var(--light-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 151, 178, 0.1);
 }
 
-.hero-content h1 {
-    font-size: 3em;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color:#464040;
+.form-section-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
 }
 
-.hero-content p {
-    font-size: 1.2em;
-    margin-bottom: 30px;
-    color:#000011a1;
+@media (max-width: 768px) {
+    .project-card {
+        margin-bottom: 1.5rem;
+    }
+
+    .page-header {
+        padding: 3rem 0;
+    }
 }
 
-.cta-buttons {
+/* Add new styles for reviews section */
+.reviews-section {
+    background-color: white;
+    border-radius: 15px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+}
+
+.review-card {
+    background: var(--light-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 151, 178, 0.1);
+}
+
+    .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-color: var(--primary-color);
+    }
+
+.review-header {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-
-}
-
-.cta-btn {
-    padding: 15px 30px;
-    
-    color: #fa65b1;
-    font-size: 1.2em;
-    border: 1px solid #fa65b1;
-    border-radius: 23px;
-    text-decoration: none;
-}
-
-
-
-/* Media Query for Small Screens */
-@media (max-width: 767px) {
-
-    .hero-content h1 {
-        font-size: 2em; /* Reduced font size */
-    }
-    .hero-content p {
-        font-size: 1em; /* Reduced font size */
-    }
-    .cta-buttons {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .cta-btn {
-        width: 100%; /* Full width buttons */
-        padding: 12px 20px;
-    }
-}
-
-/* Adjustments for very small screens (425px or less) */
-@media (max-width: 425px) {
-    .navbar {
-        width: 100vw !important;
-    }
-    .hero-section {
-        width: 100vw !important;
-    }
-    .hero-content h1 {
-        font-size: 1.6em; /* Further reduced for small screens */
-    }
-    .hero-content p {
-        font-size: 0.9em; /* Further reduced for small screens */
-    }
-    .cta-btn {
-        padding: 10px 15px;
-    }
-}
-
-/* How It Works Section */
-.how-it-works .row {
-    display: flex;
-    justify-content: center;
     align-items: center;
+    margin-bottom: 1rem;
 }
 
-.how-it-works i {
-    color: #fa65b1 !important;
-}
-
-.how-it-works p {
-    color: rgb(108 117 125) !important;
-}
-
-.step-icon {
-    margin-bottom: 20px;
-}
-
-h3 {
-    font-size: 1.25rem;
-}
-
-svg {
-    transform: rotate(90deg);  /* Rotate arrow to horizontal */
-    margin: 0 15px;
-    transition: transform 0.3s ease;
-}
-
-svg:hover {
-    transform: rotate(0deg);  /* Hover effect */
-}
-
-/* Form Styling */
-.form-group {
-    padding: 20px 40px;
-}
-
-.form-group label {
-    color: #eee !important;
-    font-size: 20px;
-}
-
-.form-group input {
-    padding: 20px;
-    background: #eee;
-}
-
-/* Accordion Styling */
-.accordion-item {
-    background-color: transparent !important;
-    border: none !important;
-}
-
-.accordion-button {
-    background: #eeeeee !important;
-    color: #fa65b1 !important;
-    font-weight: bold;
-    box-shadow: none !important;
-    padding: 15px !important;
-    transition: background-color 0.3s ease-in-out;
-}
-
-.accordion-button:not(.collapsed) {
-    background-color: #eeeeee !important;
-    color: #fa65b1 !important;
-}
-
-.accordion-body {
-    background: #eeeeee;
-    padding: 20px;
-    border-radius: 10px;
-    color: #333;
-    font-size: 1rem;
-}
-
-/* FAQ Container */
-.faq-container {
-    margin-top: 60px;
-    padding: 40px 20px;
-    border-radius: 15px;
-}
-
-h6 {
-    color: #007f92;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Libraries Section */
-.libraries {
-    padding: 60px 0;
-}
-
-.libraries h2 {
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 40px;
-    color: #0097b2;
-}
-
-/* Stat Cards */
-.stat-card {
-    background: #fff;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-    height: auto;
-    min-height: 400px !important;
-    box-shadow: 0px 4px 10px #fa65b1;
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
-}
-
-.stat-card img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
+.review-avatar {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    /* border: 4px solid #0097b2; */
+    margin-right: 1rem;
+    object-fit: cover;
 }
 
-.stat-card h5 {
-    font-size: 1.2rem;
-    color: #333;
-    font-weight: bold;
+.review-info h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--primary-color);
 }
 
-.stat-card p {
+.review-info p {
+    margin: 0;
     font-size: 0.9rem;
     color: #666;
 }
 
-.stat-card .btn {
-    border-radius: 25px;
-    font-size: 0.9rem;
-    padding: 8px 20px;
-    border: 2px solid #fa65b1;
-    color: #fa65b1;
-
-    transition: all 0.3s;
+.review-rating {
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
 }
 
-.stat-card .btn:hover {
-    background: #0097b2;
+.review-content {
+    color: #555;
+    line-height: 1.6;
+}
+
+.review-date {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 0.5rem;
+}
+
+.add-review-form {
+    background: var(--light-bg);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+    border: 1px solid rgba(0, 151, 178, 0.1);
+}
+
+.rating-input {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+    .rating-input input {
+        display: none;
+    }
+
+    .rating-input label {
+        cursor: pointer;
+        font-size: 1.5rem;
+        color: #ddd;
+        margin: 0 0.2rem;
+        transition: color 0.3s ease;
+    }
+
+        .rating-input label:hover,
+        .rating-input label:hover ~ label,
+        .rating-input input:checked ~ label {
+            color: var(--secondary-color);
+        }
+
+/* Add new styles for trust section */
+.trust-section {
+    background: var(--card-gradient);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
     color: white;
 }
 
-/* Carousel Controls */
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    background-color: #fa65b1;
-    border-radius: 50%;
-    padding: 10px;
+.trust-stats {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    text-align: center;
 }
 
-.carousel-control-prev,
-.carousel-control-next {
-    width: auto;
+.stat-item {
+    padding: 1rem;
+    min-width: 200px;
 }
 
-/* Testimonial Library Images */
-.Testimonial-Library img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 50%;
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--secondary-color);
 }
 
-/* Join Us Icons */
-.join-us i {
-    color: #fa65b1;
-}
-.card-body{
-    box-shadow: 0px 4px 10px #fa65b1;
-
-}
-.form-outline .form-control {
-    border: 1px solid #fa65b1;
-    border-radius: 26px;
-  }
-  .form-outline {
-  position: relative;
-  margin-bottom: 20px;
+.stat-label {
+    font-size: 1rem;
+    opacity: 0.9;
 }
 
-.form-outline .form-control {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.trust-badges {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
 }
 
-.form-outline label {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 20px;
-  color: #aaa;
-  transition: 0.3s ease-in-out;
-  pointer-events: none; /* يمنع التفاعل مع الليبل */
+.trust-badge {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.form-outline .form-control:focus + label,
-.form-outline .form-control:not(:placeholder-shown) + label {
-  top: 0;
-  left: 10px;
-  font-size: 16px;
-  color: #fa65b1 !important; 
-  background: white;
-  padding: 0 5px;
+    .trust-badge:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+
+    .trust-badge i {
+        font-size: 1.5rem;
+        color: var(--secondary-color);
+    }
+
+.trust-badge-text {
+    font-size: 0.9rem;
 }
-.text-center.h1.fw-bold::after {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 4px;
-    background: #fa65b1;
-    margin: 10px auto 0;
-    transition: width 0.3s ease-in-out;
+
+.rating-summary {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border: 1px solid rgba(0, 151, 178, 0.1);
 }
-.text-center.h1.fw-bold:hover::after {
-    width: 120px;
+
+.rating-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
 }
-.text-center.h1.fw-bold {
-    font-size: 2.8rem; /* Adjust heading size */
-    color: #fa65b1; /* Use your preferred color */
-    text-transform: uppercase; /* Make text uppercase */
-    letter-spacing: 2px; /* Add spacing between letters */
-    background: linear-gradient(45deg, #fa65b1, #ff8c94); /* Gradient effect */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; /* Apply gradient to text */
-    text-shadow: 2px 2px 10px rgba(250, 101, 177, 0.5); /* Soft glow effect */
-    padding: 10px 0;
-    position: relative;
+
+.rating-label {
+    width: 100px;
+    font-size: 0.9rem;
+    color: #666;
 }
+
+.rating-progress {
+    flex-grow: 1;
+    height: 8px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 1rem;
+}
+
+.rating-progress-bar {
+    height: 100%;
+    background: var(--card-gradient);
+    border-radius: 4px;
+}
+
+.rating-count {
+    width: 50px;
+    text-align: right;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.overall-rating {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.overall-rating-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+}
+
+.overall-rating-stars {
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.overall-rating-text {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Update star colors */
+.review-rating,
+.rating-stars,
+.overall-rating-stars {
+    color: #ffc107;
+}
+
+.rating-input label:hover,
+.rating-input label:hover ~ label,
+.rating-input input:checked ~ label {
+    color: #ffc107;
+}
+
+/* Slider styles */
+.reviews-slider {
+    padding: 2rem 0;
+}
+
+.swiper {
+    width: 100%;
+    padding: 2rem 0;
+}
+
+.swiper-slide {
+    height: auto;
+}
+
+.swiper-pagination-bullet {
+    background: var(--primary-color);
+}
+
+.swiper-pagination-bullet-active {
+    background: var(--secondary-color);
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: var(--primary-color);
+}
+
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+        color: var(--secondary-color);
+    }
+
+.review-card {
+    height: 100%;
+    margin: 0;
+}
+
+/* Add styles for project modal */
+.project-modal .modal-content {
+    border-radius: 15px;
+    border: none;
+}
+
+.project-modal .modal-header {
+    background: var(--card-gradient);
+    color: white;
+    border-radius: 15px 15px 0 0;
+    padding: 1.5rem;
+}
+
+.project-modal .modal-body {
+    padding: 2rem;
+}
+
+.project-modal .modal-footer {
+    border-top: 1px solid #eee;
+    padding: 1.5rem;
+}
+
+.project-details {
+    margin-bottom: 2rem;
+}
+
+    .project-details h3 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+.project-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .project-features li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+    }
+
+        .project-features li i {
+            color: var(--primary-color);
+            margin-right: 1rem;
+        }
+
+.order-options {
+    background: var(--light-bg);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-top: 2rem;
+}
+
+.order-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .order-option:hover {
+        border-color: var(--primary-color);
+        background: white;
+    }
+
+    .order-option.selected {
+        border-color: var(--primary-color);
+        background: white;
+    }
+
+    .order-option input[type="radio"] {
+        margin-right: 1rem;
+    }
+
+.order-option-details {
+    flex-grow: 1;
+}
+
+.order-option-price {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+}
+
+    .modal-close:hover {
+        color: var(--secondary-color);
+    }
+
+</style >
+</head >
+
+<body >
+<!-- Header Section -->
+<header class="page-header text-center" >
+<div class="container position-relative" >
+<h1 class="display-4 fw-bold mb-3" > Academic Research Services</h1 >
+<p class="lead" > Order now your graduation project, academic research, or ready-made summary from our trusted
+libraries!</p >
+</div >
+</header >
+
+<div class="container" >
+<!-- Ready Projects Section -->
+<section class="ready-projects" >
+<h2 class="section-title" > Ready Research Papers</h2 >
+<div class="row" >
+<!-- Project Card 1 -->
+<div class="col-md-4" >
+<div class="project-card" >
+<div class="project-image" >
+<img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+alt="Research" >
+<span class="project-type" > Master's Thesis</span>
+</div >
+<div class="project-content" >
+<h3 > Impact of Technology on Higher Education</h3 >
+<p class="text-muted" > Comprehensive research on the impact of modern technology on higher
+education quality</p >
+<div class="project-tags" >
+<span class="project-tag" > Education</span >
+<span class="project-tag" > Technology</span >
+</div >
+<div class="project-footer d-flex justify-content-between align-items-center" >
+<span class="project-price" > $800</span >
+<button class="btn btn-submit" > Select Research</button >
+</div >
+</div >
+</div >
+</div >
+<!-- Project Card 2 -->
+<div class="col-md-4" >
+<div class="project-card" >
+<div class="project-image" >
+<img src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+alt="Research" >
+<span class="project-type" > Graduation Project</span >
+</div >
+<div class="project-content" >
+<h3 > Human Resource Management in Public Sector</h3 >
+<p class="text-muted" > Analytical study of human resource management in government
+institutions</p >
+<div class="project-tags" >
+<span class="project-tag" > Management</span >
+<span class="project-tag" > HR</span >
+</div >
+<div class="project-footer d-flex justify-content-between align-items-center" >
+<span class="project-price" > $1000</span >
+<button class="btn btn-submit" > Select Research</button >
+</div >
+</div >
+</div >
+</div >
+<!-- Project Card 3 -->
+<div class="col-md-4" >
+<div class="project-card" >
+<div class="project-image" >
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+alt="Research" >
+<span class="project-type" > PhD Research</span >
+</div >
+<div class="project-content" >
+<h3 > Artificial Intelligence in Healthcare</h3 >
+<p class="text-muted" > In-depth study of AI applications in healthcare and medical services
+</p >
+<div class="project-tags" >
+<span class="project-tag" > Healthcare</span >
+<span class="project-tag" > AI</span >
+</div >
+<div class="project-footer d-flex justify-content-between align-items-center" >
+<span class="project-price" > $1500</span >
+<button class="btn btn-submit" > Select Research</button >
+</div >
+</div >
+</div >
+</div >
+</div >
+</section >
+<!-- Add Trust Section before Reviews Section -->
+<section class="trust-section" >
+<div class="trust-stats" >
+<div class="stat-item" >
+<div class="stat-number" > 4.8</div >
+<div class="stat-label" > Average Rating</div >
+</div >
+<div class="stat-item" >
+<div class="stat-number" > 500 + </div >
+<div class="stat-label" > Projects Completed</div >
+</div >
+<div class="stat-item" >
+<div class="stat-number" > 98%</div >
+<div class="stat-label" > Student Satisfaction</div >
+</div >
+<div class="stat-item" >
+<div class="stat-number" > 50 + </div >
+<div class="stat-label" > Universities</div >
+</div >
+</div >
+
+<div class="trust-badges" >
+<div class="trust-badge" >
+<i class="fas fa-check-circle" > </i >
+<div class="trust-badge-text" > Verified Reviews</div >
+</div >
+<div class="trust-badge" >
+<i class="fas fa-shield-alt" > </i >
+<div class="trust-badge-text" > Secure Payment</div >
+</div >
+<div class="trust-badge" >
+<i class="fas fa-clock" > </i >
+<div class="trust-badge-text" > On-time Delivery</div >
+</div >
+</div >
+</section >
+<!-- Add Rating Summary before Reviews -->
+<div class="rating-summary" >
+<div class="overall-rating" >
+<div class="overall-rating-number" > 4.8</div >
+<div class="overall-rating-stars" >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star-half-alt" > </i >
+</div >
+<div class="overall-rating-text" > Based on 500 + reviews</div >
+</div >
+
+<div class="rating-bars" >
+<div class="rating-bar" >
+<div class="rating-label" > 5 Stars</div >
+<div class="rating-progress" >
+<div class="rating-progress-bar" style="width: 75%" > </div >
+</div >
+<div class="rating-count" > 375</div >
+</div >
+<div class="rating-bar" >
+<div class="rating-label" > 4 Stars</div >
+<div class="rating-progress" >
+<div class="rating-progress-bar" style="width: 15%" > </div >
+</div >
+<div class="rating-count" > 75</div >
+</div >
+<div class="rating-bar" >
+<div class="rating-label" > 3 Stars</div >
+<div class="rating-progress" >
+<div class="rating-progress-bar" style="width: 5%" > </div >
+</div >
+<div class="rating-count" > 25</div >
+</div >
+<div class="rating-bar" >
+<div class="rating-label" > 2 Stars</div >
+<div class="rating-progress" >
+<div class="rating-progress-bar" style="width: 3%" > </div >
+</div >
+<div class="rating-count" > 15</div >
+</div >
+<div class="rating-bar" >
+<div class="rating-label" > 1 Star</div >
+<div class="rating-progress" >
+<div class="rating-progress-bar" style="width: 2%" > </div >
+</div >
+<div class="rating-count" > 10</div >
+</div >
+</div >
+</div >
+<!-- Update Reviews Section to be a slider -->
+<section class="reviews-section" >
+<h2 class="section-title" > Student Reviews</h2 >
+<!-- Reviews Slider -->
+<div class="reviews-slider" >
+<div class="swiper" >
+<div class="swiper-wrapper" >
+<!-- Review 1 -->
+<div class="swiper-slide" >
+<div class="review-card" >
+<div class="review-header" >
+<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80"
+alt="Student" class="review-avatar" >
+<div class="review-info" >
+<h4 > Sarah Johnson</h4 >
+<p > Computer Science Student</p >
+</div >
+</div >
+<div class="review-rating" >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+</div >
+<p class="review-content" > The project was exactly what I needed for my thesis. The team
+was very professional and delivered on time. Highly recommended!</p >
+<div class="review-date" > Posted on March 15, 2024</div >
+</div >
+</div >
+<!-- Review 2 -->
+<div class="swiper-slide" >
+<div class="review-card" >
+<div class="review-header" >
+<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80"
+alt="Student" class="review-avatar" >
+<div class="review-info" >
+<h4 > Michael Chen</h4 >
+<p > Data Science Student</p >
+</div >
+</div >
+<div class="review-rating" >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="far fa-star" > </i >
+</div >
+<p class="review-content" > Great experience working with the team. They helped me
+understand complex concepts and delivered a high-quality project.</p >
+<div class="review-date" > Posted on March 10, 2024</div >
+</div >
+</div >
+<!-- Review 3 -->
+<div class="swiper-slide" >
+<div class="review-card" >
+<div class="review-header" >
+<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80"
+alt="Student" class="review-avatar" >
+<div class="review-info" >
+<h4 > Emily Brown</h4 >
+<p > Information Systems Student</p >
+</div >
+</div >
+<div class="review-rating" >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star-half-alt" > </i >
+</div >
+<p class="review-content" > The team was very helpful and responsive throughout the
+project. They made sure to understand my requirements perfectly.</p >
+<div class="review-date" > Posted on March 5, 2024</div >
+</div >
+</div >
+<!-- Review 4 -->
+<div class="swiper-slide" >
+<div class="review-card" >
+<div class="review-header" >
+<img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80"
+alt="Student" class="review-avatar" >
+<div class="review-info" >
+<h4 > David Wilson</h4 >
+<p > Software Engineering Student</p >
+</div >
+</div >
+<div class="review-rating" >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+<i class="fas fa-star" > </i >
+</div >
+<p class="review-content" > Excellent work on my graduation project. The code was clean,
+well-documented, and met all requirements.</p >
+<div class="review-date" > Posted on March 1, 2024</div >
+</div >
+</div >
+</div >
+<!-- Add Navigation -->
+<div class="swiper-button-next" > </div >
+<div class="swiper-button-prev" > </div >
+<!-- Add Pagination -->
+<div class="swiper-pagination" > </div >
+</div >
+</div >
+</section >
+<!-- Project Request Form Section -->
+<section class="project-form" >
+<h2 class="section-title" > Request Custom Project</h2 >
+<form id="projectRequestForm" >
+<div class="form-section" >
+<h3 class="form-section-title" > Project Information</h3 >
+<div class="row" >
+<div class="col-md-6" >
+<div class="mb-3" >
+<label for="library" class="form-label" > Library</label >
+<select class="form-select" id="library" required >
+<option value="" > Select Library</option >
+<option value="library1" > University of Jordan Library</option >
+<option value="library2" > Science and Technology Library</option >
+<option value="library3" > Arts Library</option >
+</select >
+</div >
+</div >
+<div class="col-md-6" >
+<div class="mb-3" >
+<label for="projectName" class="form-label" > Project Name</label >
+<input type="text" class="form-control" id="projectName" required >
+</div >
+</div >
+</div >
+</div >
+
+<div class="form-section" >
+<h3 class="form-section-title" > Project Details</h3 >
+<div class="mb-3" >
+<label for="projectDetails" class="form-label" > Project Description</label >
+<textarea class="form-control" id="projectDetails" rows="4" required > </textarea >
+</div >
+</div >
+
+<div class="form-section" >
+<h3 class="form-section-title" > Additional Information</h3 >
+<div class="row" >
+<div class="col-md-6" >
+<div class="mb-3" >
+<label for="deadline" class="form-label" > Deadline (Optional)</label >
+<input type="date" class="form-control" id="deadline" >
+</div >
+</div >
+<div class="col-md-6" >
+<div class="mb-3" >
+<label for="contact" class="form-label" > Contact Information</label >
+<input type="text" class="form-control" id="contact" placeholder="Phone number or email"
+required >
+</div >
+</div >
+</div >
+</div >
+
+<div class="text-center" >
+<button type="submit" class="btn btn-submit" > Submit Request</button >
+</div >
+</form >
+</section >
+</div >
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" > </script >
+<!-- Add Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js" > </script >
+<script >
+// Form submission handling
+document.getElementById('projectRequestForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            // Here you can add your form submission logic
+            alert('Your request has been submitted successfully!');
+            this.reset();
+        });
+
+// Initialize Swiper
+const swiper = new Swiper('.swiper', {
+            // Optional parameters
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            // Responsive breakpoints
+            breakpoints: {
+                // when window width is >= 768px
+                768: {
+                    slidesPerView: 2,
+                },
+                // when window width is >= 1024px
+                1024: {
+                    slidesPerView: 3,
+                }
+            },
+            // Navigation arrows
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            // Pagination
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+        });
+
+// Add click event to all Select Project buttons
+document.querySelectorAll('.btn-submit').forEach(button => {
+            button.addEventListener('click', function () {
+                const modal = new bootstrap.Modal(document.getElementById('projectModal'));
+                modal.show();
+            });
+        });
+
+// Handle package selection
+document.querySelectorAll('.order-option').forEach(option => {
+            option.addEventListener('click', function () {
+                // Remove selected class from all options
+                document.querySelectorAll('.order-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                // Check the radio button
+                this.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+</script >
+<!-- Add Project Modal -->
+<div class="modal fade project-modal" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel"
+aria-hidden="true" >
+<div class="modal-dialog modal-lg" >
+<div class="modal-content" >
+<div class="modal-header" >
+<h5 class="modal-title" id="projectModalLabel" > Research Details</h5 >
+<button type="button" class="modal-close" data-bs-dismiss="modal" aria-label="Close" >
+<i class="fas fa-times" > </i >
+</button >
+</div >
+<div class="modal-body" >
+<div class="project-details" >
+<h3 > Impact of Technology on Higher Education</h3 >
+<p class="text-muted" > Comprehensive research on the impact of modern technology on higher
+education quality</p >
+
+<div class="project-features" >
+<li > <i class="fas fa-check-circle" > </i > Complete research with academic references</li >
+<li > <i class="fas fa-check-circle" > </i > Executive summary in English and Arabic</li >
+<li > <i class="fas fa-check-circle" > </i > Professional presentation</li >
+<li > <i class="fas fa-check-circle" > </i > 3 months academic support</li >
+<li > <i class="fas fa-check-circle" > </i > Customization options available</li >
+</div >
+</div >
+
+<div class="order-options" >
+<h4 > Choose Your Package</h4 >
+<div class="order-option selected" >
+<input type="radio" name="package" id="basic" checked >
+<div class="order-option-details" >
+<h5 > Basic Package</h5 >
+<p class="text-muted" > Ready research + basic documentation</p >
+</div >
+<div class="order-option-price" > $800</div >
+</div >
+<div class="order-option" >
+<input type="radio" name="package" id="standard" >
+<div class="order-option-details" >
+<h5 > Standard Package</h5 >
+<p class="text-muted" > Research + 6 months support + content customization</p >
+</div >
+<div class="order-option-price" > $1200</div >
+</div >
+<div class="order-option" >
+<input type="radio" name="package" id="premium" >
+<div class="order-option-details" >
+<h5 > Premium Package</h5 >
+<p class="text-muted" > Research + full customization + 1 year support</p >
+</div >
+<div class="order-option-price" > $1500</div >
+</div >
+</div >
+</div >
+<div class="modal-footer" >
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" > Close</button >
+<button type="button" class="btn btn-submit" > Proceed to Payment</button >
+</div >
+</div >
+</div >
+</div >
+</body >
+
+</html >

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<stationerySpot.Models.Product> 
+﻿@model stationerySpot.Models.LibraryViewModel
 
 @{
     Layout = "HomeLayout";
@@ -12,297 +12,6 @@
     <link rel="stylesheet" href="~/assets\style\nav.css">
     <link rel="stylesheet" href="~/assets\style\library.css">
 }
-<!-- CSS (for chat and styling) -->
-
-<style>
-    :root {
-        --primary-color: #2c3e50;
-        --secondary-color: #ff69b4;
-        --accent-color: #3498db;
-        --light-bg: #f8f9fa;
-        --dark-text: #2c3e50;
-    }
-
-    body {
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        color: var(--dark-text);
-    }
-
-    /* Tabs Styling */
-    .nav-tabs {
-        border: none;
-        margin-bottom: 2rem;
-        background-color: #f9f9f9;
-        border-radius: 10px;
-        padding: 10px;
-    }
-
-        .nav-tabs .nav-link {
-            border: none;
-            color: var(--dark-text);
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            margin: 0 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-            .nav-tabs .nav-link:hover {
-                background: rgba(255, 105, 180, 0.1);
-                color: var(--secondary-color);
-            }
-
-            .nav-tabs .nav-link.active {
-                background: var(--secondary-color);
-                color: white;
-            }
-
-    /* Testimonials Carousel */
-    .testimonial-section {
-        background: linear-gradient(135deg, #f6f8fd 0%, #ffffff 100%);
-        padding: 4rem 0;
-        margin-bottom: 3rem;
-    }
-
-    .testimonial-card {
-        background: white;
-        border-radius: 15px;
-        padding: 2.5rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        position: relative;
-    }
-
-        .testimonial-card::before {
-            content: '"';
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 4rem;
-            color: var(--secondary-color);
-            opacity: 0.1;
-            font-family: serif;
-        }
-
-    .carousel-control-prev,
-    .carousel-control-next {
-        width: 40px;
-        height: 40px;
-        background: var(--secondary-color);
-        border-radius: 50%;
-        top: 50%;
-        transform: translateY(-50%);
-        opacity: 1;
-    }
-
-        .carousel-control-prev:hover,
-        .carousel-control-next:hover {
-            background: #ff1493;
-            opacity: 1;
-        }
-
-    .carousel-control-prev-icon,
-    .carousel-control-next-icon {
-        filter: brightness(0) invert(1);
-    }
-
-    .carousel-control-prev {
-        left: -20px;
-    }
-
-    .carousel-control-next {
-        right: -20px;
-    }
-
-    /* Project Cards */
-    .project-card {
-        height: 100%;
-        border: none;
-        border-radius: 15px;
-        overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        background: white;
-    }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .project-card .card-img-top {
-            height: 250px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .project-card:hover .card-img-top {
-            transform: scale(1.05);
-        }
-
-        .project-card .card-body {
-            padding: 2rem;
-        }
-
-        .project-card .card-title {
-            color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .project-card .card-text {
-            color: #666;
-            line-height: 1.6;
-        }
-
-    /* Chat Components */
-    .chat-toggle {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: var(--secondary-color);
-        color: white;
-        box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
-        border: none;
-        transition: transform 0.3s ease;
-        z-index: 1000;
-    }
-
-        .chat-toggle:hover {
-            transform: scale(1.1);
-        }
-
-    .chat-box {
-        position: fixed;
-        bottom: 100px;
-        right: 30px;
-        width: 350px;
-        height: 500px;
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        z-index: 999;
-    }
-
-    .chat-header {
-        padding: 1rem;
-        background: var(--secondary-color);
-        color: white;
-        border-radius: 20px 20px 0 0;
-    }
-
-    .chat-messages {
-        height: calc(100% - 140px);
-        overflow-y: auto;
-        padding: 1rem;
-    }
-
-    .chat-input {
-        padding: 1rem;
-        border-top: 1px solid #eee;
-    }
-
-    /* Feedback Form */
-    .feedback-section {
-        background: linear-gradient(135deg, #ffffff 0%, #f6f8fd 100%);
-        padding: 4rem 0;
-        border-radius: 15px;
-        margin-top: 3rem;
-    }
-
-    .form-control {
-        border-radius: 10px;
-        padding: 0.8rem 1rem;
-        border: 1px solid #e0e0e0;
-    }
-
-        .form-control:focus {
-            box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
-            border-color: var(--secondary-color);
-        }
-
-    .btn-submit {
-        background: var(--secondary-color);
-        border: none;
-        padding: 0.8rem 2rem;
-        border-radius: 10px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        color: white;
-    }
-
-        .btn-submit:hover {
-            background: #ff1493;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
-            color: white;
-        }
-
-    /* Testimonial Cards */
-    .testimonial-card {
-        background: white;
-        border-radius: 20px;
-        padding: 3rem 2rem;
-        margin: 1rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        text-align: center;
-    }
-
-    /* Project Cards */
-    .project-card {
-        height: 100%;
-        border: none;
-        border-radius: 20px;
-        overflow: hidden;
-        transition: all 0.3s ease;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.1);
-        }
-
-        .project-card .card-img-top {
-            height: 250px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .project-card:hover .card-img-top {
-            transform: scale(1.05);
-        }
-
-        .project-card .card-body {
-            background: white;
-        }
-
-    /* Form Controls */
-    .form-floating > .form-control:focus,
-    .form-floating > .form-control:not(:placeholder-shown) {
-        padding-top: 1.625rem;
-        padding-bottom: 0.625rem;
-    }
-
-        .form-floating > .form-control:focus ~ label,
-        .form-floating > .form-control:not(:placeholder-shown) ~ label {
-            opacity: .65;
-            transform: scale(.85) translateY(-0.5rem) translateX(0.15rem);
-        }
-
-    .form-control:focus {
-        border-color: var(--secondary-color);
-        box-shadow: 0 0 0 0.25rem rgba(255, 105, 180, 0.25);
-    }
-</style>
-
-
-
-
-
-
-
-
 
 <!-- hero -->
 <div class="hero">
@@ -335,17 +44,17 @@
                 🌟 Reviews
             </button>
         </li>
+        @* <li class="nav-item m-1" role="presentation"> *@
+        @*     <button class="nav-link tab" id="services-tab" data-bs-toggle="tab" data-bs-target="#services" *@
+        @*             type="button" role="tab" aria-controls="services" aria-selected="false"> *@
+        @*         🛠 Services *@
+        @*     </button> *@
+        @* </li> *@
         <li class="nav-item m-1" role="presentation">
-            <button class="nav-link tab" id="services-tab" data-bs-toggle="tab" data-bs-target="#services"
-                    type="button" role="tab" aria-controls="services" aria-selected="false">
-                🛠 Services
-            </button>
-        </li>
-        <li class="nav-item m-1" role="presentation">
-            <button class="nav-link tab" id="projects-tab" data-bs-toggle="tab" data-bs-target="#projects"
-                    type="button" role="tab" aria-controls="projects" aria-selected="false">
+            <a class="nav-link tab" asp-controller="Home" asp-action="AcademicProject" role="tab style="color:black !important;">
                 🎓 Project Help
-            </button>
+            </a>
+
         </li>
         <li class="nav-item m-1" role="presentation">
             <button class="nav-link tab" id="pdf-tab" data-bs-toggle="tab" data-bs-target="#pdf"
@@ -370,18 +79,20 @@
                     <div class="contact-info">
                         <h3>Contact Us</h3>
                         <ul>
-                            <li><i class="fas fa-map-marker-alt"></i><a> Irbid, University Street, near yarmouk university</a></li>
-                            <li><i class="fas fa-envelope"></i><a href="mailto:namaaqazaq30@gmail.com">namaaqazaq30@gmail.com</a></li>
-                            <li><i class="fas fa-phone-alt"></i><a href="tel:+123456789">+1 (234) 567-89</a></li>
-                            <li><i class="fas fa-globe"></i><a href="https://yourwebsite.com" target="_blank">www.Alnamaa.com</a></li>
+                            <li><i class="fas fa-map-marker-alt"></i><a>@Model.Library.Location</a></li>
+                            @if (Model.LibraryAccounts != null && !string.IsNullOrEmpty(Model.LibraryAccounts.Email))
+                            {
+                                <li><i class="fas fa-envelope"></i><a href="mailto:@Model.LibraryAccounts.Email">@Model.LibraryAccounts.Email</a></li>
+                            }
+                            <li><i class="fas fa-phone-alt"></i><a href="tel:@Model.Library.Phone">@Model.Library.Phone</a></li>
+                            <li><i class="fas fa-globe"></i><a href="@Model.Library.WebsiteUrl" target="_blank">@Model.Library.WebsiteUrl</a></li>
                         </ul>
                     </div>
 
                     <div class="working-hours">
                         <h3>Working Hours</h3>
                         <ul>
-                            <li><span>Saturday - Thursday:</span> 9 AM - 12 PM</li>
-                            <li><span>Friday:</span> 4 AM - 12 PM</li>
+                            <li><span>Saturday - Thursday:</span> @Model.Library.WorkingHours</li>
                         </ul>
                     </div>
                 </div>
@@ -389,14 +100,18 @@
                 <section class="services-section">
                     <h2 class="section-title">Our Services</h2>
                     <div class="services-container">
-                        <div class="service-card"><i class="fas fa-print"></i><h3>Printing Services</h3><p>High quality printing for documents and assignments.</p></div>
-                        <div class="service-card"><i class="fas fa-copy"></i><h3>Document Copying</h3><p>Fast and reliable photocopying for your documents.</p></div>
-                        <div class="service-card"><i class="fas fa-book-open"></i><h3>Study Notes & Summarize</h3><p>Detailed and helpful study material for students.</p></div>
-                        <div class="service-card"><i class="fas fa-school"></i><h3>School Bags</h3><p>Trendy and durable backpacks for students.</p></div>
-                        <div class="service-card"><i class="fas fa-pencil-alt"></i><h3>Stationery Supplies</h3><p>All your needs: pens, notebooks, erasers, and more.</p></div>
-                        <div class="service-card"><i class="fas fa-graduation-cap"></i><h3>Graduation Sashes</h3><p>Beautifully customized sashes for your special day.</p></div>
+                        @foreach (var service in Model.Services)
+                        {
+                            <div class="service-card">
+                                @* <i class="fas fa-@service.Icon"></i> *@
+                                <h3>@service.Name</h3>
+                                <p>@service.Description</p>
+                            </div>
+                        }
                     </div>
                 </section>
+
+                
             </section>
         </div>
 
@@ -455,10 +170,10 @@
 
             </div>
             <!-- Pagination with Cards -->
-            @if (Model != null && Model.Any())
+            @if (Model != null )
             {
                 <div class="row row-cols-1 row-cols-md-3 g-4">
-                    @foreach (var product in Model)
+                    @foreach (var product in Model.Products)
                     {
                         if (product != null)
                         {
@@ -543,92 +258,88 @@
         <!-- Reviews Tab -->
         <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
             <div class="container mt-4">
-                <!-- Reviews Tab Content -->
-                <div class="tab-pane fade show active" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-                    <div class="reviews-section mb-4">
-                        <h4>Customer Reviews</h4>
+                <div class="reviews-section mb-4">
+                    <h4>Customer Reviews</h4>
 
-                        <!-- Displaying Reviews -->
-                        <div class="review-item mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <img src="~/assets\img\slide222.jpeg" alt="User Avatar" class="rounded-circle" width="60" height="60">
-                                </div>
-                                <div>
-                                    <h6>John Doe <small class="text-muted">- 4 days ago</small></h6>
-                                    <div class="star-rating">
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-muted"></i>
+                    <!-- Displaying Reviews Dynamically -->
+                    @if (Model.Reviews != null && Model.Reviews.Any())
+                    {
+                        foreach (var review in Model.Reviews)
+                        {
+                            <div class="review-item mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <img src="https://i.pinimg.com/474x/3c/ae/07/3cae079ca0b9e55ec6bfc1b358c9b1e2.jpg" alt="User Avatar" class="rounded-circle" width="60" height="60">
                                     </div>
-                                    <p>This book is amazing! Highly recommended to everyone.</p>
-                                </div>
-                            </div>
-                        </div>
+                                    <div>
+                                        <h6>@review.User.Name <small class="text-muted">- @review.CreatedAt?.ToString("MMMM dd, yyyy")</small></h6>
 
-                        <div class="review-item mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="me-3">
-                                    <img src="~/assets\img\student.jpg" alt="User Avatar" class="rounded-circle" width="60" height="60">
-                                </div>
-                                <div>
-                                    <h6>Jane Smith <small class="text-muted">- 1 week ago</small></h6>
-                                    <div class="star-rating">
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-muted"></i>
-                                        <i class="fas fa-star text-muted"></i>
+                                        <!-- Star Rating -->
+                                        <div class="star-rating">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (review.Rating.HasValue && i <= review.Rating.Value)
+                                                {
+                                                    <i class="fas fa-star text-warning"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fas fa-star text-muted"></i>
+                                                }
+                                            }
+                                        </div>
+
+                                        <p>@review.Comment</p>
                                     </div>
-                                    <p>Good book, but the pacing was a little slow in the middle.</p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Add a Review Section -->
-                    <div class="add-review">
-                        <h4>Add Your Review</h4>
-
-                        <!-- Rating Stars -->
-                        <div class="mb-3">
-                            <label for="rating" class="form-label">Your Rating</label>
-                            <div class="star-rating">
-                                <i class="fas fa-star text-muted" data-rating="1"></i>
-                                <i class="fas fa-star text-muted" data-rating="2"></i>
-                                <i class="fas fa-star text-muted" data-rating="3"></i>
-                                <i class="fas fa-star text-muted" data-rating="4"></i>
-                                <i class="fas fa-star text-muted" data-rating="5"></i>
-                            </div>
-                        </div>
-
-                        <!-- Comment Textarea -->
-                        <div class="mb-3">
-                            <label for="comment" class="form-label">Your Comment</label>
-                            <textarea id="comment" class="form-control" rows="4" placeholder="Write your review here..."></textarea>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <button type="submit" class="btn btn-primary">Submit Review</button>
-                    </div>
-                    <!-- Printing Services  -->
-
+                        }
+                    }
+                    else
+                    {
+                        <p>No reviews available yet.</p>
+                    }
                 </div>
-            </div>
 
+                <div class="add-review" id="addReviewForm">
+                    <h4>Add Your Review</h4>
+
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Your Rating</label>
+                        <div class="star-rating" id="ratingStars">
+                            <i class="fas fa-star text-muted" data-rating="1"></i>
+                            <i class="fas fa-star text-muted" data-rating="2"></i>
+                            <i class="fas fa-star text-muted" data-rating="3"></i>
+                            <i class="fas fa-star text-muted" data-rating="4"></i>
+                            <i class="fas fa-star text-muted" data-rating="5"></i>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Your Comment</label>
+                        <textarea id="comment" class="form-control" rows="4" placeholder="Write your review here..."></textarea>
+                    </div>
+
+                    <button type="button" id="submitReview" class="btn btn-primary">Submit Review</button>
+                </div>
+
+
+            </div>
         </div>
+
         <!-- Pdf-tabs -->
         <div class="tab-pane fade" id="pdf" role="tabpanel" aria-labelledby="pdf-tab">
             <div class="container pdf-container">
                 <h2 class="primary-color text-center mb-4">Upload PDF for Printing</h2>
 
-                <!-- File Upload Section -->
-                <div class="file-drop mb-4">
-                    <p>Drag and drop your PDF file here, or click to upload</p>
-                    <input type="file" class="form-control d-none" id="pdf-upload" accept=".pdf">
+                <!-- File Upload Section - Enhanced -->
+                <div class="file-drop mb-4 border border-2 border-dashed rounded-3 p-5 text-center position-relative" id="custom-drop">
+                    <i class="fas fa-cloud-upload-alt fa-3x mb-3 text-primary"></i>
+                    <p class="mb-1">Drag & drop your PDF here</p>
+                    <p class="text-muted">or click to browse</p>
+                    <input type="file" class="form-control position-absolute top-0 start-0 w-100 h-100 opacity-0" id="pdf-upload" accept=".pdf">
                 </div>
+
 
                 <!-- Printing Options -->
                 <div class="options">
@@ -670,7 +381,8 @@
                         </div>
 
                         <!-- Submit Button -->
-                        <button type="button" class="btn btn-primary w-100">Submit</button>
+                        <button id="submit-print-request" type="button" class="btn btn-primary w-100">Submit</button>
+
                     </form>
                     <!-- Summary Section -->
                     <div class="mt-4 p-3 border rounded bg-light">
@@ -754,219 +466,7 @@
                 </div><!--- END CONTAINER -->
             </div>
         </div>
-        <!-- project-tabs -->
-        <!-- Projects Tab Content -->
-        <div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="projects-tab">
-            <!-- Testimonials Section -->
-            <section class="testimonials-section py-5 mb-5"
-                     style="background: linear-gradient(135deg, #fff1f6 0%, #fff 100%);">
-                <div class="container">
-                    <h2 class="text-center mb-5" style="color: var(--primary-color); font-weight: 600;">
-                        What Our
-                        Students Say
-                    </h2>
-                    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <div class="testimonial-card">
-                                    <div class="testimonial-content">
-                                        <div class="quote-icon mb-3">
-                                            <i class="fas fa-quote-left"
-                                               style="color: var(--secondary-color); font-size: 2rem; opacity: 0.2;"></i>
-                                        </div>
-                                        <p class="fs-5 mb-4">
-                                            "This library helped me complete my graduation project
-                                            smoothly. The guidance was excellent!"
-                                        </p>
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <img src="https://i.pravatar.cc/150?img=1" class="rounded-circle me-3"
-                                                 width="60" height="60" alt="Sara">
-                                            <div class="text-start">
-                                                <h6 class="fw-bold mb-1">Sara Khalid</h6>
-                                                <p class="text-muted mb-0">Software Engineering</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="testimonial-card">
-                                    <div class="testimonial-content">
-                                        <div class="quote-icon mb-3">
-                                            <i class="fas fa-quote-left"
-                                               style="color: var(--secondary-color); font-size: 2rem; opacity: 0.2;"></i>
-                                        </div>
-                                        <p class="fs-5 mb-4">
-                                            "Their project support saved me a lot of time. I got
-                                            great help with my master's thesis."
-                                        </p>
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <img src="https://i.pravatar.cc/150?img=2" class="rounded-circle me-3"
-                                                 width="60" height="60" alt="Omar">
-                                            <div class="text-start">
-                                                <h6 class="fw-bold mb-1">Omar Mahmoud</h6>
-                                                <p class="text-muted mb-0">Master's in AI</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="testimonial-card">
-                                    <div class="testimonial-content">
-                                        <div class="quote-icon mb-3">
-                                            <i class="fas fa-quote-left"
-                                               style="color: var(--secondary-color); font-size: 2rem; opacity: 0.2;"></i>
-                                        </div>
-                                        <p class="fs-5 mb-4">
-                                            "We built a full website for our graduation project
-                                            with the library's help. Highly recommend!"
-                                        </p>
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <img src="https://i.pravatar.cc/150?img=3" class="rounded-circle me-3"
-                                                 width="60" height="60" alt="Lina">
-                                            <div class="text-start">
-                                                <h6 class="fw-bold mb-1">Lina Saleh</h6>
-                                                <p class="text-muted mb-0">Web Development</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel"
-                                data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel"
-                                data-bs-slide="next">
-                            <span class="carousel-control-next-icon"></span>
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Project Types Section -->
-            <section class="project-types-section py-5">
-                <div class="container">
-                    <h2 class="text-center mb-5" style="color: var(--primary-color); font-weight: 600;">
-                        Types of
-                        Graduation Projects We Offer
-                    </h2>
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <div class="project-card">
-                                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3"
-                                     class="card-img-top" alt="AI Projects">
-                                <div class="card-body p-4">
-                                    <div class="card-icon mb-3">
-                                        <i class="fas fa-brain"
-                                           style="color: var(--secondary-color); font-size: 2rem;"></i>
-                                    </div>
-                                    <h5 class="card-title mb-3">AI & Data Science Projects</h5>
-                                    <p class="card-text text-muted">
-                                        Advanced machine learning, deep learning, and
-                                        data analytics projects with state-of-the-art tools and frameworks.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="project-card">
-                                <img src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3"
-                                     class="card-img-top" alt="Web Projects">
-                                <div class="card-body p-4">
-                                    <div class="card-icon mb-3">
-                                        <i class="fas fa-code"
-                                           style="color: var(--secondary-color); font-size: 2rem;"></i>
-                                    </div>
-                                    <h5 class="card-title mb-3">Web Development Projects</h5>
-                                    <p class="card-text text-muted">
-                                        Modern web applications using React, Angular, or
-                                        Vue.js with robust backend technologies.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="project-card">
-                                <img src="https://i.pinimg.com/736x/cf/55/4a/cf554aa52a101aa4ba5f81f65ae2e382.jpg"
-                                     class="card-img-top" alt="IoT Projects">
-                                <div class="card-body p-4">
-                                    <div class="card-icon mb-3">
-                                        <i class="fas fa-microchip"
-                                           style="color: var(--secondary-color); font-size: 2rem;"></i>
-                                    </div>
-                                    <h5 class="card-title mb-3">IoT & Hardware Projects</h5>
-                                    <p class="card-text text-muted">
-                                        Innovative IoT solutions and hardware projects
-                                        using Arduino, Raspberry Pi, and other platforms.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Feedback Section -->
-            <section class="feedback-section py-5"
-                     style="background: linear-gradient(135deg, #fff1f6 0%, #fff 100%);">
-                <div class="container">
-                    <h2 class="text-center mb-4" style="color: var(--primary-color); font-weight: 600;">
-                        Share Your
-                        Experience
-                    </h2>
-                    <p class="text-center text-muted mb-5">
-                        Help future students by sharing your graduation project
-                        journey with us
-                    </p>
-
-                    <div class="row justify-content-center">
-                        <div class="col-md-8">
-                            <form class="feedback-form p-4 bg-white rounded-3 shadow-sm">
-                                <div class="row g-4">
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" id="name"
-                                                   placeholder="Your Name" required>
-                                            <label for="name">Your Name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input type="email" class="form-control" id="email"
-                                                   placeholder="Your Email" required>
-                                            <label for="email">Your Email</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" id="project"
-                                                   placeholder="Project Title" required>
-                                            <label for="project">Project Title</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <textarea class="form-control" id="feedback"
-                                                      placeholder="Share your feedback..." style="height: 150px"
-                                                      required></textarea>
-                                            <label for="feedback">Share your feedback...</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 text-center">
-                                        <button type="submit" class="btn btn-submit px-5 py-3">
-                                            <i class="fas fa-paper-plane me-2"></i>Submit Feedback
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
+       
         @section Scripts {
             <script>
                 $(document).ready(function () {
@@ -996,6 +496,185 @@
                         });
                     });
                 });
+                //Review Section
+                       
+                let selectedRating = 0;
+
+                // Handle star click
+                $('#ratingStars i').click(function () {
+                    selectedRating = $(this).data('rating');
+
+                    $('#ratingStars i').each(function () {
+                        if ($(this).data('rating') <= selectedRating) {
+                            $(this).removeClass('text-muted').addClass('text-warning');
+                        } else {
+                            $(this).removeClass('text-warning').addClass('text-muted');
+                        }
+                    });
+                });
+
+                // Handle submit review
+                $('#submitReview').click(function () {
+                    var comment = $('#comment').val();
+
+                    if (selectedRating === 0 || comment.trim() === '') {
+                        alert('Please add a rating and a comment.');
+                        return;
+                    }
+
+                    $.ajax({
+                        url: '@Url.Action("AddReview", "Home")', // بتعملي اكشن اسمه AddReview بالكونترولر
+                        type: 'POST',
+                        data: {
+                            rating: selectedRating,
+                            comment: comment,
+                            libraryId: @Model.Library.Id  // مكتبة الحالية
+                        },
+                                        success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Your review has been added successfully.',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            location.reload(); // بعد ما يضغط OK بيعمل ريفرش
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong! Please try again.',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                }
+
+                    });
+                });
+                //Pdf Section
+                                // دالة لتحديث الـ Cost Summary بشكل ديناميكي
+                function updateCostSummary() {
+                    var copies = parseInt(document.getElementById('copies').value);
+                    var colorOption = document.getElementById('color-option').value;
+                    var paperSize = document.getElementById('paper-size').value;
+                    var deliveryChecked = document.getElementById('delivery-option').checked;
+
+                    var printingCost = 0;
+                    var deliveryCost = deliveryChecked ? 2.50 : 0; // تكلفة التسليم إذا تم اختيارها
+                    var totalCost = 0;
+
+                    // تكلفة الطباعة بناءً على اللون وحجم الورق
+                    if (colorOption === "color") {
+                        printingCost = paperSize === "a4" ? 0.10 : 0.15; // على سبيل المثال تكلفة الطباعة بالألوان
+                    } else {
+                        printingCost = paperSize === "a4" ? 0.05 : 0.08; // تكلفة الطباعة بالأسود والأبيض
+                    }
+
+                    // حساب التكلفة الإجمالية
+                    var costPerCopy = printingCost * copies;
+                    totalCost = costPerCopy + deliveryCost;
+
+                    // تحديث الـ Cost Summary
+                    document.getElementById('printing-cost').textContent = `$${costPerCopy.toFixed(2)}`;
+                    document.getElementById('delivery-cost').textContent = `$${deliveryCost.toFixed(2)}`;
+                    document.getElementById('total-cost').textContent = `$${totalCost.toFixed(2)}`;
+                }
+
+                // استدعاء دالة التحديث عند أي تغيير في المدخلات
+                document.getElementById('color-option').addEventListener('change', updateCostSummary);
+                document.getElementById('paper-size').addEventListener('change', updateCostSummary);
+                document.getElementById('copies').addEventListener('input', updateCostSummary);
+                document.getElementById('delivery-option').addEventListener('change', updateCostSummary);
+
+                // استدعاء الدالة لأول مرة لبدء التحديث
+                updateCostSummary();
+
+                document.getElementById('submit-print-request').addEventListener('click', function () {
+                    console.log("Hi");
+                    var pdfFile = document.getElementById('pdf-upload').files[0];
+                    var copies = document.getElementById('copies').value;
+                    var color = document.getElementById('color-option').value;
+                    var printSide = document.getElementById('print-sides').value;
+                    var message = document.getElementById('additional-message').value;
+                    var libraryId = @Model.Library.Id;
+
+                    if (!pdfFile) {
+                        alert('Please upload a PDF file.');
+                        return;
+                    }
+
+                    var formData = new FormData();
+                    formData.append('pdfFile', pdfFile);
+                    formData.append('copies', copies);
+                    formData.append('color', color);
+                    formData.append('printSide', printSide);
+                    formData.append('message', message);
+                    formData.append('libraryId', libraryId);
+
+                    fetch('/Home/SubmitPrintRequest', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        // تحقق أولاً من نوع المحتوى
+                        const contentType = response.headers.get("Content-Type");
+                        if (contentType && contentType.includes("application/json")) {
+                            return response.json(); // إذا كانت الاستجابة JSON، حولها إلى JSON
+                        } else {
+                            return response.text(); // إذا كانت نصًا عاديًا، اقرأها كنص
+                        }
+                    })
+                    .then(data => {
+                        if (typeof data === 'string') {
+                            // إذا كانت الاستجابة نصًا، اعرضها كما هي
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                html: `<pre style="text-align:left;">${data}</pre>`,
+                                confirmButtonColor: '#d33'
+                            });
+                        } else {
+                            // إذا كانت الاستجابة JSON
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: data.message,
+                                    confirmButtonColor: '#3085d6'
+                                }).then(() => {
+                                    updateCostSummary(); // تحديث الـ Cost Summary بعد النجاح
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: data.message,
+                                    confirmButtonColor: '#d33'
+                                });
+                            }
+                        }
+                    })
+                                    .catch(async error => {
+                    console.error('Error:', error);
+
+                    let errorMessage = 'An unexpected error occurred. Please try again later.';
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: errorMessage,  // رسالة عامة
+                        confirmButtonColor: '#d33'
+                    });
+                });
+
+                });
+
+
+
+            
             </script>
 
         }

@@ -1,6 +1,5 @@
 ﻿@model stationerySpot.Models.ProfileViewModel
 
-
 @{
     Layout = "HomeLayout";
 }
@@ -100,11 +99,11 @@
                                                     @foreach (var order in Model.Orders)
                                                     {
                                                         <tr>
-                                                            <td>@order.Id</td>
-                                                            <td>@order.CreatedAt?.ToString("MMM dd, yyyy")</td>
+                                                            <td>@order.OrderId</td>
+                                                            <td>@(order.OrderDate.ToString("MMM dd, yyyy") ?? "No Date")</td>
                                                             <td>@order.Status</td>
                                                             <td>@order.TotalAmount.ToString("C")</td>
-                                                            <td><a href="@Url.Action("Details", "Order", new { id = order.Id })" class="check-btn sqr-btn">View</a></td>
+                                                            <td><a href="@Url.Action("Details", "Order", new { id = order.OrderId })" class="check-btn sqr-btn">View</a></td>
                                                         </tr>
                                                     }
                                                 }

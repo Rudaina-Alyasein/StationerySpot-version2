@@ -219,7 +219,7 @@ public partial class MyDbContext : DbContext
                 .HasDefaultValue("Pending");
             entity.Property(e => e.TotalAmount).HasColumnType("decimal(10, 2)");
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
+            entity.HasOne(d => d.User).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Orders__Customer__4D94879B");

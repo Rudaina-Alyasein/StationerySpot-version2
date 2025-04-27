@@ -209,7 +209,37 @@ namespace stationerySpot.Controllers
 
         public IActionResult Orders()
         {
-            return View();
+            int libraryId = HttpContext.Session.GetInt32("LibraryId").GetValueOrDefault();
+
+            // جلب الطلبات الخاصة بالمكتبة بناءً على الـ LibraryId
+            var orders = _context.Orders
+                .Where(o => o.LibraryId == libraryId)
+                .Include(o => o.User)
+                .Include(o => o.OrderDetails)
+                   .ThenInclude(od => od.Product)
+                .ToList();
+
+            // تحويل البيانات إلى ViewModel
+            var orderViewModels = orders.Select(o => new OrderViewModel
+            {
+                OrderId = o.Id,
+                OrderDate = o.CreatedAt ?? DateTime.Now,
+                Status = o.Status,
+                Name = o.User.Name,
+                Email = o.User.Email,
+                TotalAmount=o.TotalAmount,
+               
+                Products = o.OrderDetails.Select(od => new ProductInfo
+                {
+                    ProductName = od.Product?.Name ?? "Unknown Product", // استخدام default value في حالة عدم وجود المنتج
+                    Quantity = od.Quantity,
+                    UnitPrice = od.Product?.Price ?? 0 // في حالة عدم وجود السعر
+                }).ToList()
+
+            }).ToList();
+
+            // إعادة الـ View مع الـ ViewModel
+            return View(orderViewModels);
         }
      
         public IActionResult profile()
@@ -284,6 +314,7 @@ namespace stationerySpot.Controllers
             var Users = _context.Users.ToList();
             return View(Users);
         }
+      
 
     }
 }

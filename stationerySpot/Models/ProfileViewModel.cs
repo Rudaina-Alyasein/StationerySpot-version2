@@ -1,4 +1,5 @@
-﻿namespace stationerySpot.Models
+﻿using stationerySpot.ViewModels;
+namespace stationerySpot.Models
 {
     public class ProfileViewModel
     {
