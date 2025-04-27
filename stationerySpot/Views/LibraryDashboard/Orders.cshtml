@@ -49,7 +49,7 @@
                 <tr>
                     <td>@order.OrderId</td>
                     <td>@order.Name</td>
-                    <td>@order.TotalAmount.ToString("C")</td>
+                    <td>@("JD " + order.TotalAmount.ToString("F2"))</td>
                     <td>
                         @if (order.Status == "Pending")
                         {
@@ -72,6 +72,7 @@
                             <span class="badge bg-secondary">@order.Status</span>
                         }
                     </td>
+                    <td>@order.OrderId</td>
                     <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
                     <td>
                         <button class="btn btn-info btn-sm view-details-btn"
@@ -119,22 +120,20 @@
     </div>
 
 </div> 
-@section Scripts {
+
+    @section Scripts {
     <script>
-                     $('#orderDetailsModal').on('show.bs.modal', function (event) {
-            // استرجاع البيانات من الزر
-            var button = $(event.relatedTarget); // الزر الذي تم النقر عليه
+        $('#orderDetailsModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); 
             var orderId = button.data('orderid');
             var customerName = button.data('customername');
             var totalAmount = button.data('totalamount');
             var status = button.data('status');
 
-            // التحقق مما إذا كانت البيانات غير فارغة
-            var productsData = button.data('products');
+            var productsData = button.attr('data-products'); // تعديل بسيط هنا بدل data('products') => attr
             var products = [];
 
-            // إذا كانت البيانات غير فارغة، قم بتحويلها من JSON إلى كائن JavaScript
-            if (productsData) {
+            if (productsData && productsData.trim() !== '') {
                 try {
                     products = JSON.parse(productsData);
                 } catch (e) {
@@ -142,20 +141,22 @@
                 }
             }
 
-            // ضبط البيانات داخل الـ Modal
+            // تعبئة البيانات
             $('#modalOrderId').text(orderId);
             $('#modalCustomerName').text(customerName);
-        $('#modalTotalAmount').text('$' + parseFloat(totalAmount).toFixed(2));
-                    $('#modalStatus').text(status);
+            $('#modalTotalAmount').text('JD' + parseFloat(totalAmount).toFixed(2));
+            $('#modalStatus').text(status);
 
-            // عرض المنتجات
             var productList = '';
-            products.forEach(function(product) {
-                productList += `<li>${product.ProductName} - Quantity: ${product.Quantity} - $${product.UnitPrice.toFixed(2)}</li>`;
-            });
-            $('#modalProductList').html(productList); // تحديث قائمة المنتجات في الـ Modal
+            if (products.length > 0) {
+                products.forEach(function (product) {
+                    productList += `<li>${product.ProductName} - Quantity: ${product.Quantity} - ${parseFloat(product.UnitPrice).toFixed(2)}</li>`;
+                });
+            } else {
+                productList = "<li>No products found for this order.</li>";
+            }
+            $('#modalProductList').html(productList);
         });
-
-
     </script>
+}
 }
