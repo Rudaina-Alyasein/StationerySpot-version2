@@ -311,6 +311,9 @@ namespace stationerySpot.Controllers
             return View(Users);
         }
       
-
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
     }
 }
