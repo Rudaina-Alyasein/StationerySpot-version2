@@ -12,23 +12,77 @@
     <!-- Filter by Status & Sort by Date -->
     <div class="mb-3 row">
         <div class="col-md-4">
-            <select class="form-select" id="statusFilter">
-                <option value="">All Statuses</option>
-                <option value="Pending">Pending</option>
-                <option value="Processing">Processing</option>
-                <option value="Completed">Completed</option>
-                <option value="Cancelled">Cancelled</option>
-            </select>
+            <form method="get" action="/LibraryDashboard/Orders" id="statusForm">
+                <select name="status" id="statusSelect">
+                    <option value="">All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Completed">Delivered</option>
+                    <option value="Canceled">Cancelled</option>
+                </select>
+            </form>
+
+            <script>
+                // اضبط القيمة المحددة من السيرفر هنا:
+                const selectedStatus = "@(ViewBag.SelectedStatus ?? "")";
+
+                document.getElementById("statusSelect").value = selectedStatus;
+
+                // ارسال تلقائي عند التغيير
+                document.getElementById("statusSelect").addEventListener("change", function () {
+                    document.getElementById("statusForm").submit();
+                });
+            </script>
+
+
+
+
+
+
+
         </div>
         <div class="col-md-4">
             <select class="form-select" id="sortOrder">
                 <option value="asc">Oldest to Newest</option>
                 <option value="desc">Newest to Oldest</option>
             </select>
+
+            <script>
+                // التعامل مع حدث تغيير الـ select
+                document.getElementById("sortOrder").addEventListener("change", function () {
+                    var sortOrder = this.value; // أخذ القيمة المحددة
+                    var url = new URL(window.location.href); // الحصول على الـ URL الحالي
+                    url.searchParams.set("sortOrder", sortOrder); // إضافة أو تحديث معلمة sortOrder في الـ URL
+                    window.location.href = url.toString(); // إعادة تحميل الصفحة بالـ URL المحدث
+                });
+            </script>
         </div>
+
         <div class="col-md-4">
             <input type="text" class="form-control" id="orderSearch" placeholder="Search Orders by Order ID or Customer Name" />
         </div>
+        <script>
+            // استرجاع قيمة البحث من URL عند تحميل الصفحة وتعبئتها في الانبوت
+            window.addEventListener("DOMContentLoaded", function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const searchValue = urlParams.get("search");
+                if (searchValue) {
+                    document.getElementById("orderSearch").value = searchValue;
+                }
+            });
+
+            // عند الكتابة في الانبوت أو الضغط Enter، فلتر الطلبات
+            document.getElementById("orderSearch").addEventListener("change", function () {
+                const value = this.value.trim();
+                const url = new URL(window.location.href);
+                if (value) {
+                    url.searchParams.set("search", value);
+                } else {
+                    url.searchParams.delete("search");
+                }
+                window.location.href = url.toString();
+            });
+        </script>
     </div>
 
     <!-- Orders Table -->
@@ -63,7 +117,7 @@
                         {
                             <span class="badge bg-success">Completed</span>
                         }
-                        else if (order.Status == "Cancelled")
+                        else if (order.Status == "Canceled")
                         {
                             <span class="badge bg-danger">Cancelled</span>
                         }
@@ -72,7 +126,6 @@
                             <span class="badge bg-secondary">@order.Status</span>
                         }
                     </td>
-                    <td>@order.OrderId</td>
                     <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
                     <td>
                         <button class="btn btn-info btn-sm view-details-btn"
@@ -88,10 +141,12 @@
 
                     </td>
                 </tr>
-            }
+                
+           } 
         </tbody>
+        
     </table>
-
+    
     <!-- Modal to show order details -->
     <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -112,8 +167,19 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success">Complete Order</button>
-                    <button type="button" class="btn btn-danger">Cancel Order</button>
+                    <form asp-action="UpdateOrderStatus" method="post">
+                        <input type="hidden" name="orderId" id="modalOrderIdInput" />
+                        <input type="hidden" name="newStatus" value="Completed" />
+                        <button type="submit" class="btn btn-success">Complete Order</button>
+                    </form>
+
+                    <form asp-action="UpdateOrderStatus" method="post">
+                        <input type="hidden" name="orderId" id="modalOrderIdInputCancel" />
+                        <input type="hidden" name="newStatus" value="Canceled" />
+                        <button type="submit" class="btn btn-danger">Cancel Order</button>
+                    </form>
+
+
                 </div>
             </div>
         </div>
@@ -123,14 +189,14 @@
 
     @section Scripts {
     <script>
-        $('#orderDetailsModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); 
+              $('#orderDetailsModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
             var orderId = button.data('orderid');
             var customerName = button.data('customername');
             var totalAmount = button.data('totalamount');
             var status = button.data('status');
 
-            var productsData = button.attr('data-products'); // تعديل بسيط هنا بدل data('products') => attr
+            var productsData = button.attr('data-products');
             var products = [];
 
             if (productsData && productsData.trim() !== '') {
@@ -141,11 +207,13 @@
                 }
             }
 
-            // تعبئة البيانات
             $('#modalOrderId').text(orderId);
             $('#modalCustomerName').text(customerName);
             $('#modalTotalAmount').text('JD' + parseFloat(totalAmount).toFixed(2));
             $('#modalStatus').text(status);
+
+            $('#modalOrderIdInput').val(orderId);
+            $('#modalOrderIdInputCancel').val(orderId);
 
             var productList = '';
             if (products.length > 0) {
@@ -157,6 +225,7 @@
             }
             $('#modalProductList').html(productList);
         });
+
     </script>
 }
-}
+

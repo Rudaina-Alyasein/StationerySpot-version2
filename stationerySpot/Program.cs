@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using stationerySpot.Models;
+using stationerySpot.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true; // التأكد من عمل الـ Session حتى مع سياسة الخصوصية
 });
 
+builder.Services.AddScoped<OrderService>();
 
 var app = builder.Build();
 

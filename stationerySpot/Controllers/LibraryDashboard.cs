@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Razor.Compilation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using stationerySpot.Models;
+using stationerySpot.Services;
 using stationerySpot.ViewModels;
 using System.Diagnostics;
 
@@ -11,9 +12,13 @@ namespace stationerySpot.Controllers
     public class LibraryDashboard : Controller
     {
         private readonly MyDbContext _context;
-        public LibraryDashboard(MyDbContext context)
+        private readonly OrderService _orderService;
+
+        public LibraryDashboard(MyDbContext context, OrderService orderService)
         {
             _context = context;
+            _orderService = orderService;
+
 
         }
         public IActionResult Index()
@@ -207,37 +212,27 @@ namespace stationerySpot.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Orders()
+        public IActionResult Orders(string status, string sortOrder = "asc", string search = "")
         {
             int libraryId = HttpContext.Session.GetInt32("LibraryId").GetValueOrDefault();
 
-            var orders = _context.Orders
-                .Where(o => o.LibraryId == libraryId)
-                .Include(o => o.User)
-                .Include(o => o.OrderDetails)
-                   .ThenInclude(od => od.Product)
-                .ToList();
-
-            var orderViewModels = orders.Select(o => new OrderViewModel
+            if (libraryId == 0)
             {
-                OrderId = o.Id,
-                OrderDate = o.CreatedAt ?? DateTime.Now,
-                Status = o.Status,
-                Name = o.User?.Name ?? "Unknown User",
-                Email = o.User?.Email ?? "No Email",
-                TotalAmount = o.TotalAmount,
-                Products = o.OrderDetails != null
-                    ? o.OrderDetails.Where(od => od.Product != null).Select(od => new ProductInfo
-                    {
-                        ProductName = od.Product.Name,
-                        Quantity = od.Quantity,
-                        UnitPrice = od.Product.Price
-                    }).ToList()
-                    : new List<ProductInfo>()
-            }).ToList();
+                return RedirectToAction("Login", "User");
+            }
+
+            var orderViewModels = _orderService.GetOrders(libraryId, status, sortOrder, search);
+
+            ViewData["SelectedStatus"] = status;
+            ViewData["SortOrder"] = sortOrder;
+            ViewData["SearchQuery"] = search;
 
             return View(orderViewModels);
         }
+
+
+
+
         public IActionResult profile()
         {
             int libraryId = HttpContext.Session.GetInt32("LibraryId").GetValueOrDefault();
@@ -315,5 +310,28 @@ namespace stationerySpot.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult UpdateOrderStatus(int orderId, string newStatus)
+        {
+            // جيبي الطلب من قاعدة البيانات
+            var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                TempData["Error"] = "Order not found.";
+                return RedirectToAction("LibraryOrders");
+            }
+
+            // عدلي الحالة
+            order.Status = newStatus;
+            order.CreatedAt = DateTime.Now; // اختياري: لو عندك عمود تاريخ التحديث
+
+            // خزني التغييرات
+            _context.SaveChanges();
+
+            TempData["Success"] = $"Order #{orderId} marked as {newStatus}.";
+            return RedirectToAction("Orders");
+        }
+
     }
 }
