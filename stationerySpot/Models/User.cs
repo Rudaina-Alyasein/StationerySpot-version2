@@ -29,6 +29,9 @@ public partial class User
     public ICollection<ReviewsProduct> ReviewsProducts { get; set; }
     public virtual ICollection<Cart> Carts { get; set; } // علاقة مع عدة Carts
 
+    public Address Address { get; set; }
+    public PaymentMethod PaymentMethod { get; set; }  
+
 
 
     // يمكنك إضافة طريقة تحقق دور المستخدم

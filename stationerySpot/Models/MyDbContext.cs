@@ -47,6 +47,11 @@ public partial class MyDbContext : DbContext
     public virtual DbSet<ReviewsProduct> ReviewsProducts { get; set; }
 
     public virtual DbSet<Service> Services { get; set; }
+  
+    public DbSet<PaymentMethod> PaymentMethods { get; set; }
+    public DbSet<Address> Addresses { get; set; }
+
+
 
     public virtual DbSet<User> Users { get; set; }
 

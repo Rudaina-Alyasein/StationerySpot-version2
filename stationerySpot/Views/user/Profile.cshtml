@@ -1,9 +1,5 @@
 ﻿@model stationerySpot.Models.ProfileViewModel
-
-@{
-    Layout = "HomeLayout";
-}
-@section Style{
+@section Style {
     <!-- Favicon -->
     <!-- CSS (Font, Vendor, Icon, Plugins & Style CSS files) -->
     <!-- Font CSS -->
@@ -23,6 +19,10 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="~/assets/css/style.min.css">
 }
+
+@{
+    Layout = "HomeLayout";
+}
 <!--== Wrapper Start ==-->
 <div class="wrapper">
 
@@ -30,21 +30,21 @@
     <main class="main-content">
 
         <!--== Start Page Header Area Wrapper ==-->
-        <section class="page-header-area pt-10 pb-9" style="background-color:rgb(255, 243, 218)">
+        <!--== Start Page Title Area Wrapper ==-->
+        <section class="page-header-area py-5" style="background-color: rgb(255, 243, 218);">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-5">
-                        <div class="page-header-st3-content text-center text-md-start">
-                            <ol class="breadcrumb justify-content-center justify-content-md-start">
-                                <li class="breadcrumb-item"><a class="text-dark" href="index.html">Home</a></li>
-                                <li class="breadcrumb-item text-dark" aria-current="page">My Account</li>
-                            </ol>
-                            <h2 class="page-header-title">My Account</h2>
+                    <div class="col-md-6 mx-auto mx-md-0">
+                        <div class="page-header-content text-center text-md-start">
+                            <h2 class="page-header-title mb-0">My Account</h2>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+
+        <!--== End Page Title Area Wrapper ==-->
         <!--== End Page Header Area Wrapper ==-->
         <!--== Start My Account Area Wrapper ==-->
         <section class="my-account-area section-space">
@@ -54,11 +54,13 @@
                         <div class="my-account-tab-menu nav nav-tabs" id="nav-tab" role="tablist">
                             <button class="nav-link active" id="dashboad-tab" data-bs-toggle="tab" data-bs-target="#dashboad" type="button" role="tab" aria-controls="dashboad" aria-selected="true">Dashboard</button>
                             <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="false"> Orders</button>
-                            <button class="nav-link" id="download-tab" data-bs-toggle="tab" data-bs-target="#download" type="button" role="tab" aria-controls="download" aria-selected="false">Download</button>
+                            @* <button class="nav-link" id="download-tab" data-bs-toggle="tab" data-bs-target="#download" type="button" role="tab" aria-controls="download" aria-selected="false">Download</button> *@
                             <button class="nav-link" id="payment-method-tab" data-bs-toggle="tab" data-bs-target="#payment-method" type="button" role="tab" aria-controls="payment-method" aria-selected="false">Payment Method</button>
                             <button class="nav-link" id="address-edit-tab" data-bs-toggle="tab" data-bs-target="#address-edit" type="button" role="tab" aria-controls="address-edit" aria-selected="false">address</button>
                             <button class="nav-link" id="account-info-tab" data-bs-toggle="tab" data-bs-target="#account-info" type="button" role="tab" aria-controls="account-info" aria-selected="false">Account Details</button>
-                            <button class="nav-link" onclick="window.location.href='account-login.html'" type="button">Logout</button>
+                            <form action="@Url.Action("Logout", "User")" method="post" style="display:inline;">
+                                <button class="nav-link" type="submit">Logout</button>
+                            </form>
                         </div>
                     </div>
                     <div class="col-lg-9 col-md-8">
@@ -110,7 +112,7 @@
                                                 else
                                                 {
                                                     <tr>
-                                                        <td colspan="5">لا توجد طلبات لعرضها</td>
+                                                        <td colspan="5">there is no orders to display it</td>
                                                     </tr>
                                                 }
 
@@ -119,107 +121,176 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="download" role="tabpanel" aria-labelledby="download-tab">
-                                <div class="myaccount-content">
-                                    <h3>Downloads</h3>
-                                    <div class="myaccount-table table-responsive text-center">
-                                        <table class="table table-bordered">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th>Product</th>
-                                                    <th>Date</th>
-                                                    <th>Expire</th>
-                                                    <th>Download</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Haven - Free Real Estate PSD Template</td>
-                                                    <td>Aug 22, 2018</td>
-                                                    <td>Yes</td>
-                                                    <td><a href="#/" class="check-btn sqr-btn"><i class="fa fa-cloud-download"></i> Download File</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>HasTech - Profolio Business Template</td>
-                                                    <td>Sep 12, 2018</td>
-                                                    <td>Never</td>
-                                                    <td><a href="#/" class="check-btn sqr-btn"><i class="fa fa-cloud-download"></i> Download File</a></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                            
                             <div class="tab-pane fade" id="payment-method" role="tabpanel" aria-labelledby="payment-method-tab">
                                 <div class="myaccount-content">
                                     <h3>Payment Method</h3>
-                                    <p class="saved-message">You Can't Saved Your Payment Method yet.</p>
+
+                                    <form method="post" action="@Url.Action("UpdatePaymentMethod", "User")">
+                                        @if (Model.PaymentMethod != null)
+                                        {
+                                            <p><strong>Current Payment Method: </strong>@Model.PaymentMethod.MethodName</p>
+                                        }
+                                        else
+                                        {
+                                            <p>No payment method selected yet.</p>
+                                        }
+
+                                        <!-- Cash on Delivery (COD) -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="cod">
+                                            <label class="form-check-label" for="cod">
+                                                Cash on Delivery (COD)
+                                            </label>
+                                            <small class="text-muted">Pay when you receive the order.</small>
+                                        </div>
+
+                                        <!-- Bank Transfer -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paymentMethod" id="bankTransfer" value="bankTransfer">
+                                            <label class="form-check-label" for="bankTransfer">
+                                                Bank Transfer (Send proof via WhatsApp)
+                                            </label>
+                                            <small class="text-muted">Transfer payment to our bank account and send proof via WhatsApp.</small>
+                                        </div>
+
+                                        <!-- Submit the form -->
+                                        <button type="submit" class="btn btn-primary mt-3">Save Payment Method</button>
+                                    </form>
                                 </div>
                             </div>
+
                             <div class="tab-pane fade" id="address-edit" role="tabpanel" aria-labelledby="address-edit-tab">
                                 <div class="myaccount-content">
-                                    <h3>Billing Address</h3>
-                                    <address>
-                                        <p><strong>Alex Tuntuni</strong></p>
-                                        <p>
-                                            1355 Market St, Suite 900 <br>
-                                            San Francisco, CA 94103
-                                        </p>
-                                        <p>Mobile: (123) 456-7890</p>
-                                    </address>
-                                    <a href="#/" class="check-btn sqr-btn"><i class="fa fa-edit"></i> Edit Address</a>
+                                    <h3 class="mb-4" style="color: #2c3e50; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Billing Address</h3>
+
+                                    @if (Model.Address != null)
+                                    {
+                                        <div class="card shadow-sm p-3 mb-4" style="background-color: #f9f9f9; border-radius: 10px;">
+                                            <address style="font-size: 16px; color: #34495e; line-height: 1.6;">
+                                                <p><strong>@Model.Address.Street</strong></p>
+                                                <p>@Model.Address.City</p>
+                                                @if (!string.IsNullOrEmpty(Model.Address.PostalCode))
+                                                {
+                                                    <p><strong>Postal Code:</strong> @Model.Address.PostalCode</p>
+                                                }
+                                                @if (!string.IsNullOrEmpty(Model.Address.Notes))
+                                                {
+                                                    <p><strong>Notes:</strong> @Model.Address.Notes</p>
+                                                }
+                                            </address>
+
+                                            <!-- Edit Address Button -->
+                                            <a href="#editAddressModal" data-bs-toggle="modal" class="btn btn-outline-primary mt-3">
+                                                <i class="fa fa-edit"></i> Edit Address
+                                            </a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <p style="color: gray;">No address found.</p>
+                                        <a href="#editAddressModal" data-bs-toggle="modal" class="btn btn-outline-success mt-2">
+                                            <i class="fa fa-plus"></i> Add Address
+                                        </a>
+                                    }
                                 </div>
                             </div>
+
+                            <!-- Modal for Editing Address -->
+                            <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form method="post" action="@Url.Action("UpdateAddress", "User")">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="street" class="form-label">Street</label>
+                                                    <input type="text" class="form-control" id="street" name="street"
+                                                           value="@Model.Address?.Street" required />
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="city" class="form-label">City</label>
+                                                    <input type="text" class="form-control" id="city" name="city"
+                                                           value="@Model.Address?.City" required />
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="postalCode" class="form-label">Postal Code</label>
+                                                    <input type="text" class="form-control" id="postalCode" name="postalCode"
+                                                           value="@Model.Address?.PostalCode" />
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="notes" class="form-label">Notes</label>
+                                                    <input type="text" class="form-control" id="notes" name="notes"
+                                                           value="@Model.Address?.Notes" />
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save Address</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="tab-pane fade" id="account-info" role="tabpanel" aria-labelledby="account-info-tab">
                                 <div class="myaccount-content">
                                     <h3>Account Details</h3>
                                     <div class="account-details-form">
-                                        <form action="#">
+                                        <form asp-action="UpdateAccountDetails" method="post">
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="single-input-item">
                                                         <label for="first-name" class="required">First Name</label>
-                                                        <input type="text" id="first-name" />
+                                                        <input type="text" id="first-name" name="FirstName" value="@Model.Name?.Split(' ')[0]" />
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="single-input-item">
                                                         <label for="last-name" class="required">Last Name</label>
-                                                        <input type="text" id="last-name" />
+                                                        <input type="text" id="last-name" name="LastName" value="@(Model.Name?.Split(' ').Length > 1 ? Model.Name.Split(' ')[1] : "")" />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="single-input-item">
                                                 <label for="display-name" class="required">Display Name</label>
-                                                <input type="text" id="display-name" />
+                                                <input type="text" id="display-name" name="DisplayName" value="@Model.Name" />
                                             </div>
                                             <div class="single-input-item">
                                                 <label for="email" class="required">Email Address</label>
-                                                <input type="email" id="email" />
+                                                <input type="email" id="email" name="Email" value="@Model.Email" />
                                             </div>
                                             <fieldset>
                                                 <legend>Password change</legend>
                                                 <div class="single-input-item">
                                                     <label for="current-pwd" class="required">Current Password</label>
-                                                    <input type="password" id="current-pwd" />
+                                                    <input type="password" id="current-pwd" name="CurrentPassword" autocomplete="off" />
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item">
                                                             <label for="new-pwd" class="required">New Password</label>
-                                                            <input type="password" id="new-pwd" />
+                                                            <input type="password" id="new-pwd" name="NewPassword" />
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item">
                                                             <label for="confirm-pwd" class="required">Confirm Password</label>
-                                                            <input type="password" id="confirm-pwd" />
+                                                            <input type="password" id="confirm-pwd" name="ConfirmPassword" />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <div class="single-input-item">
-                                                <button class="check-btn sqr-btn">Save Changes</button>
+                                                <button type="submit" class="check-btn sqr-btn">Save Changes</button>
                                             </div>
                                         </form>
                                     </div>
@@ -403,75 +474,7 @@
             <h1 class="d-none" id="offcanvasExampleLabel">Aside Menu</h1>
             <button class="btn-menu-close" data-bs-dismiss="offcanvas" aria-label="Close">menu <i class="fa fa-chevron-left"></i></button>
         </div>
-        @* <div class="offcanvas-body"> *@
-        @*     <div id="offcanvasNav" class="offcanvas-menu-nav"> *@
-        @*         <ul> *@
-        @*             <li class="offcanvas-nav-parent"> *@
-        @*                 <a class="offcanvas-nav-item" href="#">home</a> *@
-        @*                 <ul> *@
-        @*                     <li><a href="index.html">Home One</a></li> *@
-        @*                     <li><a href="index-two.html">Home Two</a></li> *@
-        @*                 </ul> *@
-        @*             </li> *@
-        @*             <li class="offcanvas-nav-parent"><a class="offcanvas-nav-item" href="about-us.html">about</a></li> *@
-        @*             <li class="offcanvas-nav-parent"> *@
-        @*                 <a class="offcanvas-nav-item" href="#">shop</a> *@
-        @*                 <ul> *@
-        @*                     <li> *@
-        @*                         <a href="#" class="offcanvas-nav-item">Shop Layout</a> *@
-        @*                         <ul> *@
-        @*                             <li><a href="product.html">Shop 3 Column</a></li> *@
-        @*                             <li><a href="product-four-columns.html">Shop 4 Column</a></li> *@
-        @*                             <li><a href="product-left-sidebar.html">Shop Left Sidebar</a></li> *@
-        @*                             <li><a href="product-right-sidebar.html">Shop Right Sidebar</a></li> *@
-        @*                         </ul> *@
-        @*                     </li> *@
-        @*                     <li> *@
-        @*                         <a href="#" class="offcanvas-nav-item">Single Product</a> *@
-        @*                         <ul> *@
-        @*                             <li><a href="product-details-normal.html">Single Product Normal</a></li> *@
-        @*                             <li><a href="product-details.html">Single Product Variable</a></li> *@
-        @*                             <li><a href="product-details-group.html">Single Product Group</a></li> *@
-        @*                             <li><a href="product-details-affiliate.html">Single Product Affiliate</a></li> *@
-        @*                         </ul> *@
-        @*                     </li> *@
-        @*                     <li> *@
-        @*                         <a href="#" class="offcanvas-nav-item">Others Pages</a> *@
-        @*                         <ul> *@
-        @*                             <li><a href="product-cart.html">Shopping Cart</a></li> *@
-        @*                             <li><a href="product-checkout.html">Checkout</a></li> *@
-        @*                             <li><a href="product-wishlist.html">Wishlist</a></li> *@
-        @*                             <li><a href="product-compare.html">Compare</a></li> *@
-        @*                         </ul> *@
-        @*                     </li> *@
-        @*                 </ul> *@
-        @*             </li> *@
-        @*             <li class="offcanvas-nav-parent"> *@
-        @*                 <a class="offcanvas-nav-item" href="#">Blog</a> *@
-        @*                 <ul> *@
-        @*                     <li> *@
-        @*                         <a class="offcanvas-nav-item" href="#">Blog Layout</a> *@
-        @*                         <ul> *@
-        @*                             <li><a href="blog.html">Blog Grid</a></li> *@
-        @*                             <li><a href="blog-left-sidebar.html">Blog Left Sidebar</a></li> *@
-        @*                             <li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li> *@
-        @*                         </ul> *@
-        @*                     </li> *@
-        @*                     <li><a href="blog-details.html">Blog Details</a></li> *@
-        @*                 </ul> *@
-        @*             </li> *@
-        @*             <li class="offcanvas-nav-parent"> *@
-        @*                 <a class="offcanvas-nav-item" href="#">Pages</a> *@
-        @*                 <ul> *@
-        @*                     <li><a href="account-login.html">My Account</a></li> *@
-        @*                     <li><a href="faq.html">Frequently Questions</a></li> *@
-        @*                     <li><a href="page-not-found.html">Page Not Found</a></li> *@
-        @*                 </ul> *@
-        @*             </li> *@
-        @*             <li class="offcanvas-nav-parent"><a class="offcanvas-nav-item" href="contact.html">Contact</a></li> *@
-        @*         </ul> *@
-        @*     </div> *@
-        @* </div> *@
+
     </aside>
     <!--== End Aside Menu ==-->
 
@@ -491,8 +494,21 @@
     <script src="~/js/plugins/swiper-bundle.min.js"></script>
     <script src="~/js/plugins/fancybox.min.js"></script>
     <script src="~/js/plugins/jquery.nice-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Custom Main JS -->
     <script src="~/js/main.js"></script>
+    <script>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Done!',
+                            text: '@TempData["SuccessMessage"]'
+                    });
+            </text>
+        }
+    </script>
 
 }

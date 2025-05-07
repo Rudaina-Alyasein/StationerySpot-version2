@@ -51,10 +51,10 @@
         @*     </button> *@
         @* </li> *@
         <li class="nav-item m-1" role="presentation">
-            <a class="nav-link tab" asp-controller="Home" asp-action="AcademicProject" role="tab style="color:black !important;">
+            <a class="nav-link tab" asp-controller="Home" asp-action="AcademicProject" role="tab" style="color:black !important;">
                 🎓 Project Help
             </a>
-
+           
         </li>
         <li class="nav-item m-1" role="presentation">
             <button class="nav-link tab" id="pdf-tab" data-bs-toggle="tab" data-bs-target="#pdf"
@@ -80,10 +80,10 @@
                         <h3>Contact Us</h3>
                         <ul>
                             <li><i class="fas fa-map-marker-alt"></i><a>@Model.Library.Location</a></li>
-                            @if (Model.LibraryAccounts != null && !string.IsNullOrEmpty(Model.LibraryAccounts.Email))
-                            {
-                                <li><i class="fas fa-envelope"></i><a href="mailto:@Model.LibraryAccounts.Email">@Model.LibraryAccounts.Email</a></li>
-                            }
+                            @* @if (Model.LibraryAccounts != null && !string.IsNullOrEmpty(Model.LibraryAccounts.Email)) *@
+                            @* { *@
+                            @*     <li><i class="fas fa-envelope"></i><a href="mailto:@Model.LibraryAccounts.Email">@Model.LibraryAccounts.Email</a></li> *@
+                            @* } *@
                             <li><i class="fas fa-phone-alt"></i><a href="tel:@Model.Library.Phone">@Model.Library.Phone</a></li>
                             <li><i class="fas fa-globe"></i><a href="@Model.Library.WebsiteUrl" target="_blank">@Model.Library.WebsiteUrl</a></li>
                         </ul>

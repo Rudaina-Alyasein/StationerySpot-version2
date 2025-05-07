@@ -4,6 +4,7 @@ using stationerySpot.Models;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using stationerySpot.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace stationerySpot.Controllers
 {
@@ -130,60 +131,164 @@ namespace stationerySpot.Controllers
         [HttpPost]
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear(); // حذف جميع بيانات الجلسة
-            return RedirectToAction("Login", "User"); // إعادة التوجيه لصفحة تسجيل الدخول
+            HttpContext.Session.Clear(); 
+            return RedirectToAction("Login", "User"); 
         }
         public IActionResult Profile()
         {
-            // جلب بيانات المستخدم من الجلسة
             var userId = HttpContext.Session.GetString("UserId");
 
-            if (userId == null)
+            if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction("Login", "User"); // إذا لم تكن هناك بيانات في الجلسة، إعادة التوجيه إلى صفحة تسجيل الدخول
+                TempData["WarningMessage"] = "Please log in first.";
+                return RedirectToAction("Login", "User");
             }
 
-            // تحويل UserId إلى نوع int باستخدام TryParse لتجنب الاستثناءات
             if (!int.TryParse(userId, out int id))
             {
-                return RedirectToAction("Login", "User"); // إذا كانت القيمة غير صالحة، إعادة التوجيه إلى صفحة تسجيل الدخول
+                TempData["WarningMessage"] = "Invalid user data.";
+                return RedirectToAction("Login", "User");
             }
 
-            // جلب بيانات المستخدم من قاعدة البيانات
             var user = _context.Users
-                               .Include(u => u.Orders)
-                               .Include(u => u.PrintRequests)
-                               .Include(u => u.Reviews)
-                               .FirstOrDefault(u => u.Id == id);
+                                .Include(u => u.Address)       // تضمين العنوان
+                                .Include(u => u.Orders)        // تضمين الطلبات
+                                .Include(u => u.PaymentMethod) // تضمين طريقة الدفع
+                                .FirstOrDefault(u => u.Id == id);
 
             if (user == null)
             {
-                return RedirectToAction("Login", "User"); // إذا لم يتم العثور على المستخدم، إعادة التوجيه إلى صفحة تسجيل الدخول
+                TempData["WarningMessage"] = "User not found.";
+                return RedirectToAction("Login", "User");
             }
 
-            // إنشاء ViewModel مع البيانات
-            var profileModel = new ProfileViewModel
+            // بناء الـ ViewModel
+            var model = new ProfileViewModel
             {
                 Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
                 Role = user.Role,
                 CreatedAt = user.CreatedAt,
-                Orders = user.Orders.Select(order => new OrderViewModel
+                Address = user.Address,            // تضمين العنوان
+                Orders = user.Orders.Select(o => new OrderViewModel
                 {
-                    OrderId = order.Id,
-                    Status = order.Status,
-                    TotalAmount = order.TotalAmount,
-                    OrderDate = order.CreatedAt ?? DateTime.Now
-                }).ToList(),
-                // إذا كنت ترغب في إضافة PrintRequests و Reviews، قم بإلغاء تعليق الكود هنا
-                //PrintRequests = user.PrintRequests.Select(request => new PrintRequestViewModel {...}).ToList(),
-                //Reviews = user.Reviews.Select(review => new ReviewViewModel {...}).ToList()
+                    OrderId = o.Id,
+                    OrderDate = o.CreatedAt ?? DateTime.Now,
+                    TotalAmount = o.TotalAmount
+                }).ToList(),                      // تضمين الطلبات
+                PaymentMethod = user.PaymentMethod  // تضمين طريقة الدفع
             };
 
-            // إرسال البيانات إلى الفيو
-            return View(profileModel);
+            return View(model);
         }
 
+
+        [HttpPost]
+        public IActionResult UpdatePaymentMethod(string paymentMethod)
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            if (!int.TryParse(userId, out int id))
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            var paymentMethodRecord = _context.PaymentMethods.FirstOrDefault(p => p.UserId == id);
+
+            if (paymentMethodRecord != null)
+            {
+                // تحديث طريقة الدفع
+                paymentMethodRecord.MethodName = paymentMethod;
+                paymentMethodRecord.IsPaid = paymentMethod == "cod" ? true : false; // إذا كانت COD يعتبر الدفع تم
+                paymentMethodRecord.PaymentDate = DateTime.Now;
+            }
+            else
+            {
+                var newPaymentMethod = new PaymentMethod
+                {
+                    UserId = id,
+                    MethodName = paymentMethod,
+                    IsPaid = paymentMethod == "cod" ? true : false,
+                    PaymentDate = DateTime.Now
+                };
+
+                _context.PaymentMethods.Add(newPaymentMethod);
+            }
+
+            _context.SaveChanges(); // حفظ التغييرات في قاعدة البيانات
+
+            return RedirectToAction("Profile"); // إعادة التوجيه إلى صفحة طرق الدفع
         }
+        [HttpPost]
+        public IActionResult UpdateAddress(string street, string city, string postalCode, string notes)
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (!int.TryParse(userIdStr, out int userId)) return RedirectToAction("Login", "User");
+
+            var address = _context.Addresses.FirstOrDefault(a => a.UserId == userId);
+            if (address == null)
+            {
+                address = new Address { UserId = userId };
+                _context.Addresses.Add(address);
+            }
+
+            address.Street = street;
+            address.City = city;
+            address.PostalCode = postalCode;
+            address.Notes = notes;
+
+            _context.SaveChanges();
+            TempData["SuccessMessage"] = "Your address has been updated successfully!";
+
+            return RedirectToAction("Profile");
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateAccountDetails(ProfileViewModel model)
+        {
+            // التأكد من أن المستخدم موجود
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (!int.TryParse(userIdStr, out int userId)) return RedirectToAction("Login", "User");
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return RedirectToAction("Login", "User");
+
+            // التحقق من كلمة السر الحالية إذا كانت صحيحة (بدون Hashing)
+            if (user.PasswordHash != model.CurrentPassword)
+            {
+                ModelState.AddModelError(string.Empty, "Incorrect current password.");
+                return View(model);
+            }
+
+            // تحديث البيانات
+            user.Name = $"{model.FirstName} {model.LastName}";
+            user.Email = model.Email;
+
+            // إذا تم إدخال كلمة سر جديدة، حدثها
+            if (!string.IsNullOrWhiteSpace(model.NewPassword))
+            {
+                user.PasswordHash = model.NewPassword; // ملاحظة: غير آمن تخزينها بهذا الشكل
+            }
+
+            // حفظ التعديلات
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Account updated successfully!";
+            return RedirectToAction("Profile");
+        }
+
+
     }
+
+}
