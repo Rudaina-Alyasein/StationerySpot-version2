@@ -18,11 +18,96 @@
 
     <!-- Style CSS -->
     <link rel="stylesheet" href="~/assets/css/style.min.css">
+    <style>
+        .account-details-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        .profile-image-container {
+            margin-bottom: 20px;
+        }
+
+        .profile-image-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
+        }
+
+        .profile-image-input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #ff6565;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn:hover {
+                background-color: #ff6565;
+            }
+
+        .update-btn {
+            margin-top: 10px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .single-input-item {
+            margin-bottom: 20px;
+        }
+
+        .row {
+            margin-left: -10px;
+            margin-right: -10px;
+        }
+
+        .col-md-6 {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .user-image-preview {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-top: 30px;
+
+        }
+
+        .password-change-section legend {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+    </style>
+
 }
 
 @{
     Layout = "HomeLayout";
 }
+
 <!--== Wrapper Start ==-->
 <div class="wrapper">
 
@@ -245,55 +330,83 @@
                                 <div class="myaccount-content">
                                     <h3>Account Details</h3>
                                     <div class="account-details-form">
-                                        <form asp-action="UpdateAccountDetails" method="post">
+                                        <!-- Form to update profile image -->
+                                        <form asp-action="UpdateProfileImage" method="post" enctype="multipart/form-data" class="update-profile-form">
+                                            <div class="profile-image-container">
+                                                <label for="profile-image" class="profile-image-label">Change Profile Image</label>
+                                                <input type="file" id="profile-image" name="ProfileImage" accept="image/*" required class="profile-image-input" />
+                                            </div>
+                                            <button type="submit" class="btn btn-primary update-btn">Update Image</button>
+                                        </form>
+
+                                        <!-- Form to update account details -->
+                                        <form asp-action="UpdateAccountDetails" method="post" class="account-details-form-fields">
+                                            @if (!string.IsNullOrEmpty(Model.ProfileImagePath))
+                                            {
+                                                <div class="profile-image-preview">
+                                                    <img src="@Model.ProfileImagePath" alt="User Image" class="user-image-preview" />
+                                                </div>
+                                            }
+
+                                            <!-- User's Name (First Name and Last Name) -->
                                             <div class="row">
-                                                <div class="col-lg-6">
+                                                <div class="col-md-6">
                                                     <div class="single-input-item">
                                                         <label for="first-name" class="required">First Name</label>
-                                                        <input type="text" id="first-name" name="FirstName" value="@Model.Name?.Split(' ')[0]" />
+                                                        <input type="text" id="first-name" name="FirstName" value="@Model.Name?.Split(' ')[0]" class="input-field" />
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-md-6">
                                                     <div class="single-input-item">
                                                         <label for="last-name" class="required">Last Name</label>
-                                                        <input type="text" id="last-name" name="LastName" value="@(Model.Name?.Split(' ').Length > 1 ? Model.Name.Split(' ')[1] : "")" />
+                                                        <input type="text" id="last-name" name="LastName" value="@(Model.Name?.Split(' ').Length > 1 ? Model.Name.Split(' ')[1] : "")" class="input-field" />
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <!-- Display Name -->
                                             <div class="single-input-item">
                                                 <label for="display-name" class="required">Display Name</label>
-                                                <input type="text" id="display-name" name="DisplayName" value="@Model.Name" />
+                                                <input type="text" id="display-name" name="DisplayName" value="@Model.Name" class="input-field" />
                                             </div>
+
+                                            <!-- Email Address -->
                                             <div class="single-input-item">
                                                 <label for="email" class="required">Email Address</label>
-                                                <input type="email" id="email" name="Email" value="@Model.Email" />
+                                                <input type="email" id="email" name="Email" value="@Model.Email" class="input-field" />
                                             </div>
-                                            <fieldset>
+
+                                            <!-- Password Change Section -->
+                                            <fieldset class="password-change-section">
                                                 <legend>Password change</legend>
                                                 <div class="single-input-item">
                                                     <label for="current-pwd" class="required">Current Password</label>
-                                                    <input type="password" id="current-pwd" name="CurrentPassword" autocomplete="off" />
+                                                    <input type="password" id="current-pwd" name="CurrentPassword" autocomplete="off" class="input-field" />
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-lg-6">
+                                                    <div class="col-md-6">
                                                         <div class="single-input-item">
                                                             <label for="new-pwd" class="required">New Password</label>
-                                                            <input type="password" id="new-pwd" name="NewPassword" />
+                                                            <input type="password" id="new-pwd" name="NewPassword" class="input-field" />
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-6">
+                                                    <div class="col-md-6">
                                                         <div class="single-input-item">
                                                             <label for="confirm-pwd" class="required">Confirm Password</label>
-                                                            <input type="password" id="confirm-pwd" name="ConfirmPassword" />
+                                                            <input type="password" id="confirm-pwd" name="ConfirmPassword" class="input-field" />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </fieldset>
+
+                                            <!-- Save Changes Button -->
                                             <div class="single-input-item">
-                                                <button type="submit" class="check-btn sqr-btn">Save Changes</button>
+                                                <button type="submit" class="btn btn-primary save-btn">Save Changes</button>
                                             </div>
                                         </form>
                                     </div>
+
+                                    <!-- Style in CSS for consistency -->
                                 </div>
                             </div>
                         </div>

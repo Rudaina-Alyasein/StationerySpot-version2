@@ -1,7 +1,9 @@
-﻿
+﻿@model List<stationerySpot.ViewModels.OfferViewModel>
+
 @{
     Layout = "HomeLayout";
 }
+
 @section Style{
      <link rel="stylesheet" href="~/assets/style/style.css" asp-append-version="true"> 
 
@@ -110,105 +112,48 @@
             </div>
         </div>
     </div>
-    <!-- Latest Offers Section -->
-    <div class="offers-section">
-        <h3 class="offers-title text-center" style="color:#0097B2; font-size:32px; font-weight:900;">Latest Offers</h3>
-        <div id="offersCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <!-- Slide 1 -->
-                <div class="carousel-item active">
+<!-- Latest Offers Section -->
+<div class="offers-section">
+    <h3 class="offers-title text-center" style="color:#0097B2; font-size:32px; font-weight:900;">Latest Offers</h3>
+    <div id="offersCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @for (int i = 0; i < Model.Count; i += 3)
+            {
+                var slideOffers = Model.Skip(i).Take(3).ToList();
+                var isActive = i == 0 ? "active" : "";
+                <div class="carousel-item @isActive">
                     <div class="row justify-content-center g-3">
-                        <!-- Offer 1 -->
-                        <div class="col-6 col-lg-4">
-                            <div class="card">
-                            <img src="~/assets\img\Kawaii_Pen_Shop__1_-removebg-preview.png" class="card-img-top" alt="Offer 1">
-                                <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
-                                    <h5 class="card-title">Special Offer 1</h5>
-                                    <p class="card-text">Get 20% off on your favorite books!</p>
-                                    <h5 class="card-title">Available at: Curve Library</h5>
-                                    <a class="btn btn-primary mt-2 ShopNow" href="#">Shop now</a>
+                        @foreach (var offer in slideOffers)
+                        {
+                            <div class="col-6 col-lg-4 @(slideOffers.Count < 3 && offer == slideOffers.Last() ? "d-none d-lg-block" : "")">
+                                <div class="card">
+                                    <img src="@offer.ImagePath" class="card-img-top" alt="Offer image" />
+                                    <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
+                                        <h5 class="card-title">@offer.Title</h5>
+                                        <p class="card-text">@offer.Description</p>
+                                        <h5 class="card-title">Available at: @offer.LibraryName</h5>
+                                        <a class="btn btn-primary mt-2 ShopNow" href="@Url.Action("Offer", "Home", new { id = offer.Id })">Shop now</a>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Offer 2 -->
-                        <div class="col-6 col-lg-4">
-                            <div class="card">
-                            <img src="~/assets\img\download__8_-removebg-preview (1).png" class="card-img-top" alt="Offer 2">
-                                <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
-                                    <h5 class="card-title">Special Offer 2</h5>
-                                    <p class="card-text">Buy 1 get 1 free on selected items!</p>
-                                    <h5 class="card-title">Available at: Alyaqeen Library</h5>
-                                    <a class="btn btn-primary mt-2 ShopNow" href="#">Shop now</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Offer 3 -->
-                        <div class="col-6 col-lg-4 d-none d-lg-block">
-                            <div class="card">
-                            <img src="~/assets\img\offer3-removebg-preview.png" class="card-img-top" alt="Offer 3">
-                                <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
-                                    <h5 class="card-title">Special Offer 3</h5>
-                                    <p class="card-text">Free shipping for orders over $50!</p>
-                                    <h5 class="card-title">Available at: Noor Library</h5>
-                                    <a class="btn btn-primary mt-2 ShopNow" href="#">Shop now</a>
-                                </div>
-                            </div>
-                        </div>
+                        }
                     </div>
                 </div>
-                <!-- Slide 2 -->
-                <div class="carousel-item">
-                    <div class="row justify-content-center g-3">
-                        <!-- Offer 4 -->
-                        <div class="col-6 col-lg-4">
-                            <div class="card">
-                            <img src="~/assets\img/Offer1.png" class="card-img-top" alt="Offer 4">
-                                <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
-                                    <h5 class="card-title">Special Offer 4</h5>
-                                    <p class="card-text">Save 30% on your next purchase!</p>
-                                    <h5 class="card-title">Available at: Curve Library</h5>
-                                    <a class="btn btn-primary mt-2 ShopNow" href="#">Shop now</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Offer 5 -->
-                        <div class="col-6 col-lg-4">
-                            <div class="card">
-                            <img src="~/assets\img\LIK_EPOCH_Pink_Backpack_Kawaii_Backpack_with_Cute_Pin_Accessories_Plush_Pendant__16_Inch-removebg-preview.png" class="card-img-top" alt="Offer 5">
-                                <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
-                                    <h5 class="card-title">Special Offer 5</h5>
-                                    <p class="card-text">Enjoy an exclusive member discount!</p>
-                                    <h5 class="card-title">Available at: Curve Library</h5>
-                                    <a class="btn btn-primary mt-2 ShopNow" href="#">Shop now</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Offer 6 -->
-                        <div class="col-6 col-lg-4 d-none d-lg-block">
-                            <div class="card">
-                            <img src="~/assets\img\download__9_-removebg-preview.png" class="card-img-top" alt="Offer 6">
-                                <div class="card-body" style="color:rgba(0, 0, 0, 0.7)">
-                                    <h5 class="card-title">Special Offer 6</h5>
-                                    <p class="card-text">Get a free gift with every purchase over $100!</p>
-                                    <h5 class="card-title">Available at: Curve Library</h5>
-                                    <a class="btn btn-primary mt-2 ShopNow" href="#">Shop now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Carousel Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#offersCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#offersCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+            }
         </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#offersCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#offersCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
+</div>
 
     <!-- Tabs Section -->
     <div class="container py-5">

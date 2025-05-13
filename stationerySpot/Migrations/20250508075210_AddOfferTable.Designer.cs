@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using stationerySpot.Models;
 
@@ -11,9 +12,11 @@ using stationerySpot.Models;
 namespace stationerySpot.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250508075210_AddOfferTable")]
+    partial class AddOfferTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -430,63 +433,26 @@ namespace stationerySpot.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime?>("ExpiryDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagePath")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LibraryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Link")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LibraryId");
 
                     b.ToTable("Offers");
-                });
-
-            modelBuilder.Entity("stationerySpot.Models.OfferComment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CommentText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DatePosted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OfferId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OfferId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("OfferComments");
                 });
 
             modelBuilder.Entity("stationerySpot.Models.Order", b =>
@@ -840,9 +806,6 @@ namespace stationerySpot.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("ProfileImagePath")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -933,25 +896,6 @@ namespace stationerySpot.Migrations
                         .IsRequired();
 
                     b.Navigation("Library");
-                });
-
-            modelBuilder.Entity("stationerySpot.Models.OfferComment", b =>
-                {
-                    b.HasOne("stationerySpot.Models.Offer", "Offer")
-                        .WithMany("OfferComments")
-                        .HasForeignKey("OfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("stationerySpot.Models.User", "User")
-                        .WithMany("OfferComments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Offer");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("stationerySpot.Models.Order", b =>
@@ -1118,11 +1062,6 @@ namespace stationerySpot.Migrations
                     b.Navigation("Services");
                 });
 
-            modelBuilder.Entity("stationerySpot.Models.Offer", b =>
-                {
-                    b.Navigation("OfferComments");
-                });
-
             modelBuilder.Entity("stationerySpot.Models.Order", b =>
                 {
                     b.Navigation("OrderDetails");
@@ -1143,8 +1082,6 @@ namespace stationerySpot.Migrations
                         .IsRequired();
 
                     b.Navigation("Carts");
-
-                    b.Navigation("OfferComments");
 
                     b.Navigation("Orders");
 

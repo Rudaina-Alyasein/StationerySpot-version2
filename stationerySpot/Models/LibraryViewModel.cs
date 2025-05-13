@@ -8,6 +8,7 @@
         public List<Service> Services { get; set; }
         public List<PrintRequest> PrintRequests { get; set; }  // إضافة الطلبات للطباعة
         public LibraryAccount LibraryAccounts { get; set; }  // مفرد مش List
+        public List<Category> Categories { get; set; } // ← أضيفي هذا
 
 
     }

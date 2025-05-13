@@ -16,6 +16,8 @@ public partial class User
     public string Role { get; set; } = null!;
 
     public DateTime? CreatedAt { get; set; }
+    public string? ProfileImagePath { get; set; } 
+
 
     // العلاقات مع الجداول الأخرى
     //public virtual ICollection<ContactU> ContactUs { get; set; } = new List<ContactU>();
@@ -28,6 +30,7 @@ public partial class User
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
     public ICollection<ReviewsProduct> ReviewsProducts { get; set; }
     public virtual ICollection<Cart> Carts { get; set; } // علاقة مع عدة Carts
+    public virtual ICollection<OfferComment> OfferComments { get; set; } = new List<OfferComment>();
 
     public Address Address { get; set; }
     public PaymentMethod PaymentMethod { get; set; }  

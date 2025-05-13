@@ -50,12 +50,12 @@
         @*         🛠 Services *@
         @*     </button> *@
         @* </li> *@
-        <li class="nav-item m-1" role="presentation">
-            <a class="nav-link tab" asp-controller="Home" asp-action="AcademicProject" role="tab" style="color:black !important;">
-                🎓 Project Help
-            </a>
-           
-        </li>
+        @* <li class="nav-item m-1" role="presentation"> *@
+        @*     <a class="nav-link tab external-link" asp-controller="Home" asp-action="AcademicProject" role="tab" style="color:black !important;"> *@
+        @*         🎓 Project Help *@
+        @*     </a> *@
+        @* </li> *@
+
         <li class="nav-item m-1" role="presentation">
             <button class="nav-link tab" id="pdf-tab" data-bs-toggle="tab" data-bs-target="#pdf"
                     type="button" role="tab" aria-controls="pdf" aria-selected="false">
@@ -84,8 +84,8 @@
                             @* { *@
                             @*     <li><i class="fas fa-envelope"></i><a href="mailto:@Model.LibraryAccounts.Email">@Model.LibraryAccounts.Email</a></li> *@
                             @* } *@
-                            <li><i class="fas fa-phone-alt"></i><a href="tel:@Model.Library.Phone">@Model.Library.Phone</a></li>
-                            <li><i class="fas fa-globe"></i><a href="@Model.Library.WebsiteUrl" target="_blank">@Model.Library.WebsiteUrl</a></li>
+                            <li><i class="fas fa-phone-alt"></i><a href="" >@Model.Library.Phone</a></li>
+                            <li><i class="fas fa-globe"></i><a href="" >@Model.Library.WebsiteUrl</a></li>
                         </ul>
                     </div>
 
@@ -119,40 +119,34 @@
         <!-- Products Tab -->
         <div class="tab-pane fade" id="onsale" role="tabpanel" aria-labelledby="onsale-tab">
             <div class="filters my-3">
+                <!-- Hidden inputs to store selected filters -->
+                <input type="hidden" id="filter-category" name="category" value="Stationery" />
+                <input type="hidden" id="filter-sort" name="sortBy" value="low-to-high" />
+
                 <div class="d-flex flex-column flex-sm-row">
                     <!-- Category Filter -->
                     <div class="mb-3 me-sm-3">
                         <label for="category-filter" class="form-label mt-2">Filter by Category:</label>
-                        <div class="custom-select">
-                            <div class="selected-option">
-                                Stationery
-                                <i class="icon-arrow-down">&#9660;</i>
-                            </div>
-                            <ul class="options-list">
-                                <li class="option-item">Stationery</li>
-                                <li class="option-item">Book</li>
-                                <li class="option-item">Bags</li>
-                            </ul>
-                        </div>
+                        <select id="category-filter" class="form-select" name="category">
+                            <option value="">Select Category</option>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <option value="@category.Name">@category.Name</option>
+                            }
+                        </select>
                     </div>
 
                     <!-- Sort By Filter -->
                     <div class="mb-3">
                         <label for="sort-by" class="form-label mt-2">Sort By:</label>
-                        <div class="custom-select">
-                            <div class="selected-option">
-                                Price: Low to High
-                                <i class="icon-arrow-down">&#9660;</i>
-                            </div>
-                            <ul class="options-list">
-                                <li class="option-item">Price: Low to High</li>
-                                <li class="option-item">Price: High to Low</li>
-                                <li class="option-item">Newest</li>
-                                <li class="option-item">Bestseller</li>
-                            </ul>
-                        </div>
+                        <select id="sort-by" class="form-select" name="sort">
+                            <option value="PriceLowToHigh">Price: Low to High</option>
+                            <option value="PriceHighToLow">Price: High to Low</option>
+                            <option value="Newest">Newest</option>
+                        </select>
                     </div>
                 </div>
+
             </div>
 
             <!-- Search Bar -->
@@ -160,7 +154,7 @@
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-8 col-lg-6 d-flex align-items-center gap-3">
                         <!-- Search Input -->
-                        <input id="search-bar" type="text" class="form-control" placeholder="Search..." />
+                        <input id="search-bar" type="text" class="form-control" placeholder="Search for a product..." />
                         <!-- Search Button -->
                         <button id="search-button" class="btn">
                             <i class="fa fa-search"></i>
@@ -169,41 +163,9 @@
                 </div>
 
             </div>
-            <!-- Pagination with Cards -->
-            @if (Model != null )
-            {
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                    @foreach (var product in Model.Products)
-                    {
-                        if (product != null)
-                        {
-                            <div class="col">
-                                <div class="card pagination-card">
-                                    <img src="@(string.IsNullOrEmpty(product.ImagePath) ? "/path/to/default-image.jpg" : product.ImagePath)" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">@product.Name</h5>
-                                        <p class="card-text">@product.Description</p>
-                                        <p class="card-price">JD @product.Price</p>
-                                        <div class="d-flex flex-column flex-sm-row justify-content-between">
-                                            <button type="button" class="btn btn-primary add-to-cart-btn mb-2 mb-sm-0"
-                                                    data-product-id="@product.Id">
-                                                Add to Cart
-                                            </button>
-                                            <a href="@Url.Action("ProductDetails", "Home", new { id = product.Id })" class="btn btn-secondary">View Details</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-
-                </div>
-            }
-            else
-            {
-                <p>No products available.</p>
-            }
-
+            <div id="product-container">
+                @Html.Partial("_FilteredProductsPartial", Model.Products)
+            </div>
 
 
 
@@ -672,9 +634,95 @@
 
                 });
 
+                //filter products
+                // عندما يتغير الاختيار في الـ Category Filter
+                $('#category-filter').change(function() {
+                    var selectedCategory = $(this).val(); // الحصول على القيمة المحددة
 
+                    var selectedSort = $('#sort-by').val(); // الحصول على القيمة المحددة من الترتيب
 
-            
+                    // إرسال الطلب عبر AJAX
+                    $.ajax({
+                        url: '@Url.Action("FilterProducts", "Home")',  // استبدل هذا بعنوان URL للـ action الذي سيتعامل مع الفلاتر
+                        type: 'GET',
+                        data: { category: selectedCategory, sort: selectedSort },
+                        success: function(response) {
+                            // تحديث المحتوى بناءً على الاستجابة (سيتم تحميل الـ PartialView)
+                            $('#product-container').html(response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.log("Error: " + error);
+                        }
+                    });
+                });
+
+                // عندما يتغير الاختيار في الـ Sort Filter
+                $('#sort-by').change(function() {
+                    var selectedCategory = $('#category-filter').val(); // الحصول على القيمة المحددة من الفئة
+
+                    var selectedSort = $(this).val(); // الحصول على القيمة المحددة من الترتيب
+
+                    // إرسال الطلب عبر AJAX
+                    $.ajax({
+                        url: '@Url.Action("FilterProducts", "Home")',  // استبدل هذا بعنوان URL للـ action الذي سيتعامل مع الفلاتر
+                        type: 'GET',
+                        data: { category: selectedCategory, sort: selectedSort },
+                        success: function(response) {
+                            // تحديث المحتوى بناءً على الاستجابة (سيتم تحميل الـ PartialView)
+                            $('#product-container').html(response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.log("Error: " + error);
+                        }
+                    });
+                });
+
+            //search for a product
+                            $(document).ready(function () {
+                    // عندما يضغط المستخدم على زر البحث أو يكتب في شريط البحث
+                    $('#search-button').click(function () {
+                        var searchText = $('#search-bar').val().trim();  // الحصول على النص من شريط البحث
+
+                        if (searchText.length > 0) {
+                            // إرسال الطلب إلى السيرفر باستخدام AJAX
+                            $.ajax({
+                                url: '@Url.Action("SearchProduct", "Home")', // استبدل باسم الـ Action في الـ Controller
+                                method: 'GET',
+                                data: { query: searchText },
+                                success: function (response) {
+                                    // عرض النتائج في مكان معين داخل الصفحة
+                                        $('#product-container').html(response);
+                                },
+                                error: function () {
+                                    alert("Error while searching");
+                                }
+                            });
+                        }
+                    });
+
+                    // كذلك يمكن إضافة استدعاء عند الكتابة في شريط البحث لتحديث النتائج مباشرة
+                    $('#search-bar').keyup(function () {
+                        var searchText = $(this).val().trim();
+                        if (searchText.length > 0) {
+                            // إرسال طلب AJAX عند الكتابة
+                            $.ajax({
+                                url: '@Url.Action("SearchProducts", "Home")',
+                                method: 'GET',
+                                data: { query: searchText },
+                                success: function (response) {
+                                        $('#product-container').html(response);
+                                },
+                                error: function () {
+                                    alert("Error while searching");
+                                }
+                            });
+                        } else {
+                            // إعادة تحميل كل المنتجات عند مسح شريط البحث
+                            $('#products-container').html('');
+                        }
+                    });
+                });
+
             </script>
 
         }

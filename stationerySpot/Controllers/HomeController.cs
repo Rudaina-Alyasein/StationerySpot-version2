@@ -4,6 +4,9 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using stationerySpot.Models;
+using stationerySpot.ViewModels;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace stationerySpot.ControllersF
@@ -23,7 +26,22 @@ namespace stationerySpot.ControllersF
 
         public IActionResult Index()
         {
-            return View();
+            var latestOffers = _context.Offers
+                .Where(o => o.ExpiryDate == null || o.ExpiryDate > DateTime.Now)
+                .OrderByDescending(o => o.Id)
+                .Take(6)
+                .Select(o => new OfferViewModel
+                {
+                    Id =o.Id,
+                    Title = o.Title,
+                    Description = o.Description ?? "",
+                    ImagePath = o.ImagePath ?? "/images/default-offer.jpg",
+                    LibraryName = o.Library.Name,
+                    ExpiryDate = o.ExpiryDate
+                })
+                .ToList();
+
+            return View(latestOffers); 
         }
         public IActionResult About()
         {
@@ -138,62 +156,88 @@ namespace stationerySpot.ControllersF
 
         public IActionResult Pressure(int id)
         {
-            // تحميل المكتبة باستخدام الـ id
-            var library = _context.Libraries
-                                  .FirstOrDefault(l => l.Id == id);
+            var library = _context.Libraries.FirstOrDefault(l => l.Id == id);
 
             if (library == null)
             {
                 return NotFound(); // إذا لم يتم العثور على المكتبة
             }
 
-            // تحميل المنتجات المتعلقة بالمكتبة
-            var products = _context.Products
-                                   .Include(p => p.Category)  // تحميل الكاتيجوري
-                                   .Where(p => p.LibraryId == id)
-                                   .ToList();
+            var products = _context.Products.Include(p => p.Category).Where(p => p.LibraryId == id).ToList();
+            var reviews = _context.Reviews.Include(r => r.User).Where(r => r.LibraryId == id).ToList();
+            var services = _context.Services.Where(s => s.LibraryId == id).ToList();
+            var printRequests = _context.PrintRequests.Where(pr => pr.LibraryId == id).ToList();
+            var libraryAccounts = _context.LibraryAccounts.Where(la => la.LibraryId == id).ToList();
 
-            // تحميل التقييمات المتعلقة بالمكتبة
-            var reviews = _context.Reviews
-                        .Include(r => r.User)   // <<< ضروري!!
-                        .Where(r => r.LibraryId == id)
-                        .ToList();
-
-
-            // تحميل الخدمات المتعلقة بالمكتبة
-            var services = _context.Services
-                                   .Where(s => s.LibraryId == id)
-                                   .ToList();
-
-            // تحميل طلبات الطباعة المتعلقة بالمكتبة
-            var printRequests = _context.PrintRequests
-                                        .Where(pr => pr.LibraryId == id)
-                                        .ToList();
-            // تحميل حسابات المكتبة
-            var libraryAccounts = _context.LibraryAccounts
-                                          .Where(la => la.LibraryId == id)
-                                          .ToList();
-
-            // التحقق إذا كانت هناك منتجات للمكتبة
             if (!products.Any())
             {
                 ViewBag.Message = "No products available for this library.";
                 return View("NoProducts");
             }
 
-            // بناء الـ ViewModel
+            // جلب الفئات الفريدة باستخدام GroupBy بناءً على الـ Id
+            var categories = _context.Products
+                                     .Select(p => p.Category)
+                                     .GroupBy(c => c.Id)
+                                     .Select(g => g.FirstOrDefault()) // اختيار أول فئة من كل مجموعة
+                                     .ToList();
+
             var viewModel = new LibraryViewModel
             {
                 Library = library,
                 Products = products,
                 Reviews = reviews,
                 Services = services,
-                PrintRequests = printRequests  // إضافة بيانات الطلبات للطباعة
+                PrintRequests = printRequests,
+                Categories = categories // إرسال قائمة الفئات بدون تكرار
             };
 
-            return View(viewModel);  // تمرير الـ ViewModel إلى الـ View
+            return View(viewModel);
         }
 
+
+        public IActionResult FilterProducts(string category, string sort)
+        {
+            // جيبي كل المنتجات أولاً
+            var products = _context.Products.AsQueryable();
+
+            // فلترة حسب الكاتيجوري
+            if (!string.IsNullOrEmpty(category))
+            {
+                products = products.Where(p => p.Category.Name == category);
+            }
+
+            // ترتيب حسب المطلوب
+            switch (sort)
+            {
+                case "PriceLowToHigh":
+                    products = products.OrderBy(p => p.Price);
+                    break;
+                case "PriceHighToLow":
+                    products = products.OrderByDescending(p => p.Price);
+                    break;
+                case "Newest":
+                    products = products.OrderByDescending(p => p.CreatedAt); // لازم يكون عندك تاريخ للإضافة
+                    break;
+              
+            }
+
+            return PartialView("_FilteredProductsPartial", products.ToList());
+        }
+        public IActionResult SearchProducts(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                return PartialView("_FilteredProductsPartial", new List<Product>());
+            }
+
+            // البحث في المنتجات
+            var products = _context.Products
+                                   .Where(p => p.Name.Contains(query) || p.Description.Contains(query))  // تعديل الشرط بما يناسبك
+                                   .ToList();
+
+            return PartialView("_FilteredProductsPartial", products);
+        }
 
         public IActionResult ProductDetails(int id)
         {
@@ -662,6 +706,77 @@ namespace stationerySpot.ControllersF
         public IActionResult AcademicProject()
         {
             return View();
+        }
+        public IActionResult Offer(int id)
+        {
+            var offer = _context.Offers
+                                .Where(o => o.Id == id)
+                                .Select(o => new OfferViewModel
+                                {
+                                    Id = o.Id,  // إضافة الـ Id للعرض
+                                    Title = o.Title,
+                                    Description = o.Description ?? "",
+                                    ImagePath = o.ImagePath ?? "/images/default-offer.jpg",
+                                    Link = o.Link ?? "#",
+                                    LibraryName = o.Library.Name,
+                                    ExpiryDate = o.ExpiryDate,
+                                    // إضافة التعليقات الخاصة بالعرض
+                                    Comments = o.OfferComments.Select(c => new CommentViewModel
+                                    {
+                                        UserName = c.User.Name,  // افترض أن `User` هو الكائن الذي يحتوي على اسم المستخدم
+                                        UserImage = string.IsNullOrEmpty(c.User.ProfileImagePath) ? "/images/default-user.jpg" : c.User.ProfileImagePath,
+                                        CommentText = c.CommentText,
+                                        DatePosted = c.DatePosted
+                                    }).ToList()
+                                })
+                                .FirstOrDefault();
+
+            if (offer == null)
+            {
+                return NotFound();
+            }
+
+            return View(offer);  // تمرير الـ OfferViewModel إلى الـ View
+        }
+
+        [HttpPost]
+        //comment for offer 
+        public IActionResult AddComment(int OfferId, string CommentText)
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (userId.IsNullOrEmpty())
+            {
+                TempData["Error"] = "You must be logged in to leave a comment.";
+                return RedirectToAction("Offer", new { id = OfferId });
+            }
+
+            var offer = _context.Offers.FirstOrDefault(o => o.Id == OfferId);
+            if (offer == null)
+            {
+                TempData["Error"] = "Offer not found.";
+                return RedirectToAction("Index");  
+            }
+
+            if (string.IsNullOrEmpty(CommentText))
+            {
+                TempData["Error"] = "Comment cannot be empty.";
+                return RedirectToAction("Offer", new { id = OfferId });
+            }
+
+            var comment = new OfferComment
+            {
+                OfferId = OfferId,
+                CommentText = CommentText,
+                UserId = Convert.ToInt32(userId),
+                DatePosted = DateTime.Now
+            };
+
+            _context.OfferComments.Add(comment);
+            _context.SaveChanges();
+
+            // إعادة التوجيه لصفحة العرض مع إضافة تعليقات جديدة
+            return RedirectToAction("Offer", new { id = OfferId });
         }
 
     }

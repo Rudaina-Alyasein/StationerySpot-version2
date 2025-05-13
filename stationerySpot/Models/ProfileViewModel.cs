@@ -25,6 +25,8 @@ namespace stationerySpot.Models
         public string? CurrentPassword { get; set; }
         public string? NewPassword { get; set; }
         public string? ConfirmPassword { get; set; }
+        public IFormFile? ProfileImage { get; set; }
+        public string? ProfileImagePath { get; set; }
 
     }
 }

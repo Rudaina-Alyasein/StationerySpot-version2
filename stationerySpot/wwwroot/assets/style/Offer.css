@@ -1,0 +1,120 @@
+﻿/* تنسيق عام للصفحة */
+body{
+    color:black !important;
+}
+.offer-details {
+    background-color: #fdfdfd;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+    /* تنسيق للأزرار */
+    .offer-details .btn {
+        font-size: 16px;
+        padding: 10px 20px;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+        .offer-details .btn:hover {
+            transform: scale(1.05);
+        }
+
+    /* تنسيق رأس الصفحة (عنوان العرض) */
+    .offer-details h2 {
+        font-size: 2.5rem;
+        color: #1E2A38; /* لون داكن */
+        font-weight: bold;
+    }
+
+    /* تنسيق للفقرات */
+    .offer-details p {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    /* تنسيق للصورة */
+    .offer-details .img-fluid {
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* رسالة ترحيبية في الجانب الأيمن */
+    .offer-details .welcome-message {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        color: #17A2B8;
+        margin-bottom: 20px;
+    }
+
+/* تنسيق لتعليقات المستخدمين */
+.list-group-item {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+    .list-group-item:hover {
+        background-color: #f1f3f5;
+        cursor: pointer;
+    }
+
+    .list-group-item .fw-semibold {
+        color: #1E2A38;
+    }
+
+/* تنسيق للفورم (إضافة تعليق) */
+.offer-details form {
+    margin-top: 30px;
+}
+
+    .offer-details form .form-control {
+        border-radius: 10px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        font-size: 1rem;
+    }
+
+    .offer-details form button {
+        font-size: 1rem;
+        font-weight: bold;
+        background-color: #007bff;
+        color: white;
+        border-radius: 8px;
+        padding: 10px 15px;
+    }
+
+/* تنسيق الرسالة عندما لا يوجد تعليقات */
+.text-muted {
+    font-size: 1rem;
+    text-align: center;
+    color: #888;
+}
+.custom-wishlist-btn {
+    background-color: #fa65b1;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    transition: 0.3s ease;
+}
+
+    .custom-wishlist-btn:hover {
+        background-color: #e7559f; /* لون أغمق عند التحويم */
+        color: #fff;
+    }
+.custom-cart-btn {
+    background-color: rgb(0, 151, 178);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    transition: background 0.3s ease;
+}
+
+    .custom-cart-btn:hover {
+        background-color: rgb(0, 131, 158); /* لون أغمق عند التحويم */
+        color: #fff;
+    }

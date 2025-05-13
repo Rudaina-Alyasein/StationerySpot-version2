@@ -169,6 +169,8 @@ namespace stationerySpot.Controllers
                 Name = user.Name,
                 Email = user.Email,
                 Role = user.Role,
+                ProfileImagePath = user.ProfileImagePath,
+
                 CreatedAt = user.CreatedAt,
                 Address = user.Address,            // تضمين العنوان
                 Orders = user.Orders.Select(o => new OrderViewModel
@@ -288,6 +290,34 @@ namespace stationerySpot.Controllers
             return RedirectToAction("Profile");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfileImage(IFormFile ProfileImage)
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (!int.TryParse(userIdStr, out int userId)) return RedirectToAction("Login", "User");
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return RedirectToAction("Login", "User");
+
+            // تحقق إذا كان يوجد صورة تم رفعها
+            if (ProfileImage != null && ProfileImage.Length > 0)
+            {
+                // تخزين الصورة في مكان ما
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", ProfileImage.FileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await ProfileImage.CopyToAsync(stream);
+                }
+
+                // تحديث مسار الصورة في قاعدة البيانات
+                user.ProfileImagePath = "/uploads/" + ProfileImage.FileName;
+                await _context.SaveChangesAsync();
+            }
+
+            TempData["SuccessMessage"] = "Profile image updated successfully!";
+            return RedirectToAction("Profile"); // إعادة التوجيه إلى صفحة الـ Profile بعد التحديث
+        }
 
     }
 

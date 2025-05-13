@@ -1,0 +1,118 @@
+﻿@model stationerySpot.ViewModels.OfferViewModel
+
+@{
+    Layout = "HomeLayout";
+}
+@section Style {
+    
+    <link rel="stylesheet" href="@Url.Content("~/assets/style/Offer.css")">
+
+}
+<div class="container my-5 p-4 rounded shadow" style="background-color: #fdfdfd;">
+    <div class="row g-4">
+        <!-- الجانب الأيسر (العرض) -->
+        <div class="col-md-6">
+            <img src="@Model.ImagePath" class="img-fluid rounded-4 shadow-sm" alt="Offer Image" />
+        </div>
+
+        <!-- الجانب الأيمن (التفاصيل والرسالة الترحيبية) -->
+        <div class="col-md-6">
+            <!-- رسالة ترحيبية -->
+            <div class="mb-4">
+                <h3 class="fw-semibold text-center " style="color:rgb(0 151 178);">Welcome to Our Exclusive Offers!</h3>
+                <p class="text-center">Take advantage of our special deals available for a limited time.</p>
+            </div>
+
+            <!-- تفاصيل العرض -->
+            <h2 class="fw-bold " style="color:rgb(0 151 178);">@Model.Title</h2>
+            <p><span class="fw-semibold">📘 Description:</span> @Model.Description</p>
+            <p><span class="fw-semibold">🏬 Library:</span> @Model.LibraryName</p>
+            <p><span class="fw-semibold">📅 Expiry Date:</span> @Model.ExpiryDate?.ToString("dd MMM yyyy")</p>
+
+            <!-- الأزرار -->
+            <div class="mt-4 d-flex gap-3">
+                <a href="/Cart/AddToCart/@Model.Id" class="btn custom-cart-btn px-4 py-2">
+                    <i class="bi bi-cart-plus me-1"></i> Add to Cart
+                </a>
+
+                <a href="/Wishlist/AddToWishlist/@Model.Id" class="btn custom-wishlist-btn px-4 py-2">
+                    <i class="bi bi-heart-fill me-1"></i> Add to Wishlist
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- إضافة تعليق -->
+    <div class="mt-5">
+        <h4 class="fw-bold">Leave a Comment</h4>
+        <form id="commentForm" method="post">
+            <input type="hidden" name="OfferId" value="@Model.Id" />
+            <textarea name="CommentText" rows="4" class="form-control" placeholder="Write your comment..."></textarea>
+            <button type="submit" class="btn btn-primary mt-3" style="background:rgb(0 151 178) !important;">Submit</button>
+        </form>
+    </div>
+
+    <!-- عرض التعليقات -->
+    <div class="mt-4">
+        <h5 class="fw-semibold">What others say</h5>
+
+        @if (Model.Comments.Any())
+        {
+            <div class="list-group">
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="list-group-item list-group-item-action mb-3 shadow-sm rounded">
+                        <div class="d-flex align-items-start">
+                            <img src="@comment.UserImage" alt="User Image" class="rounded-circle me-3 border" width="50" height="50" />
+
+                        
+                            <div>
+                                <div class="fw-semibold">@comment.UserName</div>
+                                <p class="mb-1">@comment.CommentText</p>
+                                <small class="text-muted">@comment.DatePosted.ToString("dd MMM yyyy")</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">No comments yet.</p>  <!-- رسالة لا توجد تعليقات -->
+        }
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+        $('#commentForm').submit(function(e) {
+            e.preventDefault();  // منع الـ form من الإرسال العادي
+            var offerId = $("input[name='OfferId']").val();
+            var commentText = $("textarea[name='CommentText']").val();
+
+            $.ajax({
+                url: '/Home/AddComment',  // أو URL الأكشن الخاص بك
+                type: 'POST',
+                data: {
+                    OfferId: offerId,
+                    CommentText: commentText
+                },
+                success: function(response) {
+                    // إضافة التعليق مباشرة إلى قسم التعليقات
+                    $('#commentsSection').prepend(`
+    <div class="list-group-item">
+        <p>${commentText}</p>
+        <small>${new Date().toLocaleDateString()}</small>
+    </div>
+                `);
+                $("textarea[name='CommentText']").val('');  // مسح الـ textarea بعد الإرسال
+            },
+            error: function() {
+                alert('Error adding comment');
+            }
+        });
+    });
+});
+    </script>
+}
