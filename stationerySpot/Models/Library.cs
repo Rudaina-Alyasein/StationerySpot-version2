@@ -44,9 +44,10 @@ namespace stationerySpot.Models
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 
         public virtual ICollection<Service> Services { get; set; } = new List<Service>();
-        // 💡 العلاقة: مكتبة فيها عدة مشاريع
         public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
         public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
+        public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
+
 
     }
 }

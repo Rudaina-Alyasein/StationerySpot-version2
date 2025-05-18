@@ -1,4 +1,6 @@
-﻿namespace stationerySpot.Models
+﻿using stationerySpot.Models;
+
+namespace stationerySpot.ViewModels
 {
     public class LibraryViewModel
     {
@@ -9,6 +11,7 @@
         public List<PrintRequest> PrintRequests { get; set; }  // إضافة الطلبات للطباعة
         public LibraryAccount LibraryAccounts { get; set; }  // مفرد مش List
         public List<Category> Categories { get; set; } // ← أضيفي هذا
+        public List<ContactUsMessage> ContactUsMessages { get; set; } // ← أضيفي هذا
 
 
     }

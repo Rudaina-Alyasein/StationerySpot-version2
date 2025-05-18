@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<stationerySpot.Models.Library>
+
+@{
     Layout = "HomeLayout";
 }
 @section Style{
@@ -152,94 +154,45 @@
 
 
 
-  <div id="portfolio" class="our-portfolio section">
+<div id="portfolio" class="our-portfolio section">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-5">
-          <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
-            <h6>Our Libraries</h6>
-            <h4>Explore the <em style="color: #fa65b1;">Libraries</em> Partnered with Us</h4>
-
-            <div class="line-dec" style="background-color: #fa65b1;"></div>
-          </div>
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="section-heading wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
+                    <h6>Our Libraries</h6>
+                    <h4>Explore the <em style="color: #fa65b1;">Libraries</em> Partnered with Us</h4>
+                    <div class="line-dec" style="background-color: #fa65b1;"></div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
+
     <div class="container-fluid wow fadeIn" data-wow-duration="1s" data-wow-delay="0.7s">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="loop owl-carousel">
-            <div class="item">
-              <a href="#">
-                <div class="portfolio-item">
-                  <div class="thumb">
-                                    <img src="~/assets\img\Portfolio1.jpg" alt="">
-                  </div>
-                  <div class="down-content">
-                    <h4>ِAlyaqeen library</h4>
-                    <span>Irbid City</span>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="item">
-              <a href="#">
-                <div class="portfolio-item">
-                  <div class="thumb">
-                                    <img src="~/assets\img\Portfolio2.jpg" alt="">
-                  </div>
-                  <div class="down-content">
-                    <h4>Curve library</h4>
-                    <span>Near Yarmouk University</span>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="item">
-              <a href="#">
-                <div class="portfolio-item">
-                  <div class="thumb">
-                                    <img src="~/assets\img\Portfolio3.jpg" alt="">
-                  </div>
-                  <div class="down-content">
-                    <h4>Elaf library</h4>
-                    <span>Yarmouk street</span>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="item">
-              <a href="#">
-                <div class="portfolio-item">
-                  <div class="thumb">
-                                    <img src="~/assets\img\Portfolio4.jpg" alt="">
-                  </div>
-                  <div class="down-content">
-                    <h4>Dar Aleloum</h4>
-                    <span>Near Yarmouk University</span>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="item">
-              <a href="#">
-                <div class="portfolio-item">
-                  <div class="thumb">
-                                    <img src="~/assets\img\Portfolio5.jpg" alt="">
-                  </div>
-                  <div class="down-content">
-                    <h4>Alnoor library</h4>
-                    <span>Irbid</span>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="loop owl-carousel">
+                    @foreach (var library in Model)
+                    {
+                        <div class="item">
+                            <a href="@Url.Action("Pressure", "Home", new { id = library.Id })">
+                                <div class="portfolio-item">
+                                    <div class="thumb">
+                                        <img src="@library.LogoPath" alt="@library.Name" style="height: 200px; object-fit: cover;">
+                                    </div>
+                                    <div class="down-content">
+                                        <h4>@library.Name</h4>
+                                        <span>@library.City</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
   <div id="blog" class="blog">
     <div class="container">
       <div class="row">

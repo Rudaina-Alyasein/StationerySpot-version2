@@ -8,28 +8,26 @@ namespace stationerySpot.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100)]  // تحديد طول النص
+        [StringLength(100)]  
         public string Title { get; set; } = null!;
 
-        [StringLength(500)]  // تحديد الطول الأقصى للوصف
+        [StringLength(500)]  
         public string? Description { get; set; }
 
-        [StringLength(255)]  // تحديد الطول الأقصى لمسار الصورة
+        [StringLength(255)]  
         public string? ImagePath { get; set; }
 
-        [StringLength(255)]  // تحديد الطول الأقصى للرابط
+        [StringLength(255)]  
         public string? Link { get; set; }
 
-        // 🔗 الربط مع المكتبة
-        [Required]  // تأكد من أن LibraryId مطلوب
+        [Required]  
         public int LibraryId { get; set; }
 
         [ForeignKey("LibraryId")]
         public virtual Library Library { get; set; } = null!;
 
-        // تاريخ انتهاء العرض
-        [DataType(DataType.Date)] // تحديد نوع البيانات لتاريخ
-        public DateTime? ExpiryDate { get; set; }  // يمكن أن يكون تاريخ غير مُحدد
+        [DataType(DataType.Date)] 
+        public DateTime? ExpiryDate { get; set; }  
         public virtual ICollection<OfferComment> OfferComments { get; set; } = new List<OfferComment>();
 
     }

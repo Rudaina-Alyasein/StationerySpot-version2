@@ -111,9 +111,16 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.Name)
-                .HasMaxLength(100)
-                .IsUnicode(false);
+                  .HasMaxLength(100)
+                  .IsUnicode(false);
+
+            // ⬇️⬇️ العلاقة الجديدة مع المكتبة
+            entity.HasOne(e => e.Library)
+                  .WithMany(l => l.Categories)
+                  .HasForeignKey(e => e.LibraryId)
+                  .OnDelete(DeleteBehavior.Cascade); 
         });
+
 
         modelBuilder.Entity<ContactUsMessage>(entity =>
         {

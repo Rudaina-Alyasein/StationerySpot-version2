@@ -2,6 +2,20 @@
     Layout = "HomeLayout";
 }
 @model IEnumerable<stationerySpot.Models.Library>
+@{
+    var uniqueCities = Model
+        .Select(l => l.Location.Split('-')[0].Trim()) 
+        .Distinct()
+        .ToList();
+}
+@{
+    var uniqueStatuses = Model
+        .Select(l => l.Status?.Trim()) // نختار الستاتس ونتأكد إنها مش null
+        .Where(s => !string.IsNullOrEmpty(s)) // نتجاهل القيم الفارغة
+        .Distinct()
+        .ToList();
+}
+
 
 
 @section Style {
@@ -27,19 +41,23 @@
             <div class="col-md-4">
                 <select class="form-select" id="city-filter">
                     <option value="">Select City</option>
-                    <option value="Irbid">Irbid</option>
-                    <option value="Amman">Amman</option>
-                    <option value="Zarqa">Zarqa</option>
-                    <option value="Aqaba">Aqaba</option>
+                    @foreach (var city in uniqueCities)
+                    {
+                        <option value="@city">@city</option>
+                    }
                 </select>
             </div>
+
             <div class="col-md-4">
                 <select class="form-select" id="best-seller-filter">
                     <option value="">All Libraries</option>
-                    <option value="best-seller">Best Seller</option>
-                    <option value="new-arrival">New Arrivals</option>
+                    @foreach (var status in uniqueStatuses)
+                    {
+                        <option value="@status.ToLower().Replace(" ", "-")">@status</option>
+                    }
                 </select>
             </div>
+
             <div class="col-md-4">
                 <div class="input-group SearchInput">
                     <input type="text" class="form-control" placeholder="Search for library..." aria-label="search"
@@ -50,10 +68,16 @@
         </div>
 
         <!-- Library Cards Section -->
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="libraries-container">
             @foreach (var library in Model)
             {
-                <div class="col">
+                var city = library.Location?.Split('-')[0]?.Trim(); // استخراج المدينة من Location
+                var status = library.Status?.ToLower().Replace(" ", "-"); // تجهيز الحالة للفلترة
+
+                <div class="col library-card-item"
+                     data-city="@city.ToLower()"
+                     data-status="@status"
+                     data-name="@library.Name.ToLower()">
                     <div class="card library-card">
                         <div class="badge-container">
                             @if (library.Status == "New")
@@ -75,18 +99,57 @@
                                     <i class="fas fa-star"></i>
                                 }
                             </div>
-                            <a href="@Url.Action("pressure", "Home" , new { id=library.Id })"
+                            <a href="@Url.Action("pressure", "Home", new { id = library.Id })"
                                class="btn btn-pink btn-sm w-100">View Details</a>
                         </div>
                     </div>
                 </div>
             }
         </div>
+
     </div>
 </div>
 
 @section Scripts {
     <script>
-        // Custom JS for searching and filtering functionality can be added later
+        document.addEventListener("DOMContentLoaded", function () {
+            const cityFilter = document.getElementById("city-filter");
+            const statusFilter = document.getElementById("best-seller-filter");
+            const searchInput = document.getElementById("search-library");
+            const searchBtn = document.getElementById("search-btn");
+
+            const libraryCards = document.querySelectorAll(".library-card-item");
+
+            function filterLibraries() {
+                const selectedCity = cityFilter.value.toLowerCase();
+                const selectedStatus = statusFilter.value.toLowerCase();
+                const searchText = searchInput.value.toLowerCase().trim();
+
+                libraryCards.forEach(card => {
+                    const cardCity = card.dataset.city.toLowerCase();
+                    const cardStatus = card.dataset.status.toLowerCase();
+                    const cardName = card.dataset.name.toLowerCase();
+
+                    const matchCity = !selectedCity || cardCity.includes(selectedCity);
+                    const matchStatus = !selectedStatus || cardStatus.includes(selectedStatus);
+                    const matchSearch = !searchText || cardName.includes(searchText);
+
+                    if (matchCity && matchStatus && matchSearch) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            }
+
+            cityFilter.addEventListener("change", filterLibraries);
+            statusFilter.addEventListener("change", filterLibraries);
+            searchBtn.addEventListener("click", filterLibraries);
+            searchInput.addEventListener("keyup", function (e) {
+                if (e.key === "Enter") {
+                    filterLibraries();
+                }
+            });
+        });
     </script>
 }

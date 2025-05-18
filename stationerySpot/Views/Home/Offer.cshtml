@@ -10,26 +10,21 @@
 }
 <div class="container my-5 p-4 rounded shadow" style="background-color: #fdfdfd;">
     <div class="row g-4">
-        <!-- الجانب الأيسر (العرض) -->
         <div class="col-md-6">
             <img src="@Model.ImagePath" class="img-fluid rounded-4 shadow-sm" alt="Offer Image" />
         </div>
 
-        <!-- الجانب الأيمن (التفاصيل والرسالة الترحيبية) -->
         <div class="col-md-6">
-            <!-- رسالة ترحيبية -->
             <div class="mb-4">
                 <h3 class="fw-semibold text-center " style="color:rgb(0 151 178);">Welcome to Our Exclusive Offers!</h3>
                 <p class="text-center">Take advantage of our special deals available for a limited time.</p>
             </div>
 
-            <!-- تفاصيل العرض -->
             <h2 class="fw-bold " style="color:rgb(0 151 178);">@Model.Title</h2>
             <p><span class="fw-semibold">📘 Description:</span> @Model.Description</p>
             <p><span class="fw-semibold">🏬 Library:</span> @Model.LibraryName</p>
             <p><span class="fw-semibold">📅 Expiry Date:</span> @Model.ExpiryDate?.ToString("dd MMM yyyy")</p>
 
-            <!-- الأزرار -->
             <div class="mt-4 d-flex gap-3">
                 <a href="/Cart/AddToCart/@Model.Id" class="btn custom-cart-btn px-4 py-2">
                     <i class="bi bi-cart-plus me-1"></i> Add to Cart

@@ -12,6 +12,9 @@ public partial class Category
     public string? Description { get; set; }
 
     public DateTime? CreatedAt { get; set; }
+    public int LibraryId { get; set; } // المفتاح الأجنبي
+
+    public Library Library { get; set; } = null!; // العلاقة
 
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

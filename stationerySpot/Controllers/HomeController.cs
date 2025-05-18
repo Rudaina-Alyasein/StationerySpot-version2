@@ -45,7 +45,13 @@ namespace stationerySpot.ControllersF
         }
         public IActionResult About()
         {
-            return View();
+
+            var libraries = _context.Libraries
+                            .Take(10) 
+                            .ToList();
+
+            return View(libraries);
+        
         }
         public IActionResult Libraries()
         {
@@ -176,11 +182,10 @@ namespace stationerySpot.ControllersF
             }
 
             // جلب الفئات الفريدة باستخدام GroupBy بناءً على الـ Id
-            var categories = _context.Products
-                                     .Select(p => p.Category)
-                                     .GroupBy(c => c.Id)
-                                     .Select(g => g.FirstOrDefault()) // اختيار أول فئة من كل مجموعة
-                                     .ToList();
+            var categories = _context.Categories
+                           .Where(c => c.LibraryId == id)
+                           .ToList();
+
 
             var viewModel = new LibraryViewModel
             {
@@ -196,18 +201,18 @@ namespace stationerySpot.ControllersF
         }
 
 
-        public IActionResult FilterProducts(string category, string sort)
+        public IActionResult FilterProducts(int libraryId, string category, string sort)
         {
-            // جيبي كل المنتجات أولاً
-            var products = _context.Products.AsQueryable();
+            var products = _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.Category.LibraryId == libraryId)
+                .AsQueryable();
 
-            // فلترة حسب الكاتيجوري
             if (!string.IsNullOrEmpty(category))
             {
                 products = products.Where(p => p.Category.Name == category);
             }
 
-            // ترتيب حسب المطلوب
             switch (sort)
             {
                 case "PriceLowToHigh":
@@ -217,9 +222,8 @@ namespace stationerySpot.ControllersF
                     products = products.OrderByDescending(p => p.Price);
                     break;
                 case "Newest":
-                    products = products.OrderByDescending(p => p.CreatedAt); // لازم يكون عندك تاريخ للإضافة
+                    products = products.OrderByDescending(p => p.CreatedAt);
                     break;
-              
             }
 
             return PartialView("_FilteredProductsPartial", products.ToList());
@@ -306,20 +310,19 @@ namespace stationerySpot.ControllersF
             if (string.IsNullOrEmpty(userIdStr))
             {
                 TempData["CartMessage"] = "Please log in first to add products to your cart..";
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "‘User");
             }
 
             int userId = int.Parse(userIdStr);
 
-            // جلب أو إنشاء السلة للمستخدم
             var cart = _context.Carts.FirstOrDefault(c => c.CustomerId == userId);
             if (cart == null)
             {
                 cart = new Cart
                 {
-                    CustomerId = userId, // 👈 ضروري تحطها هون
+                    CustomerId = userId,
                     CreatedAt = DateTime.Now,
-                    IsCheckedOut = false // ممكن تحطها false كبداية إذا بدك
+                    IsCheckedOut = false 
                 };
                 _context.Carts.Add(cart);
                 _context.SaveChanges();
@@ -541,7 +544,6 @@ namespace stationerySpot.ControllersF
                 _context.Orders.Add(order);
                 _context.SaveChanges();
 
-                // إضافة العناصر إلى جدول OrderDetail للطلب الحالي
                 foreach (var item in cart.CartItems.Where(ci => ci.Product.LibraryId == libraryId))
                 {
                     var orderDetail = new OrderDetail
@@ -555,14 +557,12 @@ namespace stationerySpot.ControllersF
                     _context.OrderDetails.Add(orderDetail);
                 }
 
-                _context.SaveChanges(); // حفظ البيانات في قاعدة البيانات
+                _context.SaveChanges();
             }
 
-            // إفراغ سلة التسوق بعد إتمام الطلب
             cart.CartItems.Clear();
             _context.SaveChanges();
 
-            // إعادة التوجيه إلى صفحة تأكيد أو الدفع أو غيرها
             return RedirectToAction("Checkout");
         }
 
@@ -607,7 +607,6 @@ namespace stationerySpot.ControllersF
             }
             else
             {
-                // إذا كانت البيانات موجودة، نقوم بتحديثها
                 customerInfo.FullName = fullName;
                 customerInfo.Email = email;
                 customerInfo.Phone = phone;
@@ -618,10 +617,8 @@ namespace stationerySpot.ControllersF
 
             await _context.SaveChangesAsync();
 
-            // إرسال رسالة نجاح عبر TempData
             TempData["SuccessMessage"] = "Your order has been placed successfully!";
 
-            // إعادة التوجيه إلى صفحة تأكيد الطلب
             return RedirectToAction("OrderConfirmation");
         }
 
@@ -630,7 +627,6 @@ namespace stationerySpot.ControllersF
             return View();
         }
 
-        //Review Library Section 
         [HttpPost]
         public IActionResult AddReview(int rating, string comment, int libraryId)
         {
@@ -658,7 +654,6 @@ namespace stationerySpot.ControllersF
 
             return Json(new { success = true });
         }
-        //pdf library section 
         [HttpPost]
         public async Task<IActionResult> SubmitPrintRequest(IFormFile pdfFile, int copies, string color, string printSide, string? message, int libraryId)
         {
