@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using stationerySpot.Models;
 
@@ -11,9 +12,11 @@ using stationerySpot.Models;
 namespace stationerySpot.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250513190952_AddMessageChatModel")]
+    partial class AddMessageChatModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -443,14 +446,9 @@ namespace stationerySpot.Migrations
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("LibraryId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -800,13 +798,6 @@ namespace stationerySpot.Migrations
                     b.Property<int?>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<string>("Reply")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -1009,20 +1000,12 @@ namespace stationerySpot.Migrations
             modelBuilder.Entity("stationerySpot.Models.Message", b =>
                 {
                     b.HasOne("stationerySpot.Models.Library", "Library")
-                        .WithMany("Messages")
+                        .WithMany()
                         .HasForeignKey("LibraryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("stationerySpot.Models.User", "User")
-                        .WithMany("Messages")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Library");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("stationerySpot.Models.Offer", b =>
@@ -1219,8 +1202,6 @@ namespace stationerySpot.Migrations
                 {
                     b.Navigation("LibraryAccounts");
 
-                    b.Navigation("Messages");
-
                     b.Navigation("Orders");
 
                     b.Navigation("PrintRequests");
@@ -1259,8 +1240,6 @@ namespace stationerySpot.Migrations
                         .IsRequired();
 
                     b.Navigation("Carts");
-
-                    b.Navigation("Messages");
 
                     b.Navigation("OfferComments");
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using stationerySpot.Models;
 
@@ -11,9 +12,11 @@ using stationerySpot.Models;
 namespace stationerySpot.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250513163600_AddProjectsModel")]
+    partial class AddProjectsModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -421,40 +424,6 @@ namespace stationerySpot.Migrations
                     b.ToTable("LibraryRegistrationRequests");
                 });
 
-            modelBuilder.Entity("stationerySpot.Models.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LibraryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Sender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LibraryId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Messages");
-                });
-
             modelBuilder.Entity("stationerySpot.Models.Offer", b =>
                 {
                     b.Property<int>("Id")
@@ -800,13 +769,6 @@ namespace stationerySpot.Migrations
                     b.Property<int?>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<string>("Reply")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -1006,25 +968,6 @@ namespace stationerySpot.Migrations
                     b.Navigation("Library");
                 });
 
-            modelBuilder.Entity("stationerySpot.Models.Message", b =>
-                {
-                    b.HasOne("stationerySpot.Models.Library", "Library")
-                        .WithMany("Messages")
-                        .HasForeignKey("LibraryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("stationerySpot.Models.User", "User")
-                        .WithMany("Messages")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Library");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("stationerySpot.Models.Offer", b =>
                 {
                     b.HasOne("stationerySpot.Models.Library", "Library")
@@ -1219,8 +1162,6 @@ namespace stationerySpot.Migrations
                 {
                     b.Navigation("LibraryAccounts");
 
-                    b.Navigation("Messages");
-
                     b.Navigation("Orders");
 
                     b.Navigation("PrintRequests");
@@ -1259,8 +1200,6 @@ namespace stationerySpot.Migrations
                         .IsRequired();
 
                     b.Navigation("Carts");
-
-                    b.Navigation("Messages");
 
                     b.Navigation("OfferComments");
 

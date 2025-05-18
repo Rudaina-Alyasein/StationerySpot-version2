@@ -1,68 +1,60 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using stationerySpot.Models;
 using System.Collections.Generic;
 namespace stationerySpot.Controllers
 {
     public class ChatController : Controller
     {
-        private static List<ChatMessageViewModel> Messages = new List<ChatMessageViewModel>();
+        private readonly MyDbContext _context;
 
-        [HttpGet]
-        public IActionResult GetMessages(int libraryId)
+        public ChatController(MyDbContext context)
         {
-            // استرجاع الـ userId من الجلسة
-            var userId = HttpContext.Session.GetInt32("UserId");
+            _context = context;
+        }
 
-            if (userId == null)
+        public IActionResult Chat(int libraryId)
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
             {
-                return Unauthorized(); // في حال عدم وجود المستخدم في الجلسة
+                return RedirectToAction("Login", "User");
             }
 
-            var chatMessages = Messages
-                .Where(m => (m.SenderId == userId && m.ReceiverId == libraryId) ||
-                            (m.SenderId == libraryId && m.ReceiverId == userId))
+            var messages = _context.Messages
+                .Where(m => m.LibraryId == libraryId && m.UserId == Convert.ToInt32(userIdStr))
                 .OrderBy(m => m.Timestamp)
                 .ToList();
 
-            return Json(chatMessages);
+            ViewBag.LibraryId = libraryId;
+            return View(messages);
         }
 
         [HttpPost]
-        public IActionResult SendMessage([FromBody] ChatMessageViewModel message)
+        public IActionResult Send(int libraryId, string content)
         {
-            // استرجاع الـ userId من الجلسة
-            var userId = HttpContext.Session.GetInt32("UserId");
-
-            if (userId == null)
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
             {
-                return Unauthorized(); // في حال عدم وجود المستخدم في الجلسة
+                TempData["ReviewMessage"] = "Please log in first to add products to your cart..";
+                return RedirectToAction("Login", "User");
             }
-
-            message.SenderId = userId.Value; // تعيين SenderId من الجلسة
-            message.Timestamp = DateTime.Now;
-            Messages.Add(message);
-
-            return Json(new { success = true });
-        }
-        [HttpGet]
-        public IActionResult GetMessagesUser(int userId)
-        {
-            // استرجاع الـ userId من الجلسة
-            var libraryId = HttpContext.Session.GetInt32("LibraryId");
-
-            if (userId == 0)
+            var message = new Message
             {
-                return Unauthorized(); // في حال عدم وجود المستخدم في الجلسة
-            }
+                LibraryId = libraryId,
+                UserId = Convert.ToInt32(userIdStr),
+                Sender = "User",
+                Content = content,
+                Timestamp = DateTime.Now
+            };
 
-            var chatMessages = Messages
-                .Where(m => (m.SenderId == userId && m.ReceiverId == libraryId) ||
-                            (m.SenderId == libraryId && m.ReceiverId == userId))
-                .OrderBy(m => m.Timestamp)
-                .ToList();
+            _context.Messages.Add(message);
+            _context.SaveChanges();
 
-            return Json(chatMessages);
+            return RedirectToAction("Chat", new { libraryId });
         }
+
     }
 }
 

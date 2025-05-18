@@ -1,0 +1,108 @@
+﻿
+@{
+    Layout = "LibraryDashboard";
+}
+@model IEnumerable<Review>
+@section style {
+    <style>
+        .review-card {
+            border: 1px solid #c34ba1;
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .review-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(150, 91, 185, 0.2);
+            }
+
+        .text-primary {
+            color: #965BB9 !important;
+        }
+    </style>
+}
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="color: #965BB9;">Customer Reviews</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            No reviews available yet.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var review in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm h-100 review-card">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">@review.User.Name</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">@review.CreatedAt?.ToString("MMM dd, yyyy")</h6>
+
+                            <p class="card-text text-dark">
+                                <strong>Rating:</strong>
+                                @for (int i = 0; i < (review.Rating ?? 0); i++)
+                                {
+                                    <i class="fas fa-star text-warning"></i>
+                                }
+                            </p>
+
+                            <p class="card-text">
+                                <strong>Comment:</strong><br />
+                                @(!string.IsNullOrWhiteSpace(review.Comment) ? review.Comment : "No comment provided.")
+                            </p>
+
+                            <!-- ✅ حالة الريفيو -->
+                            <p>
+                                <strong>Status:</strong>
+                                @if (review.Status == "Approved")
+                                {
+                                    <span class="badge bg-success" style="padding:10px; color:azure">Approved</span>
+                                }
+                                else if (review.Status == "Rejected")
+                                {
+                                    <span class="badge bg-danger" style="padding:10px; color:azure">Cancelled</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary" style="color:#6f07ad;padding:10px; color:azure">Pending</span>
+                                }
+                            </p>
+
+                            @if (string.IsNullOrWhiteSpace(review.Reply) && review.Status != "Rejected")
+                            {
+                                <!-- ✅ Form للرد -->
+                                <form asp-action="ReplyToReview" method="post" class="mb-2">
+                                    <input type="hidden" name="id" value="@review.Id" />
+                                    <div class="mb-2">
+                                        <textarea name="reply" class="form-control" rows="3" placeholder="Write your reply here..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-success me-2">Reply</button>
+                                </form>
+
+                                <!-- ❌ زر الرفض -->
+                                <form asp-action="RejectReview" method="post">
+                                    <input type="hidden" name="id" value="@review.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
+                                </form>
+                            }
+                            else if (!string.IsNullOrWhiteSpace(review.Reply))
+                            {
+                                <!-- ✅ Show Reply -->
+                                <p class="mt-3">
+                                    <strong>Admin Reply:</strong><br />
+                                    @review.Reply
+                                </p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+
+

@@ -1,0 +1,79 @@
+﻿
+@{
+    Layout = "LibraryDashboard";
+}
+@model List<stationerySpot.Models.PrintRequest>
+
+@{
+    ViewData["Title"] = "Manage Print Requests";
+}
+
+<h2 class="text-center text-primary mb-4">Print Requests</h2>
+
+<table class="table table-bordered table-hover text-center">
+    <thead class="table-dark">
+        <tr>
+            <th>Customer</th>
+            <th>File</th>
+            <th>Copies</th>
+            <th>Color</th>
+            <th>Sides</th>
+            <th>Message</th>
+            <th>Status</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Model)
+        {
+            <tr>
+                <td>@request.Customer.Name</td>
+                <td>
+                    <a href="@request.DocumentPath" class="btn btn-sm btn-outline-primary" download>
+                        Download PDF
+                    </a>
+                </td>
+
+                <td>@request.Copies</td>
+                <td>@request.Color</td>
+                <td>@request.PrintSide</td>
+                <td>@request.Message</td>
+                <td>
+                    <form asp-action="UpdateStatus" method="post" class="d-flex justify-content-center">
+                        <input type="hidden" name="id" value="@request.Id" />
+                       
+                        <select name="status" class="form-select form-select-sm me-2" style="width: 140px;">
+                            <option value="Pending" selected="@("Pending" == request.Status)">Pending</option>
+                            <option value="Completed" selected="@("Completed" == request.Status)">Completed</option>
+                            <option value="Cancelled" selected="@("Cancelled" == request.Status)">Cancelled</option>
+                        </select>
+
+                        <button type="submit" class="btn btn-sm btn-success">Save</button>
+                    </form>
+                </td>
+                <td>@request.CreatedAt?.ToString("g")</td>
+                <td>
+                    <!-- Optional: extra action -->
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (TempData["StatusMessage"] != null)
+        {
+            <text>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Done!',
+                        text: '@TempData["StatusMessage"]',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+            </text>
+        }
+    </script>
+}
+

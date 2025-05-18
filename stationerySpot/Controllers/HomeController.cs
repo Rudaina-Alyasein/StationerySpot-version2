@@ -707,6 +707,11 @@ namespace stationerySpot.ControllersF
         {
             return View();
         }
+        public IActionResult Projects()
+        {
+            var projects = _context.Projects.Include(p => p.Library).ToList();
+            return View(projects);
+        }
         public IActionResult Offer(int id)
         {
             var offer = _context.Offers

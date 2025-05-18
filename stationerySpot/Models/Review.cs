@@ -16,7 +16,8 @@ public partial class Review
     public string? Comment { get; set; }
 
     public DateTime? CreatedAt { get; set; }
-
+    public string? Reply { get; set; }  // هنا خاصية الرد
+    public string Status { get; set; } = "Pending";
     public virtual Library Library { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;

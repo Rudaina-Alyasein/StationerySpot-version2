@@ -1,4 +1,5 @@
-﻿@model stationerySpot.Models.Library
+﻿@using stationerySpot.ViewModels
+@model LibraryDashboardViewModel
 
 @{
     Layout = "LibraryDashboard";
@@ -28,8 +29,8 @@
         <!-- القسم الأيسر: صورة + اسم + أزرار -->
         <div class="col-md-3 border-right d-flex justify-content-center">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5 w-100">
-                <img class="rounded-circle mt-4" width="150px" height="150px" style="object-fit:cover" src="@Url.Content(Model.LogoPath)">
-                <h5 class="mt-3 fw-bold">@Model.Name</h5>
+                <img class="rounded-circle mt-4" width="150px" height="150px" style="object-fit:cover" src="@Url.Content(Model.Library.LogoPath)">
+                <h5 class="mt-3 fw-bold">@Model.Library.Name</h5>
 
                 <div class="mt-3 d-grid gap-2 w-100 px-3" style=" display:flex; flex-direction:column; gap:10px !important;">
                     <button class="btn btn-sm btn-primary w-100 d-flex align-items-center justify-content-center gap-2 py-2"
@@ -52,31 +53,31 @@
                 <div class="row mb-3">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Library Name</label>
-                        <p class="form-control-plaintext">@Model.Name</p>
+                        <p class="form-control-plaintext">@Model.Library.Name</p>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Email</label>
-                        <p class="form-control-plaintext">@Model.LibraryAccounts.FirstOrDefault()?.Email</p>
+                        <p class="form-control-plaintext">@Model.Library.LibraryAccounts.FirstOrDefault()?.Email</p>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Phone Number</label>
-                        <p class="form-control-plaintext">@Model.Phone</p>
+                        <p class="form-control-plaintext">@Model.Library.Phone</p>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">City</label>
-                        <p class="form-control-plaintext">@Model.City</p>
+                        <p class="form-control-plaintext">@Model.Library.City</p>
                     </div>
                     <div class="col-md-12 mb-3">
                         <label class="form-label">Full Address</label>
-                        <p class="form-control-plaintext">@Model.Location</p>
+                        <p class="form-control-plaintext">@Model.Library.Location</p>
                     </div>
                     <div class="col-md-12 mb-3">
                         <label class="form-label">Working Hours</label>
-                        <p class="form-control-plaintext">@Model.WorkingHours</p>
+                        <p class="form-control-plaintext">@Model.Library.WorkingHours</p>
                     </div>
                     <div class="col-md-12 mb-3">
                         <label class="form-label">Library Description</label>
-                        <p class="form-control-plaintext">@Model.Description</p>
+                        <p class="form-control-plaintext">@Model.Library.Description</p>
                     </div>
                 </div>
             </div>
@@ -101,11 +102,11 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Library Name</label>
-                                    <input type="text" class="form-control" name="Name" value="@Model.Name" placeholder="Al-Noor Library" required>
+                                    <input type="text" class="form-control" name="Name" value="@Model.Library.Name" placeholder="Al-Noor Library" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Email</label>
-                                    <input type="email" class="form-control" name="Email" value="@Model.LibraryAccounts.FirstOrDefault()?.Email" placeholder="library@example.com" required>
+                                    <input type="email" class="form-control" name="Email" value="@Model.Library.LibraryAccounts.FirstOrDefault()?.Email" placeholder="library@example.com" required>
                                 </div>
                             </div>
 
@@ -113,13 +114,13 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Phone</label>
-                                    <input type="text" class="form-control" name="Phone" value="@Model.Phone" placeholder="07XXXXXXXX" required>
+                                    <input type="text" class="form-control" name="Phone" value="@Model.Library.Phone" placeholder="07XXXXXXXX" required>
                                 </div>
                               
                                 <!-- Dropdown for City -->
                                 <div class="d-flex flex-row align-items-center mb-4">
                                     <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                        <select id="City" name="City" value="@Model.City" class="form-control">
+                                        <select id="City" name="City" value="@Model.Library.City" class="form-control">
                                             <option value="" disabled selected>Select City</option>
                                             <option value="Amman" selected>Amman</option>
                                             <option value="Irbid">Irbid</option>
@@ -142,19 +143,19 @@
                             <!-- Full Address -->
                             <div class="mb-3">
                                 <label class="form-label">Full Address</label>
-                                <input type="text" class="form-control" name="Location" value="@Model.Location" placeholder="University Street, beside Arab Bank" required>
+                                <input type="text" class="form-control" name="Location" value="@Model.Library.Location" placeholder="University Street, beside Arab Bank" required>
                             </div>
 
                             <!-- Working Hours -->
                             <div class="mb-3">
                                 <label class="form-label">Working Hours</label>
-                                <input type="text" class="form-control" name="WorkingHours" value="@Model.WorkingHours" placeholder="Sun - Thu | 9:00 AM - 6:00 PM" required>
+                                <input type="text" class="form-control" name="WorkingHours" value="@Model.Library.WorkingHours" placeholder="Sun - Thu | 9:00 AM - 6:00 PM" required>
                             </div>
 
                             <!-- Library Description -->
                             <div class="mb-3">
                                 <label class="form-label">Description</label>
-                                <textarea class="form-control" name="Description" rows="4" placeholder="Short description about the library..." required>@Model.Description</textarea>
+                                <textarea class="form-control" name="Description" rows="4" placeholder="Short description about the library..." required>@Model.Library.Description</textarea>
                             </div>
 
                             
@@ -181,28 +182,25 @@
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label class="form-label">Current Password</label>
-                                <input type="password" class="form-control" placeholder="Enter current password">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">New Password</label>
-                                <input type="password" class="form-control" placeholder="Enter new password">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Confirm New Password</label>
-                                <input type="password" class="form-control" placeholder="Confirm new password">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-secondary">Update Password</button>
+                        @await Html.PartialAsync("_ChangePasswordModal", new ChangePasswordLibraryViewModel())
                     </div>
                 </div>
             </div>
         </div>
 
+
     </div>
 </div>
+
+    @section Scripts {
+    <script>
+        $(document).ready(function () {
+            var hasErrors = @(!ViewData.ModelState.IsValid ? "true" : "false");
+            if (hasErrors === "true") {
+                var myModal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
+                myModal.show();
+            }
+        });
+    </script>
+}
+

@@ -31,6 +31,7 @@ public partial class User
     public ICollection<ReviewsProduct> ReviewsProducts { get; set; }
     public virtual ICollection<Cart> Carts { get; set; } // علاقة مع عدة Carts
     public virtual ICollection<OfferComment> OfferComments { get; set; } = new List<OfferComment>();
+    public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 
     public Address Address { get; set; }
     public PaymentMethod PaymentMethod { get; set; }  

@@ -16,7 +16,9 @@ public partial class MyDbContext : DbContext
     }
 
     public DbSet<CustomerInfo> CustomerInfos { get; set; }
+    public DbSet<Project> Projects { get; set; }
 
+    public DbSet<Message> Messages { get; set; }
 
     public virtual DbSet<Cart> Carts { get; set; }
 
