@@ -317,6 +317,12 @@ public partial class MyDbContext : DbContext
             entity.HasOne(d => d.Library).WithMany(p => p.Products)
                 .HasForeignKey(d => d.LibraryId)
                 .HasConstraintName("FK__Products__Librar__4316F928");
+            entity.HasOne(d => d.Offer)
+    .WithMany(p => p.Products)
+    .HasForeignKey(d => d.OfferId)
+    .OnDelete(DeleteBehavior.SetNull) // أو Cascade حسب اللي بناسبك
+    .HasConstraintName("FK__Products__OfferId");
+
         });
 
         modelBuilder.Entity<Review>(entity =>

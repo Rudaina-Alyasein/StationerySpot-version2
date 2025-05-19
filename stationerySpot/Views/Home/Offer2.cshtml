@@ -1,0 +1,68 @@
+﻿@model stationerySpot.ViewModels.OfferDetailsViewModel
+@{
+    Layout = "HomeLayout";
+}
+
+<div class="container my-5">
+    <!-- عرض معلومات الأوفر -->
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-5">
+            <img src="@Model.Offer.ImagePath" class="img-fluid rounded shadow" alt="@Model.Offer.Title" />
+        </div>
+        <div class="col-md-7">
+            <h2 class="fw-bold">@Model.Offer.Title</h2>
+            <p class="mb-2">@Model.Offer.Description</p>
+            <p class="mb-1"><strong>Expires on:</strong> @Model.Offer.ExpiryDate?.ToString("yyyy-MM-dd")</p>
+            <p class="mb-1"><strong>Library:</strong> @Model.Offer.Library.Name</p>
+            @if (Model.Offer.DiscountPercent.HasValue)
+            {
+                <p class="mb-1"><strong>Discount:</strong> @Model.Offer.DiscountPercent% OFF</p>
+            }
+        </div>
+    </div>
+
+    <hr />
+
+    <!-- عرض المنتجات المرتبطة -->
+    <div class="row">
+        @foreach (var product in Model.Products)
+        {
+            decimal discount = Model.Offer?.DiscountPercent ?? 0;
+            decimal discountedPrice = product.Price * (1 - discount / 100.0m);
+
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="@product.ImagePath" class="card-img-top" alt="@product.Name" style="height: 220px; object-fit: cover;" />
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="mb-2">
+                            <span class="text-muted text-decoration-line-through">@product.Price.ToString("0.00") JD</span>
+                            <span class="text-danger fw-bold ms-2">@discountedPrice.ToString("0.00") JD</span>
+                        </p>
+
+                        <form method="post" asp-controller="Home" asp-action="AddToCartOffer">
+                            <input type="hidden" name="productId" value="@product.Id" />
+                            <button type="submit" class="btn btn-success w-100" style="background:#0097B2 !important">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        var message = '@TempData["CartMessage"]';
+        if (message) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: message,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+    </script>
+}
+

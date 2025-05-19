@@ -286,7 +286,7 @@
             <nav aria-label="breadcrumb" class="breadcrumb-style1">
                 <div class="container">
                     <ol class="breadcrumb justify-content-center">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="index.html" style="color:black !important">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Cart</li>
                     </ol>
                 </div>
@@ -344,7 +344,7 @@
 
                                     <tr class="tbody-item-actions">
                                         <td colspan="6">
-                                            <button type="button" class="update-cart btn btn-primary">Update Cart</button>
+                                            <button type="button" class="update-cart btn btn-primary" style="background:#0097B2 !important">Update Cart</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -360,7 +360,7 @@
                                 <p class="desc">Enter your coupon code if you have one.</p>
                                 <form method="get" asp-action="Cart1">
                                     <input type="text" name="couponCode" class="form-control" placeholder="Coupon code" />
-                                    <button type="submit" class="btn-coupon mt-2">Apply coupon</button>
+                                    <button type="submit" class="btn-coupon mt-2" style="background:#0097B2 !important">Apply coupon</button>
                                 </form>
                                 @{
                                     var appliedCoupon = Context.Session.GetString("AppliedCoupon");
@@ -418,7 +418,7 @@
 
                                 </table>
                                 <div class="text-end">
-                                    <a asp-controller="Home" asp-action="CheckoutProcess" class="checkout-button">Proceed to checkout</a>
+                                    <a asp-controller="Home" asp-action="CheckoutProcess" class="checkout-button" style="background:#0097B2 !important">Proceed to checkout</a>
                                 </div>
                             </div>
                         </div>

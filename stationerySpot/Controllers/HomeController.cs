@@ -740,7 +740,6 @@ namespace stationerySpot.ControllersF
         }
 
         [HttpPost]
-        //comment for offer 
         public IActionResult AddComment(int OfferId, string CommentText)
         {
             var userId = HttpContext.Session.GetString("UserId");
@@ -777,6 +776,74 @@ namespace stationerySpot.ControllersF
 
             // إعادة التوجيه لصفحة العرض مع إضافة تعليقات جديدة
             return RedirectToAction("Offer", new { id = OfferId });
+        }
+        public IActionResult Offer2(int id)
+        {
+            var offer = _context.Offers
+                .Include(o => o.Library)  
+                .FirstOrDefault(o => o.Id == id);
+
+            if (offer == null)
+            {
+                return NotFound();
+            }
+
+            var products = _context.Products
+                .Where(p => p.OfferId == id)
+                .ToList();
+
+            var viewModel = new OfferDetailsViewModel
+            {
+                Offer = offer,
+                Products = products
+            };
+
+            return View(viewModel);
+        }
+        [HttpPost]
+        public IActionResult AddToCartOffer(int productId)
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
+            {
+                TempData["CartMessage"] = "Please log in first to add products to your cart.";
+                return RedirectToAction("Login", "User");
+            }
+
+            int userId = int.Parse(userIdStr);
+
+            var cart = _context.Carts.FirstOrDefault(c => c.CustomerId == userId );
+            if (cart == null)
+            {
+                cart = new Cart
+                {
+                    CustomerId = userId,
+                    CreatedAt = DateTime.Now,
+                    IsCheckedOut = false
+                };
+                _context.Carts.Add(cart);
+                _context.SaveChanges();
+            }
+
+            var cartItem = _context.CartItems.FirstOrDefault(ci => ci.CartId == cart.Id && ci.ProductId == productId);
+            if (cartItem != null)
+            {
+                cartItem.Quantity++;
+            }
+            else
+            {
+                _context.CartItems.Add(new CartItem
+                {
+                    CartId = cart.Id,
+                    ProductId = productId,
+                    Quantity = 1
+                });
+            }
+
+            _context.SaveChanges();
+
+            TempData["CartMessage"] = "Product added to cart!";
+            return RedirectToAction("Offer2", new { id = _context.Products.Find(productId).OfferId });
         }
 
     }

@@ -1,5 +1,5 @@
 ﻿@{
-    var isLoggedIn = Context.Session.GetString("UserId") != null; // افتراض أن UserId يتم تخزينه عند تسجيل الدخول
+    var isLoggedIn = Context.Session.GetString("UserId") != null; 
 }
 
 <!DOCTYPE html>
@@ -13,10 +13,8 @@
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    @* <link rel="stylesheet" href="~/assets\style\nav.css"> *@
 
 
-    @* <link rel="stylesheet" href="~/assets/style/style.css" asp-append-version="true"> *@
     <link rel="stylesheet" href="~/assets/style/nav.css" asp-append-version="true">
     @RenderSection("Style", required: false)
 
@@ -53,6 +51,9 @@
                         <a class="nav-link active" aria-current="page" asp-action="Register"asp-controller="Home">Join Us</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-action="Projects" asp-controller="Home">Projects</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" asp-action="ContactUs" asp-controller="Home">Contact us</a>
                     </li>
                     <!-- Add Terms and Conditions link -->
@@ -78,11 +79,7 @@
                                 <span class="badge bg-success" style="background-color: #fa65b1!important;">2</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-heart" style="font-size: 24px; margin-top: 7px;"></i>
-                            </a>
-                        </li>
+                    
                         <li class="nav-item">
                             <a asp-action="Profile" asp-controller="user" class="nav-link">
                                 <img src="~/assets/img/avatar.jpg" alt="Profile" class="rounded-circle" style="width: 35px; height: 35px;">

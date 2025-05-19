@@ -19,6 +19,8 @@ namespace stationerySpot.Models
 
         [StringLength(255)]  
         public string? Link { get; set; }
+        [Range(0, 100)]
+        public decimal? DiscountPercent { get; set; }
 
         [Required]  
         public int LibraryId { get; set; }
@@ -29,6 +31,7 @@ namespace stationerySpot.Models
         [DataType(DataType.Date)] 
         public DateTime? ExpiryDate { get; set; }  
         public virtual ICollection<OfferComment> OfferComments { get; set; } = new List<OfferComment>();
+        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 
     }
 }
