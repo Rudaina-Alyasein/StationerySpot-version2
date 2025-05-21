@@ -56,17 +56,14 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" asp-action="ContactUs" asp-controller="Home">Contact us</a>
                     </li>
-                    <!-- Add Terms and Conditions link -->
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" asp-action="TermsConditions" asp-controller="Home">Terms & Conditions</a>
                     </li>
                 </ul>
 
-                <!-- Right side (Cart, Notifications, Profile, Sign In / Logout) -->
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     @if (isLoggedIn)
                     {
-                        <!-- المستخدم مسجل دخول، عرض أيقونات الإشعارات والسلة والبروفايل -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="fa fa-bell" style="font-size: 24px; margin-top: 7px;"></i>

@@ -166,7 +166,7 @@ namespace stationerySpot.ControllersF
 
             if (library == null)
             {
-                return NotFound(); // إذا لم يتم العثور على المكتبة
+                return NotFound(); 
             }
 
             var products = _context.Products.Include(p => p.Category).Where(p => p.LibraryId == id).ToList();
@@ -844,6 +844,32 @@ namespace stationerySpot.ControllersF
 
             TempData["CartMessage"] = "Product added to cart!";
             return RedirectToAction("Offer2", new { id = _context.Products.Find(productId).OfferId });
+        }
+        [HttpPost]
+        public IActionResult SubmitReview(int ProductId, int Rating, string ReviewText)
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
+            {
+                TempData["CartMessage"] = "Please log in first to add products to your cart..";
+                return RedirectToAction("Login", "‘User");
+            }
+
+
+            var review = new ReviewsProduct
+            {
+                ProductId = ProductId,
+                UserId = Convert.ToInt32(userIdStr),
+                Rating = Rating,
+                ReviewText = ReviewText,
+                CreatedAt = DateTime.Now
+            };
+
+            _context.ReviewsProducts.Add(review);
+            _context.SaveChanges();
+            TempData["ReviewMessage"] = "Your review has been submitted successfully!";
+
+            return RedirectToAction("ProductDetails", new { id = ProductId });
         }
 
     }

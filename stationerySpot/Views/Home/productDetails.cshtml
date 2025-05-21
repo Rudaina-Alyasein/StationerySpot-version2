@@ -14,7 +14,7 @@
         <div>
             <h1 class="product-title">@Model.Name</h1>
             <span class="product-category">@Model.Category.Name</span>
-            <p class="product-price">@Model.Price.ToString("C")</p>
+            <p class="product-price">@Model.Price.ToString("N2") JD</p>
         </div>
         <img src="@Model.ImagePath" alt="Product Image" class="product-image">
     </div>
@@ -56,19 +56,37 @@
     <!-- Ratings Section -->
     <div class="ratings-section">
         <h3>Ratings and Reviews</h3>
-        <!-- Rating Form -->
-        <div class="rating-form">
-            <h4>Add Your Rating</h4>
-            <div class="rating-stars">
-                <i class="far fa-star"></i>
-                <i class="far fa-star"></i>
-                <i class="far fa-star"></i>
-                <i class="far fa-star"></i>
-                <i class="far fa-star"></i>
-            </div>
-            <textarea placeholder="Write your review here..."></textarea>
-            <button>Submit Review</button>
+        <div class="rating-form mt-5 p-4 rounded shadow-sm bg-light">
+            <h4 class="mb-4 text-primary" style="color:#ff1493 !important">Add Your Rating</h4>
+
+            <form asp-action="SubmitReview" method="post">
+                <input type="hidden" name="ProductId" value="@Model.Id" />
+
+                <!-- Rating Stars -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Rating:</label>
+                    <select name="Rating" class="form-select w-50" required>
+                        <option value="1">★☆☆☆☆ (1)</option>
+                        <option value="2">★★☆☆☆ (2)</option>
+                        <option value="3">★★★☆☆ (3)</option>
+                        <option value="4">★★★★☆ (4)</option>
+                        <option value="5">★★★★★ (5)</option>
+                    </select>
+                </div>
+
+                <!-- Review Text -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Review:</label>
+                    <textarea name="ReviewText" class="form-control" rows="4" placeholder="Write your review here..." required></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-paper-plane me-2"></i> Submit Review
+                </button>
+            </form>
         </div>
+
 
         <!-- Existing Reviews -->
         @foreach (var review in Model.ReviewsProducts)
@@ -90,3 +108,18 @@
         }
     </div>
 </div>
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (TempData["ReviewMessage"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Done!',
+                text: '@TempData["ReviewMessage"]',
+                confirmButtonColor: '#3085d6'
+            });
+        </script>
+    }
+}
